@@ -4,25 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Using routing">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/app/accounts/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/app/budgets/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/app/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/app/settings/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/app/transactions/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/auth/layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/auth/sign-in/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/auth/sign-up/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/about/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/features/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/privacy/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/marketing/terms/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Boilerplate for frontend structure">
+      <change beforePath="$PROJECT_DIR$/app/app/app/accounts/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/accounts/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/app/budgets/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/budgets/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/settings/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/app/settings/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/transactions/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/app/transactions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/auth/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/auth/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/auth/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/about/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/about/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/features/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/features/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/privacy/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/terms/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/marketing/terms/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +46,7 @@
     <urls />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -128,7 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1768880692427</updated>
       <workItem from="1768880693581" duration="7361000" />
-      <workItem from="1768954794666" duration="4119000" />
+      <workItem from="1768954794666" duration="6669000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -170,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768887950325</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Boilerplate for frontend structure">
+      <option name="closed" value="true" />
+      <created>1768964639961</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1768964639961</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +191,7 @@
     <MESSAGE value="Useful changes" />
     <MESSAGE value="ShadCN edition and prisma fix" />
     <MESSAGE value="Using routing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using routing" />
+    <MESSAGE value="Boilerplate for frontend structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Boilerplate for frontend structure" />
   </component>
 </project>
