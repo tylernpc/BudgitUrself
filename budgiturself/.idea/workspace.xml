@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Better folder organization with better naming conventions.">
-      <change afterPath="$PROJECT_DIR$/app/api/budgets/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/categories/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/health/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/transactions/[id]/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/transactions/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/webhooks/stripe/route.ts" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Prisma db layer implemented">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/health/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/health/route.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +112,7 @@
       <option name="presentableId" value="Default" />
       <updated>1768880692427</updated>
       <workItem from="1768880693581" duration="7361000" />
-      <workItem from="1768954794666" duration="7954000" />
+      <workItem from="1768954794666" duration="9199000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -174,7 +170,31 @@
       <option name="project" value="LOCAL" />
       <updated>1768967075201</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="API stuff">
+      <option name="closed" value="true" />
+      <created>1768968118021</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1768968118021</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Don't touch generated prisma">
+      <option name="closed" value="true" />
+      <created>1768968172554</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1768968172554</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Prisma db layer implemented">
+      <option name="closed" value="true" />
+      <created>1768968317467</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1768968317467</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +211,9 @@
     <MESSAGE value="Using routing" />
     <MESSAGE value="Boilerplate for frontend structure" />
     <MESSAGE value="Better folder organization with better naming conventions." />
-    <option name="LAST_COMMIT_MESSAGE" value="Better folder organization with better naming conventions." />
+    <MESSAGE value="API stuff" />
+    <MESSAGE value="Don't touch generated prisma" />
+    <MESSAGE value="Prisma db layer implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Prisma db layer implemented" />
   </component>
 </project>
