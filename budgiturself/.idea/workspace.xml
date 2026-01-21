@@ -4,23 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Boilerplate for frontend structure">
-      <change beforePath="$PROJECT_DIR$/app/app/app/accounts/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/accounts/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/app/budgets/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/budgets/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/settings/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/app/settings/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/transactions/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/app/transactions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/about/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/about/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/features/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/features/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/privacy/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/terms/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/marketing/terms/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Better folder organization with better naming conventions.">
+      <change afterPath="$PROJECT_DIR$/app/api/budgets/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/categories/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/health/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/transactions/[id]/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/transactions/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/webhooks/stripe/route.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +116,7 @@
       <option name="presentableId" value="Default" />
       <updated>1768880692427</updated>
       <workItem from="1768880693581" duration="7361000" />
-      <workItem from="1768954794666" duration="6669000" />
+      <workItem from="1768954794666" duration="7954000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -176,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768964639961</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Better folder organization with better naming conventions.">
+      <option name="closed" value="true" />
+      <created>1768967075201</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1768967075201</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,6 +190,7 @@
     <MESSAGE value="ShadCN edition and prisma fix" />
     <MESSAGE value="Using routing" />
     <MESSAGE value="Boilerplate for frontend structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Boilerplate for frontend structure" />
+    <MESSAGE value="Better folder organization with better naming conventions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Better folder organization with better naming conventions." />
   </component>
 </project>
