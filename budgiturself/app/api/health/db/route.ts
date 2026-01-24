@@ -1,6 +1,11 @@
 // app/api/health/db/route.ts
-import {createClient} from "@supabase/supabase-js";
+import { prisma } from '@/lib/db/prisma';
 
-async function InstrumentData() {
-    const supabase = await createClient();
+export async function GET() {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    return Response.json({ status: 'ok' });
+  } catch (error) {
+    return Response.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+  }
 }

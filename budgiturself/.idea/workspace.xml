@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="api get call works, nice">
-      <change afterPath="$PROJECT_DIR$/app/api/health/db/route.ts" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Add supabase dependencies, add route for db health check">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/health/db/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/health/db/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/db/prisma.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/db/prisma.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +115,7 @@
       <updated>1768880692427</updated>
       <workItem from="1768880693581" duration="7361000" />
       <workItem from="1768954794666" duration="9215000" />
-      <workItem from="1769212272227" duration="1264000" />
+      <workItem from="1769212272227" duration="7237000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -203,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768969365402</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Add supabase dependencies, add route for db health check">
+      <option name="closed" value="true" />
+      <created>1769213717949</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769213717949</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,6 +234,7 @@
     <MESSAGE value="Don't touch generated prisma" />
     <MESSAGE value="Prisma db layer implemented" />
     <MESSAGE value="api get call works, nice" />
-    <option name="LAST_COMMIT_MESSAGE" value="api get call works, nice" />
+    <MESSAGE value="Add supabase dependencies, add route for db health check" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add supabase dependencies, add route for db health check" />
   </component>
 </project>
