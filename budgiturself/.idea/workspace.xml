@@ -4,60 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Change or something broken smh,">
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/client.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/client.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/default.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/default.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/edge.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/index.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/edge-esm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/index-browser.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/library.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/library.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/react-native.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/wasm-compiler-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/runtime/wasm-engine-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/schema.prisma" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/wasm-edge-light-loader.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/wasm-worker-loader.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/wasm.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(generated)/prisma/wasm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/client.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/client.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/default.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/default.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/edge.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/index.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/libquery_engine-darwin-arm64.dylib.node" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/query_engine_bg.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/query_engine_bg.wasm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/edge-esm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/index-browser.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/index-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/library.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/library.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/react-native.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/wasm-compiler-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/runtime/wasm-engine-edge.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/schema.prisma" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/wasm-edge-light-loader.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/wasm-worker-loader.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/wasm.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/generated/prisma/wasm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db/prisma.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/db/prisma.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma.config.ts" beforeDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Primsa Fix, holy moly donut shop that took way to long">
+      <change beforePath="$PROJECT_DIR$/app/api/health/db/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/health/db/route.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -166,7 +114,7 @@
       <workItem from="1768880693581" duration="7361000" />
       <workItem from="1768954794666" duration="9215000" />
       <workItem from="1769212272227" duration="7975000" />
-      <workItem from="1769567426638" duration="2949000" />
+      <workItem from="1769567426638" duration="5563000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -280,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769569375397</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Primsa Fix, holy moly donut shop that took way to long">
+      <option name="closed" value="true" />
+      <created>1769571052628</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1769571052628</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,6 +260,7 @@
     <MESSAGE value="Add supabase dependencies, add route for db health check" />
     <MESSAGE value="don't know, somethings broken smh" />
     <MESSAGE value="Change or something broken smh," />
-    <option name="LAST_COMMIT_MESSAGE" value="Change or something broken smh," />
+    <MESSAGE value="Primsa Fix, holy moly donut shop that took way to long" />
+    <option name="LAST_COMMIT_MESSAGE" value="Primsa Fix, holy moly donut shop that took way to long" />
   </component>
 </project>

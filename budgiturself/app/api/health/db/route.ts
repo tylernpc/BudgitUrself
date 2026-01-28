@@ -1,11 +1,24 @@
 // app/api/health/db/route.ts
-import { prisma } from '@/lib/db/prisma';
+import {prisma} from "@/lib/db/prisma";
 
 export async function GET() {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    return Response.json({ status: 'ok' });
-  } catch (error) {
-    return Response.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
-  }
+    try {
+        // Connection sanity check
+        await prisma.$queryRaw`SELECT 1`;
+
+        // Fetch a representative user (if any)
+        const user = await prisma.user.findFirst({
+            select: {id: true, email: true},
+        });
+
+        return Response.json({
+            status: "ok",
+            user,
+        });
+    } catch (error) {
+        return Response.json(
+            {error: error instanceof Error ? error.message : "Unknown error"},
+            {status: 500}
+        );
+    }
 }
