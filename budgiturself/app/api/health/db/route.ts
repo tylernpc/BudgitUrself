@@ -7,7 +7,7 @@ export async function GET() {
         await prisma.$queryRaw`SELECT 1`;
 
         // Fetch the row from your Users table
-        const user = await prisma.legacyUsers.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id: 1 },
             select: { id: true, userName: true },
         });
