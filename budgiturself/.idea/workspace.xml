@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="200 Response Valid Return Reached DB!">
-      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Landing Page">
+      <change beforePath="$PROJECT_DIR$/app/api/budgets/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/budgets/route.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +116,7 @@
       <workItem from="1769212272227" duration="7975000" />
       <workItem from="1769567426638" duration="5586000" />
       <workItem from="1769608650723" duration="4000" />
-      <workItem from="1769655910121" duration="4583000" />
+      <workItem from="1769655910121" duration="5503000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -262,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769658785603</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Landing Page">
+      <option name="closed" value="true" />
+      <created>1769660758603</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1769660758603</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,6 +298,7 @@
     <MESSAGE value="Close to connection to a db" />
     <MESSAGE value="Going to blow my brains out" />
     <MESSAGE value="200 Response Valid Return Reached DB!" />
-    <option name="LAST_COMMIT_MESSAGE" value="200 Response Valid Return Reached DB!" />
+    <MESSAGE value="Landing Page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Landing Page" />
   </component>
 </project>
