@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Close to connection to a db">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/health/db/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/health/db/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="200 Response Valid Return Reached DB!">
+      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,9 +33,10 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 7
-}</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "057212ff",
+  "associatedIndex": 3
+}]]></component>
   <component name="ProjectId" id="38VNHjL8vm88vOJspj6DvNkksl6" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -117,7 +116,7 @@
       <workItem from="1769212272227" duration="7975000" />
       <workItem from="1769567426638" duration="5586000" />
       <workItem from="1769608650723" duration="4000" />
-      <workItem from="1769655910121" duration="1399000" />
+      <workItem from="1769655910121" duration="4583000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -247,7 +246,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769573741704</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Going to blow my brains out">
+      <option name="closed" value="true" />
+      <created>1769657333494</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1769657333494</updated>
+    </task>
+    <task id="LOCAL-00018" summary="200 Response Valid Return Reached DB!">
+      <option name="closed" value="true" />
+      <created>1769658785603</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1769658785603</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +288,8 @@
     <MESSAGE value="Change or something broken smh," />
     <MESSAGE value="Primsa Fix, holy moly donut shop that took way to long" />
     <MESSAGE value="Close to connection to a db" />
-    <option name="LAST_COMMIT_MESSAGE" value="Close to connection to a db" />
+    <MESSAGE value="Going to blow my brains out" />
+    <MESSAGE value="200 Response Valid Return Reached DB!" />
+    <option name="LAST_COMMIT_MESSAGE" value="200 Response Valid Return Reached DB!" />
   </component>
 </project>
