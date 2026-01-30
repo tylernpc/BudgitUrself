@@ -1,6 +1,6 @@
 export default function MarketingPage() {
     return (
-        <main>
+        <main className="min-h-screen bg-white">
             <section className="relative overflow-hidden bg-linear-to-b from-blue-50 to-white py-20 sm:py-32">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl text-center">
@@ -12,13 +12,7 @@ export default function MarketingPage() {
                             Track your paycheck, expenses, and categorize every dollar with ease.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            {/*<Button size="lg" className="text-lg px-8 py-6">*/}
-                            {/*    Get Started Free*/}
-                            {/*    <ArrowRight className="ml-2 size-5" />*/}
-                            {/*</Button>*/}
-                            {/*<Button size="lg" variant="outline" className="text-lg px-8 py-6">*/}
-                            {/*    Watch Demo*/}
-                            {/*</Button>*/}
+
                         </div>
                         <p className="mt-6 text-sm text-gray-500">
                             No credit card required • Free forever

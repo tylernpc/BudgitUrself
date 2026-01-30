@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Landing Page">
-      <change beforePath="$PROJECT_DIR$/app/api/budgets/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/budgets/route.ts" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,10 +34,10 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "057212ff",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;057212ff&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="38VNHjL8vm88vOJspj6DvNkksl6" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -116,7 +117,8 @@
       <workItem from="1769212272227" duration="7975000" />
       <workItem from="1769567426638" duration="5586000" />
       <workItem from="1769608650723" duration="4000" />
-      <workItem from="1769655910121" duration="5503000" />
+      <workItem from="1769655910121" duration="5911000" />
+      <workItem from="1769741388353" duration="2507000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -270,7 +272,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769660758603</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Can't have an empty file">
+      <option name="closed" value="true" />
+      <created>1769661676863</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1769661676863</updated>
+    </task>
+    <task id="LOCAL-00021" summary="No more empty files">
+      <option name="closed" value="true" />
+      <created>1769661830055</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1769661830055</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,6 +317,8 @@
     <MESSAGE value="Going to blow my brains out" />
     <MESSAGE value="200 Response Valid Return Reached DB!" />
     <MESSAGE value="Landing Page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Landing Page" />
+    <MESSAGE value="Can't have an empty file" />
+    <MESSAGE value="No more empty files" />
+    <option name="LAST_COMMIT_MESSAGE" value="No more empty files" />
   </component>
 </project>
