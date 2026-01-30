@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Stat padding of sorts">
       <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +117,7 @@
       <workItem from="1769567426638" duration="5586000" />
       <workItem from="1769608650723" duration="4000" />
       <workItem from="1769655910121" duration="5911000" />
-      <workItem from="1769741388353" duration="2507000" />
+      <workItem from="1769741388353" duration="3497000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -288,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769661830055</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Stat padding of sorts">
+      <option name="closed" value="true" />
+      <created>1769744753546</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1769744753546</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,6 +326,7 @@
     <MESSAGE value="Landing Page" />
     <MESSAGE value="Can't have an empty file" />
     <MESSAGE value="No more empty files" />
-    <option name="LAST_COMMIT_MESSAGE" value="No more empty files" />
+    <MESSAGE value="Stat padding of sorts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stat padding of sorts" />
   </component>
 </project>
