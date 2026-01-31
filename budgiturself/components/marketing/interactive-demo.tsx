@@ -8,13 +8,13 @@ import {Badge} from "@/components/ui/badge";
 import {ArrowRight, Wallet, ShoppingBag, Home, Car} from "lucide-react";
 
 export function InteractiveDemo() {
-    const [paycheck, setPaycheck] = useState(3500);
-    const [rent, setRent] = useState(1200);
-    const [utilities, setUtilities] = useState(200);
-    const [car, setCar] = useState(300);
+    const [paycheck, setPaycheck] = useState("3500");
+    const [rent, setRent] = useState("1200");
+    const [utilities, setUtilities] = useState("200");
+    const [car, setCar] = useState("300");
 
-    const totalExpenses = rent + utilities + car;
-    const availableSpending = paycheck - totalExpenses;
+    const totalExpenses = (Number(rent) || 0) + (Number(utilities) || 0) + (Number(car) || 0);
+    const availableSpending = Number(paycheck) - Number(totalExpenses);
 
     return (
         <section className="bg-linear-to-b from-gray-50 to-white py-20">
@@ -46,7 +46,7 @@ export function InteractiveDemo() {
                                 id="paycheck"
                                 type="number"
                                 value={paycheck}
-                                onChange={(event) => setPaycheck(Number(event.target.value))}
+                                onChange={(event) => setPaycheck(event.target.value)}
                                 className="mt-2 h-14 border-green-300 bg-white text-2xl"
                             />
                             <p className="mt-3 text-sm text-green-700">
@@ -66,6 +66,7 @@ export function InteractiveDemo() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
+                                {/* TODO: tyler, going to happen right here */}
                                 <Label htmlFor="rent" className="flex items-center gap-2 text-orange-900">
                                     <Home className="size-4"/>
                                     Rent/Mortgage
@@ -74,7 +75,7 @@ export function InteractiveDemo() {
                                     id="rent"
                                     type="number"
                                     value={rent}
-                                    onChange={(event) => setRent(Number(event.target.value))}
+                                    onChange={(event) => setRent(event.target.value)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -86,7 +87,7 @@ export function InteractiveDemo() {
                                     id="utilities"
                                     type="number"
                                     value={utilities}
-                                    onChange={(event) => setUtilities(Number(event.target.value))}
+                                    onChange={(event) => setUtilities(event.target.value)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -99,7 +100,7 @@ export function InteractiveDemo() {
                                     id="car"
                                     type="number"
                                     value={car}
-                                    onChange={(event) => setCar(Number(event.target.value))}
+                                    onChange={(event) => setCar(event.target.value)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
