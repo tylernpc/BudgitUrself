@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Need one On the board Lulz">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="TODO: Comment, about 0 bug">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/marketing/interactive-demo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/marketing/interactive-demo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/card.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +121,7 @@
       <workItem from="1769741388353" duration="5272000" />
       <workItem from="1769785518527" duration="1000" />
       <workItem from="1769785672896" duration="7000" />
-      <workItem from="1769816747388" duration="1883000" />
+      <workItem from="1769816747388" duration="3418000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -323,7 +323,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769838277986</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="TODO: Comment, about 0 bug">
+      <option name="closed" value="true" />
+      <created>1769839136733</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1769839136733</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,7 +341,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Extra stuff to commit and push" />
     <MESSAGE value="Restart again lol, using tailwind" />
     <MESSAGE value="Useful changes" />
     <MESSAGE value="ShadCN edition and prisma fix" />
@@ -358,6 +365,7 @@
     <MESSAGE value="New UI Component layer and button" />
     <MESSAGE value="Features Section" />
     <MESSAGE value="Need one On the board Lulz" />
-    <option name="LAST_COMMIT_MESSAGE" value="Need one On the board Lulz" />
+    <MESSAGE value="TODO: Comment, about 0 bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="TODO: Comment, about 0 bug" />
   </component>
 </project>
