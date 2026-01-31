@@ -16,6 +16,23 @@ export function InteractiveDemo() {
     const totalExpenses = (Number(rent) || 0) + (Number(utilities) || 0) + (Number(car) || 0);
     const availableSpending = Number(paycheck) - Number(totalExpenses);
 
+    const maxValue = 9999999;
+
+    const totalLimit = (value: string) => {
+        if (value.trim() === "") {
+            return "";
+        }
+
+        const numeric = Number(value);
+
+        if (!Number.isFinite(numeric)) {
+            return "";
+        }
+
+        const totalLimit = Math.min(Math.max(numeric, 0), maxValue);
+        return String(totalLimit);
+    }
+
     return (
         <section className="bg-linear-to-b from-gray-50 to-white py-20">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -46,7 +63,7 @@ export function InteractiveDemo() {
                                 id="paycheck"
                                 type="number"
                                 value={paycheck}
-                                onChange={(event) => setPaycheck(event.target.value)}
+                                onChange={(event) => setPaycheck(totalLimit(event.target.value))}
                                 className="mt-2 h-14 border-green-300 bg-white text-2xl"
                             />
                             <p className="mt-3 text-sm text-green-700">
@@ -75,7 +92,7 @@ export function InteractiveDemo() {
                                     id="rent"
                                     type="number"
                                     value={rent}
-                                    onChange={(event) => setRent(event.target.value)}
+                                    onChange={(event) => setRent(totalLimit(event.target.value))}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -87,7 +104,7 @@ export function InteractiveDemo() {
                                     id="utilities"
                                     type="number"
                                     value={utilities}
-                                    onChange={(event) => setUtilities(event.target.value)}
+                                    onChange={(event) => setUtilities(totalLimit(event.target.value))}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -100,7 +117,7 @@ export function InteractiveDemo() {
                                     id="car"
                                     type="number"
                                     value={car}
-                                    onChange={(event) => setCar(event.target.value)}
+                                    onChange={(event) => setCar(totalLimit(event.target.value))}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
