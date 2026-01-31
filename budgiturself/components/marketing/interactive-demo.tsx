@@ -66,6 +66,7 @@ export function InteractiveDemo() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
+                                {/* TODO: tyler, going to happen right here */}
                                 <Label htmlFor="rent" className="flex items-center gap-2 text-orange-900">
                                     <Home className="size-4"/>
                                     Rent/Mortgage
