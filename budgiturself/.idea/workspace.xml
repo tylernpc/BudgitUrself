@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="TODO: Comment, about 0 bug">
-      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="TODO: Comment, about 0 bug" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +55,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.Prisma.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "tyler/lp-footer",
+    "git-widget-placeholder": "tyler/lp-number-limit-bug",
     "javascript.preferred.runtime.type.id": "node",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -340,6 +338,7 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Restart again lol, using tailwind" />
     <MESSAGE value="Useful changes" />
     <MESSAGE value="ShadCN edition and prisma fix" />
     <MESSAGE value="Using routing" />
@@ -364,7 +363,6 @@
     <MESSAGE value="Features Section" />
     <MESSAGE value="Need one On the board Lulz" />
     <MESSAGE value="TODO: Comment, about 0 bug" />
-    <MESSAGE value="SetErrors" />
-    <option name="LAST_COMMIT_MESSAGE" value="SetErrors" />
+    <option name="LAST_COMMIT_MESSAGE" value="TODO: Comment, about 0 bug" />
   </component>
 </project>
