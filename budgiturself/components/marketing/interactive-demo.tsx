@@ -12,13 +12,23 @@ export function InteractiveDemo() {
     const [rent, setRent] = useState("1200");
     const [utilities, setUtilities] = useState("200");
     const [car, setCar] = useState("300");
+    const [errors, setErrors] = useState({
+        rent: false,
+        utilities: false,
+        car: false,
+        paycheck: false,
+    });
+    const [paycheckShake, setPaycheckShake] = useState(false);
 
     const totalExpenses = (Number(rent) || 0) + (Number(utilities) || 0) + (Number(car) || 0);
     const availableSpending = Number(paycheck) - Number(totalExpenses);
 
     const maxValue = 9999999;
+    const maxDigits = String(maxValue).length;
 
-    const totalLimit = (value: string) => {
+    const totalLimit = (value: string, options?: { clamp?: boolean }) => {
+        const {clamp = true} = options ?? {};
+
         if (value.trim() === "") {
             return "";
         }
@@ -29,9 +39,25 @@ export function InteractiveDemo() {
             return "";
         }
 
-        const totalLimit = Math.min(Math.max(numeric, 0), maxValue);
-        return String(totalLimit);
+        const normalized = Math.max(numeric, 0);
+
+        if (!clamp) {
+            return String(normalized);
+        }
+
+        const limited = Math.min(normalized, maxValue);
+        return String(limited);
     }
+
+    const triggerPaycheckShake = () => {
+        setPaycheckShake(false);
+        window.requestAnimationFrame(() => {
+            setPaycheckShake(true);
+            window.setTimeout(() => {
+                setPaycheckShake(false);
+            }, 450);
+        });
+    };
 
     return (
         <section className="bg-linear-to-b from-gray-50 to-white py-20">
@@ -63,8 +89,38 @@ export function InteractiveDemo() {
                                 id="paycheck"
                                 type="number"
                                 value={paycheck}
-                                onChange={(event) => setPaycheck(totalLimit(event.target.value))}
-                                className="mt-2 h-14 border-green-300 bg-white text-2xl"
+                                onChange={(event) => {
+                                    const value = event.target.value;
+                                    const numeric = Number(value);
+                                    const digitCount = value.replace(/\D/g, "").length;
+
+                                    if (value === "") {
+                                        setPaycheck("");
+                                        setErrors((prev) => ({...prev, paycheck: false}));
+                                        return;
+                                    }
+
+                                    const exceedsDigits = digitCount > maxDigits;
+                                    const exceedsValue = Number.isFinite(numeric) && numeric > maxValue;
+                                    const isTooBig = exceedsDigits || exceedsValue;
+
+                                    if (isTooBig) {
+                                        setErrors((prev) => ({...prev, paycheck: true}));
+                                        triggerPaycheckShake();
+                                        return;
+                                    }
+
+                                    setPaycheck(totalLimit(value, {clamp: false}));
+
+                                    setErrors((prev) => ({...prev, paycheck: false}));
+                                }}
+                                aria-invalid={errors.paycheck}
+                                className={`mt-1 bg-white ${
+                                    errors.paycheck
+                                        ? `border-destructive${paycheckShake ? " animate-input-shake" : ""}`
+                                        : "border-green-300"
+                                }`}
+                                // className="mt-2 h-14 border-green-300 bg-white text-2xl"
                             />
                             <p className="mt-3 text-sm text-green-700">
                                 This is what you earn each month
