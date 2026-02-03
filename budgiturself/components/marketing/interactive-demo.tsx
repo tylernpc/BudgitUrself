@@ -91,7 +91,7 @@ export function InteractiveDemo() {
                                 value={paycheck}
                                 onChange={(event) => {
                                     const value = event.target.value;
-                                    const numeric = Number(value);
+                                    const numericValueConversion = Number(value);
                                     const digitCount = value.replace(/\D/g, "").length;
 
                                     if (value === "") {
@@ -101,7 +101,7 @@ export function InteractiveDemo() {
                                     }
 
                                     const exceedsDigits = digitCount > maxDigits;
-                                    const exceedsValue = Number.isFinite(numeric) && numeric > maxValue;
+                                    const exceedsValue = Number.isFinite(numericValueConversion) && numericValueConversion > maxValue;
                                     const isTooBig = exceedsDigits || exceedsValue;
 
                                     if (isTooBig) {
