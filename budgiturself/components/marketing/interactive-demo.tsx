@@ -13,8 +13,83 @@ export function InteractiveDemo() {
     const [utilities, setUtilities] = useState("200");
     const [car, setCar] = useState("300");
 
+    const [errors, setErrors] = useState({
+        rent: false,
+        utilities: false,
+        car: false,
+        paycheck: false,
+    });
+    const [paycheckShake, setPaycheckShake] = useState(false);
+
     const totalExpenses = (Number(rent) || 0) + (Number(utilities) || 0) + (Number(car) || 0);
     const availableSpending = Number(paycheck) - Number(totalExpenses);
+
+    const maxValue = 9999999;
+    const maxDigits = String(maxValue).length;
+
+    const maxLimit = (value: string, options?: { isLimited?: boolean }) => {
+        const {isLimited = true} = options ?? {};
+
+        if (value.trim() === "") {
+            return "";
+        }
+
+        const valueAsNumeric = Number(value);
+
+        if (!Number.isFinite(valueAsNumeric)) {
+            return "";
+        }
+
+        const nonNegativeValue = Math.max(valueAsNumeric, 0);
+
+        if (!isLimited) {
+            return String(nonNegativeValue);
+        }
+
+        const limited = Math.min(nonNegativeValue, maxValue);
+        return String(limited);
+    }
+
+    const triggerPaycheckShake = () => {
+        setPaycheckShake(false);
+        window.requestAnimationFrame(() => {
+            setPaycheckShake(true);
+            window.setTimeout(() => {
+                setPaycheckShake(false);
+            }, 450);
+        });
+    };
+
+    const handleInput = (setter: (value: string) => void, errorKey: keyof typeof errors) => {
+        return (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.value;
+            const valueAsNumeric = Number(value);
+            const digitCount = value.replace(/\D/g, "").length;
+
+            if (value === "") {
+                setter("");
+                setErrors((prev) => ({...prev, [errorKey]: false}));
+                return;
+            }
+
+            const exceedsDigits = digitCount > maxDigits;
+            const exceedsValue = Number.isFinite(valueAsNumeric) && valueAsNumeric > maxValue;
+            const isTooBig = exceedsDigits || exceedsValue;
+
+            if (isTooBig) {
+                setErrors((prev) => ({...prev, [errorKey]: true}));
+
+                if (errorKey === "paycheck") {
+                    triggerPaycheckShake();
+                }
+
+                return;
+            }
+
+            setter(maxLimit(value, {isLimited: errorKey === "paycheck" ? false : true}));
+            setErrors((prev) => ({...prev, [errorKey]: false}));
+        };
+    };
 
     return (
         <section className="bg-linear-to-b from-gray-50 to-white py-20">
@@ -46,8 +121,15 @@ export function InteractiveDemo() {
                                 id="paycheck"
                                 type="number"
                                 value={paycheck}
-                                onChange={(event) => setPaycheck(event.target.value)}
-                                className="mt-2 h-14 border-green-300 bg-white text-2xl"
+                                onChange={(event) => {
+                                    handleInput(setPaycheck, "paycheck")(event);
+                                }}
+                                aria-invalid={errors.paycheck}
+                                className={`mt-1 bg-white ${
+                                    errors.paycheck
+                                        ? `border-destructive${paycheckShake ? " animate-input-shake" : ""}`
+                                        : "border-green-300"
+                                }`}
                             />
                             <p className="mt-3 text-sm text-green-700">
                                 This is what you earn each month
@@ -66,7 +148,6 @@ export function InteractiveDemo() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                {/* TODO: tyler, going to happen right here */}
                                 <Label htmlFor="rent" className="flex items-center gap-2 text-orange-900">
                                     <Home className="size-4"/>
                                     Rent/Mortgage
@@ -75,7 +156,7 @@ export function InteractiveDemo() {
                                     id="rent"
                                     type="number"
                                     value={rent}
-                                    onChange={(event) => setRent(event.target.value)}
+                                    onChange={(event) => handleInput(setRent, "rent")(event)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -87,7 +168,7 @@ export function InteractiveDemo() {
                                     id="utilities"
                                     type="number"
                                     value={utilities}
-                                    onChange={(event) => setUtilities(event.target.value)}
+                                    onChange={(event) => handleInput(setUtilities, "utilities")(event)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
@@ -100,7 +181,7 @@ export function InteractiveDemo() {
                                     id="car"
                                     type="number"
                                     value={car}
-                                    onChange={(event) => setCar(event.target.value)}
+                                    onChange={(event) => handleInput(setCar, "car")(event)}
                                     className="mt-1 border-orange-300 bg-white"
                                 />
                             </div>
