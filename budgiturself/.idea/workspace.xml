@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="TODO: Comment, about 0 bug">
-      <change beforePath="$PROJECT_DIR$/components/marketing/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/marketing/hero.tsx" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Routing to the sign-up page, along with nice tapping styling">
+      <change afterPath="$PROJECT_DIR$/app/(app)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,7 +16,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="59" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FormatOnSaveOptions">
@@ -330,7 +332,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769839136733</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Routing to sign-up page">
+      <option name="closed" value="true" />
+      <created>1770086217865</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1770086217865</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Routing to the sign-up page, along with nice tapping styling">
+      <option name="closed" value="true" />
+      <created>1770086517154</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1770086517154</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,8 +358,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Useful changes" />
-    <MESSAGE value="ShadCN edition and prisma fix" />
     <MESSAGE value="Using routing" />
     <MESSAGE value="Boilerplate for frontend structure" />
     <MESSAGE value="Better folder organization with better naming conventions." />
@@ -365,6 +381,8 @@
     <MESSAGE value="Need one On the board Lulz" />
     <MESSAGE value="TODO: Comment, about 0 bug" />
     <MESSAGE value="SetErrors" />
-    <option name="LAST_COMMIT_MESSAGE" value="SetErrors" />
+    <MESSAGE value="Routing to sign-up page" />
+    <MESSAGE value="Routing to the sign-up page, along with nice tapping styling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Routing to the sign-up page, along with nice tapping styling" />
   </component>
 </project>
