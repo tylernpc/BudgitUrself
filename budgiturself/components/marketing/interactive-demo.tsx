@@ -99,6 +99,7 @@ export function InteractiveDemo() {
                                         setErrors((prev) => ({...prev, paycheck: false}));
                                         return;
                                     }
+                                    // reddit karma
 
                                     const exceedsDigits = digitCount > maxDigits;
                                     const exceedsValue = Number.isFinite(numericValueConversion) && numericValueConversion > maxValue;
