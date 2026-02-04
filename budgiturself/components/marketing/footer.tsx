@@ -1,5 +1,6 @@
 import {ArrowRight, CheckCircle2} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import Link from 'next/link'
 
 const benefits = [
     "Start budgeting in under 2 minutes",
@@ -29,10 +30,13 @@ export function Footer() {
                         ))}
                     </div>
 
-                    <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
-                        Get Started!
-                        <ArrowRight className="ml-2 size-5"/>
-                    </Button>
+                    <Link href="/sign-up">
+                        <Button size="lg" variant="secondary"
+                                className="text-lg px-8 py-6 active:scale-[0.98] active:translate-y-px transition-transform">
+                            Get Started!
+                            <ArrowRight className="ml-2 size-5"/>
+                        </Button>
+                    </Link>
 
                     <p className="mt-6 text-sm text-blue-200">
                         Free forever • No credit card required • Cancel anytime
