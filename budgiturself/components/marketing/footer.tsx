@@ -39,7 +39,7 @@ export function Footer() {
                     </Link>
 
                     <p className="mt-6 text-sm text-blue-200">
-                        Free forever • No credit card required • Cancel anytime
+                        Free forever • No credit card required
                     </p>
                 </div>
             </div>
