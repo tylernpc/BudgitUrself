@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Fix to make it better for mobile and PC">
-      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Don't need cancel anytime">
+      <change beforePath="$PROJECT_DIR$/app/(marketing)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +59,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.Prisma.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "tyler/sign-up-page",
+    "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -121,7 +123,7 @@
       <workItem from="1769785518527" duration="1000" />
       <workItem from="1769785672896" duration="7000" />
       <workItem from="1769816747388" duration="3418000" />
-      <workItem from="1770166433518" duration="5255000" />
+      <workItem from="1770166433518" duration="6031000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -411,7 +413,23 @@
       <option name="project" value="LOCAL" />
       <updated>1770169606577</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Sign-up Page!">
+      <option name="closed" value="true" />
+      <created>1770171723641</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1770171723641</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Don't need cancel anytime">
+      <option name="closed" value="true" />
+      <created>1770171779325</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1770171779325</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -421,8 +439,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="don't know, somethings broken smh" />
-    <MESSAGE value="Change or something broken smh," />
     <MESSAGE value="Primsa Fix, holy moly donut shop that took way to long" />
     <MESSAGE value="Close to connection to a db" />
     <MESSAGE value="Going to blow my brains out" />
@@ -446,6 +462,8 @@
     <MESSAGE value="Login Section Centered" />
     <MESSAGE value="Sign Up initial, git test" />
     <MESSAGE value="Fix to make it better for mobile and PC" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix to make it better for mobile and PC" />
+    <MESSAGE value="Sign-up Page!" />
+    <MESSAGE value="Don't need cancel anytime" />
+    <option name="LAST_COMMIT_MESSAGE" value="Don't need cancel anytime" />
   </component>
 </project>

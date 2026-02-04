@@ -1,9 +1,10 @@
-import type { ReactNode } from "react";
+import type {ReactNode} from "react";
+import {SpeedInsights} from "@vercel/speed-insights/next"
 
-export default function MarketingLayout({
-  children,
-}: {
-  children: ReactNode;
+export default function MarketingLayout({children,}: {
+    children: ReactNode;
 }) {
-  return <main>{children}</main>;
+    return <main>{children}
+        <SpeedInsights/>
+    </main>;
 }
