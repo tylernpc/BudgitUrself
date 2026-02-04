@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Sign Up initial, git test">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Fix to make it better for mobile and PC">
       <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,7 +121,7 @@
       <workItem from="1769785518527" duration="1000" />
       <workItem from="1769785672896" duration="7000" />
       <workItem from="1769816747388" duration="3418000" />
-      <workItem from="1770166433518" duration="3153000" />
+      <workItem from="1770166433518" duration="5255000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -404,7 +403,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770169194190</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Fix to make it better for mobile and PC">
+      <option name="closed" value="true" />
+      <created>1770169606577</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1770169606577</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -414,7 +421,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add supabase dependencies, add route for db health check" />
     <MESSAGE value="don't know, somethings broken smh" />
     <MESSAGE value="Change or something broken smh," />
     <MESSAGE value="Primsa Fix, holy moly donut shop that took way to long" />
@@ -439,6 +445,7 @@
     <MESSAGE value="BudgitUrself Logo and Link back to main page onClick" />
     <MESSAGE value="Login Section Centered" />
     <MESSAGE value="Sign Up initial, git test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sign Up initial, git test" />
+    <MESSAGE value="Fix to make it better for mobile and PC" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix to make it better for mobile and PC" />
   </component>
 </project>
