@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="We don't need this comment">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="BudgitUrself Logo and Link back to main page onClick">
       <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -121,7 +121,7 @@
       <workItem from="1769785518527" duration="1000" />
       <workItem from="1769785672896" duration="7000" />
       <workItem from="1769816747388" duration="3418000" />
-      <workItem from="1770166433518" duration="1378000" />
+      <workItem from="1770166433518" duration="1677000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -379,7 +379,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770166829282</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="BudgitUrself Logo and Link back to main page onClick">
+      <option name="closed" value="true" />
+      <created>1770167831739</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1770167831739</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,7 +397,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Don't touch generated prisma" />
     <MESSAGE value="Prisma db layer implemented" />
     <MESSAGE value="api get call works, nice" />
     <MESSAGE value="Add supabase dependencies, add route for db health check" />
@@ -414,6 +421,7 @@
     <MESSAGE value="XML Update" />
     <MESSAGE value="Test Page" />
     <MESSAGE value="We don't need this comment" />
-    <option name="LAST_COMMIT_MESSAGE" value="We don't need this comment" />
+    <MESSAGE value="BudgitUrself Logo and Link back to main page onClick" />
+    <option name="LAST_COMMIT_MESSAGE" value="BudgitUrself Logo and Link back to main page onClick" />
   </component>
 </project>
