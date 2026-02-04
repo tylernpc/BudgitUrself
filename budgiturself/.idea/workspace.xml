@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Add Speed Insights" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Analytics so we can check visitors">
+      <change afterPath="$PROJECT_DIR$/app/f.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/app/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,6 +125,7 @@
       <workItem from="1769785672896" duration="7000" />
       <workItem from="1769816747388" duration="3418000" />
       <workItem from="1770166433518" duration="6047000" />
+      <workItem from="1770172704540" duration="1386000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -433,7 +439,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770172622552</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Analytics so we can check visitors">
+      <option name="closed" value="true" />
+      <created>1770172777879</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1770172777879</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,7 +457,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Close to connection to a db" />
     <MESSAGE value="Going to blow my brains out" />
     <MESSAGE value="200 Response Valid Return Reached DB!" />
     <MESSAGE value="Landing Page" />
@@ -468,6 +481,7 @@
     <MESSAGE value="Sign-up Page!" />
     <MESSAGE value="Don't need cancel anytime" />
     <MESSAGE value="Add Speed Insights" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Speed Insights" />
+    <MESSAGE value="Analytics so we can check visitors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Analytics so we can check visitors" />
   </component>
 </project>
