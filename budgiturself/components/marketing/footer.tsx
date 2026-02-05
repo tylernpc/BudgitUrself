@@ -1,6 +1,9 @@
+"use client";
+
 import {ArrowRight, CheckCircle2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import Link from 'next/link'
+import {useFeatureGate} from '@statsig/react-bindings';
 
 const benefits = [
     "Start budgeting in under 2 minutes",
@@ -10,6 +13,9 @@ const benefits = [
 ];
 
 export function Footer() {
+    const aboutGate = useFeatureGate("button_feature_flags");
+    const privacyGate = useFeatureGate("button_feature_flags");
+    const termsGate = useFeatureGate("button_feature_flags");
     return (
         <section className="py-20 bg-linear-to-b from-blue-600 to-blue-700">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -43,17 +49,23 @@ export function Footer() {
                     </p>
 
                     <div className="mt-8 grid w-full grid-cols-3 place-items-center gap-6 text-white -mb-16">
-                        <Link href="/about" className="flex items-center gap-2">
-                            <span>About</span>
-                        </Link>
+                        {aboutGate.value && (
+                            <Link href="/about" className="flex items-center gap-2">
+                                <span>About</span>
+                            </Link>
+                        )}
 
-                        <Link href="/privacy" className="flex items-center gap-2">
-                            <span>Privacy Policy</span>
-                        </Link>
+                        {privacyGate.value && (
+                            <Link href="/privacy" className="flex items-center gap-2">
+                                <span>Privacy Policy</span>
+                            </Link>
+                        )}
 
-                        <Link href="/terms" className="flex items-center gap-2">
-                            <span>Terms</span>
-                        </Link>
+                        {termsGate.value && (
+                            <Link href="/terms" className="flex items-center gap-2">
+                                <span>Terms</span>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
