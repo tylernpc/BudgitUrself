@@ -107,7 +107,7 @@ export default function SignInPage() {
                         </div>
                     </div>
                     <p className="text-center text-sm text-gray-500 mt-6 max-w-sm">
-                        By signing up, you agree to our Terms of Service and Privacy Policy
+                        By signing in, you agree to our Terms of Service and Privacy Policy
                     </p>
                 </div>
             </section>
