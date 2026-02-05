@@ -99,7 +99,7 @@ export default function SignUpPage() {
                                             type="button"
                                             className="text-blue-700 hover:text-blue-700 transition-colors"
                                         >
-                                            Log In
+                                            Sign In
                                         </button>
                                     </Link>
                                 </p>
