@@ -41,6 +41,20 @@ export function Footer() {
                     <p className="mt-6 text-sm text-blue-200">
                         Free forever • No credit card required
                     </p>
+
+                    <div className="mt-8 grid w-full grid-cols-3 place-items-center gap-6 text-white -mb-16">
+                        <Link href="/about" className="flex items-center gap-2">
+                            <span>About</span>
+                        </Link>
+
+                        <Link href="/privacy" className="flex items-center gap-2">
+                            <span>Privacy Policy</span>
+                        </Link>
+
+                        <Link href="/terms" className="flex items-center gap-2">
+                            <span>Terms</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </section>
