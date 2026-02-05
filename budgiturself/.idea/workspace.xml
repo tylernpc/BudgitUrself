@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Switch sign-in on the sign-up page button">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Login Page Complete">
       <change beforePath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +58,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.Prisma.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "tyler/login-page",
+    "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -129,7 +130,7 @@
       <workItem from="1769816747388" duration="3418000" />
       <workItem from="1770166433518" duration="6047000" />
       <workItem from="1770172704540" duration="2139000" />
-      <workItem from="1770256188575" duration="691000" />
+      <workItem from="1770256188575" duration="1008000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -475,7 +476,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770256563453</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Login Page Complete">
+      <option name="closed" value="true" />
+      <created>1770257894581</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1770257894581</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -485,7 +494,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Can't have an empty file" />
     <MESSAGE value="No more empty files" />
     <MESSAGE value="Stat padding of sorts" />
     <MESSAGE value="New UI Component layer and button" />
@@ -510,6 +518,7 @@
     <MESSAGE value="BudgitUrself branding changes" />
     <MESSAGE value="Logo on page" />
     <MESSAGE value="Switch sign-in on the sign-up page button" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch sign-in on the sign-up page button" />
+    <MESSAGE value="Login Page Complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="Login Page Complete" />
   </component>
 </project>

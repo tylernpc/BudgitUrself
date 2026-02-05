@@ -35,7 +35,7 @@ export default function SignInPage() {
                         </div>
 
                         <div className="mt-6">
-                            <Button className="w-full" variant="outline">
+                            <Button className="w-full cursor-pointer" variant="outline">
                                 <Chrome className="mr-2 size-5"/>
                                 Continue with Google
                             </Button>
@@ -68,7 +68,7 @@ export default function SignInPage() {
                                         <Label htmlFor="password">Password</Label>
                                         <button
                                             type="button"
-                                            className="text-sm text-blue-700 hover:text-blue-700 transition-colors"
+                                            className="text-sm text-blue-700 hover:text-blue-700 transition-colors cursor-pointer"
                                         >
                                             Forgot password?
                                         </button>
@@ -88,7 +88,7 @@ export default function SignInPage() {
                                     </div>
                                 </div>
 
-                                <Button type="submit" className="w-full" size="lg">
+                                <Button type="submit" className="w-full cursor-pointer" size="lg">
                                     Sign In
                                 </Button>
 
@@ -97,7 +97,7 @@ export default function SignInPage() {
                                     <Link href="/sign-up">
                                         <button
                                             type="button"
-                                            className="text-blue-700 hover:text-blue-700 transition-colors"
+                                            className="text-blue-700 hover:text-blue-700 transition-colors cursor-pointer"
                                         >
                                             Sign Up
                                         </button>
