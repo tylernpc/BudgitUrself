@@ -32,7 +32,7 @@ export function Footer() {
 
                     <Link href="/sign-up">
                         <Button size="lg" variant="secondary"
-                                className="text-lg px-8 py-6 active:scale-[0.98] active:translate-y-px transition-transform">
+                                className="text-lg px-8 py-6 active:scale-[0.98] active:translate-y-px transition-transform cursor-pointer">
                             Get Started!
                             <ArrowRight className="ml-2 size-5"/>
                         </Button>

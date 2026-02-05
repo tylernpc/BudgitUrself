@@ -17,7 +17,7 @@ export function Hero() {
                     <div className="flex flex-col justify-center gap-4 sm:flex-row">
                         <Link href="/sign-up">
                             <Button size="lg"
-                                    className="px-8 py-6 text-lg active:scale-[0.98] active:translate-y-px transition-transform">
+                                    className="px-8 py-6 text-lg active:scale-[0.98] active:translate-y-px transition-transform cursor-pointer">
                                 Get Started
                                 <ArrowRight className="ml-2 size-5"/>
                             </Button>
