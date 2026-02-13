@@ -28,7 +28,7 @@ export default function SignUpPage() {
                 <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 drop-shadow-2xl">
                     <div className="w-full max-w-md sm:max-w-lg bg-white rounded-2xl px-5 py-10 sm:px-10 sm:py-12">
                         <div className="text-center leading-10">
-                            <h1 className="text-4xl font-semibold">Welcome</h1>
+                            <h1 className="text-4xl font-semibold">Welcome!</h1>
                             <p className="text-gray-600">
                                 Sign up to BudgitUrself to manage your finances!
                             </p>
