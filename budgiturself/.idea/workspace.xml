@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Get rid of stats ig">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,8 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="61" />
-    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+    <option name="cachedIndexableFilesCount" value="63" />
   </component>
   <component name="FormatOnSaveOptions">
     <option name="myRunOnSave" value="false" />
@@ -131,7 +131,8 @@
       <workItem from="1770166433518" duration="6047000" />
       <workItem from="1770172704540" duration="2139000" />
       <workItem from="1770256188575" duration="3836000" />
-      <workItem from="1770947005014" duration="427000" />
+      <workItem from="1770947005014" duration="1856000" />
+      <workItem from="1771461862039" duration="1317000" />
     </task>
     <task id="LOCAL-00001" summary="Extra stuff to commit and push">
       <option name="closed" value="true" />
@@ -517,7 +518,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770258442203</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="BudgitUrself Welcome utilize exclamation point">
+      <option name="closed" value="true" />
+      <created>1770947457204</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1770947457204</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -527,7 +536,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Need one On the board Lulz" />
     <MESSAGE value="TODO: Comment, about 0 bug" />
     <MESSAGE value="SetErrors" />
     <MESSAGE value="Routing to sign-up page" />
@@ -552,6 +560,7 @@
     <MESSAGE value="Cursor: Pointer on frontend" />
     <MESSAGE value="Switch sign up verbiage" />
     <MESSAGE value="Switched verbiage again, got them switched on the wrong thing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switched verbiage again, got them switched on the wrong thing" />
+    <MESSAGE value="BudgitUrself Welcome utilize exclamation point" />
+    <option name="LAST_COMMIT_MESSAGE" value="BudgitUrself Welcome utilize exclamation point" />
   </component>
 </project>
