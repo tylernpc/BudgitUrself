@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Auth0 SDK Added">
+      <change afterPath="$PROJECT_DIR$/lib/auth/auth0.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,15 +130,7 @@
       <workItem from="1770172704540" duration="2139000" />
       <workItem from="1770256188575" duration="3836000" />
       <workItem from="1770947005014" duration="1856000" />
-      <workItem from="1771461862039" duration="1317000" />
-    </task>
-    <task id="LOCAL-00001" summary="Extra stuff to commit and push">
-      <option name="closed" value="true" />
-      <created>1768880713124</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1768880713124</updated>
+      <workItem from="1771461862039" duration="1916000" />
     </task>
     <task id="LOCAL-00002" summary="Restart again lol, using tailwind">
       <option name="closed" value="true" />
@@ -526,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770947457204</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Auth0 SDK Added">
+      <option name="closed" value="true" />
+      <created>1771471971172</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1771471971172</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -536,7 +534,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="TODO: Comment, about 0 bug" />
     <MESSAGE value="SetErrors" />
     <MESSAGE value="Routing to sign-up page" />
     <MESSAGE value="Routing to the sign-up page, along with nice tapping styling" />
@@ -561,6 +558,7 @@
     <MESSAGE value="Switch sign up verbiage" />
     <MESSAGE value="Switched verbiage again, got them switched on the wrong thing" />
     <MESSAGE value="BudgitUrself Welcome utilize exclamation point" />
-    <option name="LAST_COMMIT_MESSAGE" value="BudgitUrself Welcome utilize exclamation point" />
+    <MESSAGE value="Auth0 SDK Added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Auth0 SDK Added" />
   </component>
 </project>
