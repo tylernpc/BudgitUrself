@@ -1,5 +1,4 @@
 import {ArrowRight} from "lucide-react"
-import Link from 'next/link'
 import {Button} from "@/components/ui/button"
 
 export function Hero() {
@@ -15,13 +14,13 @@ export function Hero() {
                         Track your paycheck, expenses, and categorize every dollar with ease.
                     </p>
                     <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                        <Link href="/sign-up">
+                        <a href="/auth/login">
                             <Button size="lg"
                                     className="px-8 py-6 text-lg active:scale-[0.98] active:translate-y-px transition-transform cursor-pointer">
                                 Get Started
                                 <ArrowRight className="ml-2 size-5"/>
                             </Button>
-                        </Link>
+                        </a>
                     </div>
                     <p className="mt-6 text-sm text-gray-500">No credit card required • Free forever</p>
                 </div>

@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BudgitUrself | Log In</title>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+    />
+
+    <style>
+      :root {
+        --blue-700: #1d4ed8;
+        --blue-50: #eff6ff;
+        --indigo-50: #eef2ff;
+        --white: #ffffff;
+        --gray-900: #111827;
+        --gray-700: #374151;
+        --gray-600: #4b5563;
+        --gray-500: #6b7280;
+        --gray-400: #9ca3af;
+        --gray-200: #e5e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: var(--gray-900);
+        background: linear-gradient(135deg, var(--blue-50) 0%, var(--indigo-50) 52%, var(--white) 100%);
+      }
+
+      .page {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.875rem;
+        font-weight: 500;
+        color: var(--blue-700);
+        text-decoration: none;
+        padding: 1.5rem 0 0 1.5rem;
+      }
+
+      .logo svg {
+        width: 1.75rem;
+        height: 1.75rem;
+        stroke: currentColor;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .page-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 34rem;
+        background: var(--white);
+        border-radius: 1rem;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.35);
+      }
+
+      .header {
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      .header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2.25rem;
+        font-weight: 600;
+      }
+
+      .header p {
+        margin: 0;
+        color: var(--gray-600);
+      }
+
+      .actions {
+        margin-top: 1.5rem;
+      }
+
+      .button {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.75rem;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+      }
+
+      .button:active {
+        transform: translateY(1px) scale(0.99);
+      }
+
+      .button-outline {
+        background: var(--white);
+        border-color: var(--gray-200);
+        color: var(--gray-900);
+      }
+
+      .button-primary {
+        background: var(--blue-700);
+        color: var(--white);
+        border-color: var(--blue-700);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1.5rem 0;
+        color: var(--gray-500);
+        font-size: 0.875rem;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        background: var(--gray-200);
+        flex: 1;
+      }
+
+      label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--gray-700);
+        margin-bottom: 0.4rem;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.1rem;
+        height: 1.1rem;
+        stroke: var(--gray-400);
+        stroke-width: 2;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid var(--gray-200);
+        border-radius: 0.75rem;
+        padding: 0.75rem 0.9rem 0.75rem 2.5rem;
+        font-size: 1rem;
+        color: var(--gray-900);
+        outline: none;
+        transition: border-color 120ms ease, box-shadow 120ms ease;
+      }
+
+      input:focus {
+        border-color: rgba(29, 78, 216, 0.65);
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+      }
+
+      .field + .field {
+        margin-top: 1rem;
+      }
+
+      .form-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0.65rem 0 0;
+      }
+
+      .link-button {
+        border: none;
+        background: transparent;
+        color: var(--blue-700);
+        font-size: 0.875rem;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .switch {
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.9rem;
+        color: var(--gray-600);
+      }
+
+      .error {
+        display: none;
+        margin-top: 1rem;
+        color: #b91c1c;
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .legal {
+        text-align: center;
+        margin: 1.5rem 0 2rem;
+        font-size: 0.85rem;
+        color: var(--gray-500);
+        max-width: 20rem;
+      }
+
+      @media (min-width: 640px) {
+        .card {
+          padding: 3rem 3rem 3.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <a class="logo" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 1v22" />
+          <path d="M17.5 6.5c0-2-2.5-3.5-5.5-3.5S6.5 4.5 6.5 6.5 9 10 12 10s5.5 1.5 5.5 3.5S15 17 12 17s-5.5-1.5-5.5-3.5" />
+        </svg>
+        <span><strong>Budgit</strong>Urself</span>
+      </a>
+
+      <section class="page-body">
+        <div class="card">
+          <div class="header">
+            <h1 id="title">Welcome Back!</h1>
+            <p id="subtitle">Log in to BudgitUrself to manage your finances!</p>
+          </div>
+
+          <div class="actions">
+            <button class="button button-outline" id="google-login" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+                <path
+                  d="M21.805 10.023H21V10h-9v4h5.651A5.996 5.996 0 1 1 12 6a5.97 5.97 0 0 1 3.6 1.2l2.828-2.828A9.94 9.94 0 0 0 12 2C6.477 2 2 6.477 2 12s4.477 10 10 10c5.523 0 10-4.477 10-10 0-.67-.069-1.325-.195-1.977z"
+                  fill="#FFC107"
+                />
+                <path
+                  d="M3.153 7.346 6.44 9.755A5.992 5.992 0 0 1 12 6c1.39 0 2.67.47 3.6 1.2l2.828-2.828A9.94 9.94 0 0 0 12 2a9.99 9.99 0 0 0-8.847 5.346z"
+                  fill="#FF3D00"
+                />
+                <path
+                  d="M12 22c2.62 0 5.04-1.003 6.857-2.643l-3.167-2.68A5.96 5.96 0 0 1 12 18a5.993 5.993 0 0 1-5.547-3.755l-3.245 2.5A9.993 9.993 0 0 0 12 22z"
+                  fill="#4CAF50"
+                />
+                <path
+                  d="M21.805 10.023H21V10h-9v4h5.651A6.03 6.03 0 0 1 15.69 16.68l3.167 2.68C20.991 17.225 22 14.77 22 12c0-.67-.069-1.325-.195-1.977z"
+                  fill="#1976D2"
+                />
+              </svg>
+              Continue with Google
+            </button>
+
+            <div class="divider">Or continue with email</div>
+
+            <form id="auth-form">
+              <div class="field">
+                <label for="email">Email</label>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 4h16v16H4z" fill="none" />
+                    <path d="M4 6l8 6 8-6" />
+                  </svg>
+                  <input id="email" type="email" placeholder="you@example.com" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="form-row">
+                  <label for="password">Password</label>
+                  <button class="link-button" id="forgot-password" type="button">Forgot password?</button>
+                </div>
+                <div class="input-wrap">
+                  <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="10" rx="2" ry="2" fill="none" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <input id="password" type="password" placeholder="Enter your password" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <button class="button button-primary" id="submit-btn" type="submit">Log In</button>
+              </div>
+
+              <p class="switch">
+                <span id="switch-label">Need an account?</span>
+                <button class="link-button" id="switch-mode" type="button">Sign Up</button>
+              </p>
+
+              <p class="error" id="error-message"></p>
+            </form>
+          </div>
+        </div>
+
+        <p class="legal" id="legal-text">
+          By logging in, you agree to our Terms of Service and Privacy Policy
+        </p>
+      </section>
+    </main>
+
+    <script src="https://cdn.auth0.com/js/auth0/9.28/auth0.min.js"></script>
+    <script>
+      (function () {
+        var config = JSON.parse(decodeURIComponent(escape(window.atob("@@config@@"))));
+        config.extraParams = config.extraParams || {};
+        config.internalOptions = config.internalOptions || {};
+
+        var responseType =
+          config.internalOptions.response_type ||
+          (config.callbackOnLocationHash ? "token" : "code");
+
+        var params = Object.assign(
+          {
+            overrides: {
+              __tenant: config.auth0Tenant,
+              __token_issuer: config.authorizationServer.issuer,
+            },
+            domain: config.auth0Domain,
+            clientID: config.clientID,
+            redirectUri: config.callbackURL,
+            responseType: responseType,
+            scope: config.internalOptions.scope || "openid profile email",
+          },
+          config.internalOptions
+        );
+
+        if (config.clientConfigurationBaseUrl) {
+          params.configurationBaseUrl = config.clientConfigurationBaseUrl;
+        }
+
+        var webAuth = new auth0.WebAuth(params);
+        var dbConnection = config.connection || "Username-Password-Authentication";
+        var isSignup = config.extraParams.screen_hint === "signup";
+
+        var logoLink = document.querySelector(".logo");
+        var title = document.getElementById("title");
+        var subtitle = document.getElementById("subtitle");
+        var submitBtn = document.getElementById("submit-btn");
+        var switchLabel = document.getElementById("switch-label");
+        var switchMode = document.getElementById("switch-mode");
+        var legalText = document.getElementById("legal-text");
+        var errorMessage = document.getElementById("error-message");
+
+        function setMode(signup) {
+          isSignup = signup;
+          if (isSignup) {
+            title.textContent = "Welcome!";
+            subtitle.textContent = "Sign up to BudgitUrself to manage your finances!";
+            submitBtn.textContent = "Sign Up";
+            switchLabel.textContent = "Have an account?";
+            switchMode.textContent = "Log In";
+            legalText.textContent =
+              "By signing up, you agree to our Terms of Service and Privacy Policy";
+          } else {
+            title.textContent = "Welcome Back!";
+            subtitle.textContent = "Log in to BudgitUrself to manage your finances!";
+            submitBtn.textContent = "Log In";
+            switchLabel.textContent = "Need an account?";
+            switchMode.textContent = "Sign Up";
+            legalText.textContent =
+              "By logging in, you agree to our Terms of Service and Privacy Policy";
+          }
+          clearError();
+        }
+
+        function showError(err) {
+          var message =
+            (err && (err.description || err.message)) ||
+            "Something went wrong. Please try again.";
+          errorMessage.textContent = message;
+          errorMessage.style.display = "block";
+        }
+
+        function clearError() {
+          errorMessage.textContent = "";
+          errorMessage.style.display = "none";
+        }
+
+        try {
+          if (config.callbackURL && logoLink) {
+            logoLink.href = new URL(config.callbackURL).origin;
+          }
+        } catch (e) {
+        }
+
+        document.getElementById("google-login").addEventListener("click", function () {
+          clearError();
+          webAuth.authorize({
+            connection: "google-oauth2",
+          });
+        });
+
+        document.getElementById("forgot-password").addEventListener("click", function () {
+          clearError();
+          var email = document.getElementById("email").value;
+          if (!email) {
+            showError({ description: "Enter your email to reset your password." });
+            return;
+          }
+
+          webAuth.changePassword(
+            {
+              connection: dbConnection,
+              email: email,
+            },
+            function (err) {
+              if (err) {
+                showError(err);
+                return;
+              }
+              showError({ description: "Password reset email sent." });
+            }
+          );
+        });
+
+        switchMode.addEventListener("click", function () {
+          setMode(!isSignup);
+        });
+
+        document.getElementById("auth-form").addEventListener("submit", function (event) {
+          event.preventDefault();
+          clearError();
+
+          var email = document.getElementById("email").value;
+          var password = document.getElementById("password").value;
+
+          if (!email || !password) {
+            showError({ description: "Email and password are required." });
+            return;
+          }
+
+          if (isSignup) {
+            webAuth.signup(
+              {
+                connection: dbConnection,
+                email: email,
+                password: password,
+              },
+              function (err) {
+                if (err) {
+                  showError(err);
+                  return;
+                }
+
+                webAuth.login(
+                  {
+                    realm: dbConnection,
+                    username: email,
+                    password: password,
+                  },
+                  function (loginErr) {
+                    if (loginErr) {
+                      showError(loginErr);
+                    }
+                  }
+                );
+              }
+            );
+            return;
+          }
+
+          webAuth.login(
+            {
+              realm: dbConnection,
+              username: email,
+              password: password,
+            },
+            function (err) {
+              if (err) {
+                showError(err);
+              }
+            }
+          );
+        });
+
+        setMode(isSignup);
+      })();
+    </script>
+  </body>
+</html>
