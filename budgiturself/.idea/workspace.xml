@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Shows landing page if user isn't authenticated">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Unused className for styling in the hero &amp; footer.tsx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/marketing/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/marketing/hero.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(app)/app/budgets/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/app/budgets/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,23 +132,7 @@
       <workItem from="1770256188575" duration="3836000" />
       <workItem from="1770947005014" duration="1856000" />
       <workItem from="1771461862039" duration="5704000" />
-      <workItem from="1771543105871" duration="5536000" />
-    </task>
-    <task id="LOCAL-00005" summary="Using routing">
-      <option name="closed" value="true" />
-      <created>1768887950325</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1768887950325</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Boilerplate for frontend structure">
-      <option name="closed" value="true" />
-      <created>1768964639961</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1768964639961</updated>
+      <workItem from="1771543105871" duration="6548000" />
     </task>
     <task id="LOCAL-00007" summary="Better folder organization with better naming conventions.">
       <option name="closed" value="true" />
@@ -528,7 +510,23 @@
       <option name="project" value="LOCAL" />
       <updated>1771544349803</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Reroute to auth0">
+      <option name="closed" value="true" />
+      <created>1771549940829</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1771549940829</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Unused className for styling in the hero &amp; footer.tsx">
+      <option name="closed" value="true" />
+      <created>1771550135602</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1771550135603</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -538,8 +536,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cleaning" />
-    <MESSAGE value="XML Update" />
     <MESSAGE value="Test Page" />
     <MESSAGE value="We don't need this comment" />
     <MESSAGE value="BudgitUrself Logo and Link back to main page onClick" />
@@ -563,6 +559,8 @@
     <MESSAGE value="Auth ts added to auth dir" />
     <MESSAGE value="Proxy/Middleware added for auth0" />
     <MESSAGE value="Shows landing page if user isn't authenticated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Shows landing page if user isn't authenticated" />
+    <MESSAGE value="Reroute to auth0" />
+    <MESSAGE value="Unused className for styling in the hero &amp; footer.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value="Unused className for styling in the hero &amp; footer.tsx" />
   </component>
 </project>
