@@ -14,7 +14,7 @@ export function Hero() {
                         Track your paycheck, expenses, and categorize every dollar with ease.
                     </p>
                     <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                        <a href="/auth/login" className="button login">
+                        <a href="/auth/login">
                             <Button size="lg"
                                     className="px-8 py-6 text-lg active:scale-[0.98] active:translate-y-px transition-transform cursor-pointer">
                                 Get Started
