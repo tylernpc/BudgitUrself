@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="">
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Shows landing page if user isn't authenticated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(marketing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(marketing)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/marketing/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/marketing/hero.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,15 +134,7 @@
       <workItem from="1770256188575" duration="3836000" />
       <workItem from="1770947005014" duration="1856000" />
       <workItem from="1771461862039" duration="5704000" />
-      <workItem from="1771543105871" duration="1225000" />
-    </task>
-    <task id="LOCAL-00004" summary="ShadCN edition and prisma fix">
-      <option name="closed" value="true" />
-      <created>1768886030261</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1768886030261</updated>
+      <workItem from="1771543105871" duration="5536000" />
     </task>
     <task id="LOCAL-00005" summary="Using routing">
       <option name="closed" value="true" />
@@ -526,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771472692383</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Shows landing page if user isn't authenticated">
+      <option name="closed" value="true" />
+      <created>1771544349802</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1771544349803</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -536,7 +538,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Routing to the sign-up page, along with nice tapping styling" />
     <MESSAGE value="Cleaning" />
     <MESSAGE value="XML Update" />
     <MESSAGE value="Test Page" />
@@ -561,6 +562,7 @@
     <MESSAGE value="Auth0 SDK Added" />
     <MESSAGE value="Auth ts added to auth dir" />
     <MESSAGE value="Proxy/Middleware added for auth0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Proxy/Middleware added for auth0" />
+    <MESSAGE value="Shows landing page if user isn't authenticated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Shows landing page if user isn't authenticated" />
   </component>
 </project>

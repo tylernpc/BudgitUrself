@@ -4,21 +4,22 @@ import {InteractiveDemo} from "@/components/marketing/interactive-demo";
 import {Categories} from "@/components/marketing/categories";
 import {Footer} from "@/components/marketing/footer";
 import {auth0} from "@/lib/auth/auth0";
+import {redirect} from "next/navigation";
 
 export default async function MarketingPage() {
     const session = await auth0.getSession();
 
-    if (!session) {
-        return (
-            <main className="min-h-screen bg-white">
-                <Hero/>
-                <Features/>
-                <InteractiveDemo/>
-                <Categories/>
-                <Footer/>
-            </main>
-        );
+    if (session) {
+        redirect("/app/budgets");
     }
 
-    // todo: tyler, implement a return here that redirects the user to their homepage
+    return (
+        <main className="min-h-screen bg-white">
+            <Hero/>
+            <Features/>
+            <InteractiveDemo/>
+            <Categories/>
+            <Footer/>
+        </main>
+    );
 }
