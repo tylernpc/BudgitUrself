@@ -1,5 +1,5 @@
 // app/api/health/db/route.ts
-import { prisma } from "@/lib/db/prisma";
+import {prisma} from "@/lib/db/prisma";
 
 export async function GET() {
     try {
@@ -8,8 +8,8 @@ export async function GET() {
 
         // Fetch the row from your Users table
         const user = await prisma.user.findUnique({
-            where: { id: 1 },
-            select: { id: true, userName: true },
+            where: {id: 1},
+            select: {id: true, userName: true},
         });
 
         return Response.json({
@@ -18,8 +18,8 @@ export async function GET() {
         });
     } catch (error) {
         return Response.json(
-            { error: error instanceof Error ? error.message : "Unknown error" },
-            { status: 500 }
+            {error: error instanceof Error ? error.message : "Unknown error"},
+            {status: 500}
         );
     }
 }
