@@ -24,7 +24,13 @@ export async function GET() {
 }
 
 // POST Operations
-export async function POST(req: Request) {
-    const body = await req.json();
-    return NextResponse.json({user: body});
-}
+// export async function POST(req: Request) {
+//     const userRequest = 1;
+//
+//     try {
+//
+//     }
+//
+//     const body = await req.json();
+//     return NextResponse.json({user: body});
+// }

@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Footer for about and terms privacy policy and whatnot">
-      <change afterPath="$PROJECT_DIR$/app/api/users/[id]/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/users/route.ts" afterDir="false" />
+    <list default="true" id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="Get Check for Users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(app)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(app)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/users/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/users/route.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,13 +110,6 @@
       <item itemvalue="npm.Run" />
     </list>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-WS-261.22158.274" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="9c57ef4e-5d51-47d5-815d-e0d009b62f5b" name="Changes" comment="" />
@@ -141,23 +134,9 @@
       <workItem from="1771461862039" duration="5704000" />
       <workItem from="1771543105871" duration="9584000" />
       <workItem from="1774648875431" duration="255000" />
-      <workItem from="1774720368583" duration="957000" />
-    </task>
-    <task id="LOCAL-00009" summary="Don't touch generated prisma">
-      <option name="closed" value="true" />
-      <created>1768968172554</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1768968172554</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Prisma db layer implemented">
-      <option name="closed" value="true" />
-      <created>1768968317467</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1768968317467</updated>
+      <workItem from="1774720368583" duration="1977000" />
+      <workItem from="1775528102864" duration="809000" />
+      <workItem from="1775698335055" duration="1135000" />
     </task>
     <task id="LOCAL-00011" summary="api get call works, nice">
       <option name="closed" value="true" />
@@ -535,7 +514,23 @@
       <option name="project" value="LOCAL" />
       <updated>1772074894140</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="User routes for API">
+      <option name="closed" value="true" />
+      <created>1774721338358</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1774721338358</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Get Check for Users">
+      <option name="closed" value="true" />
+      <created>1774721605679</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1774721605679</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -545,8 +540,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="BudgitUrself Logo and Link back to main page onClick" />
-    <MESSAGE value="Login Section Centered" />
     <MESSAGE value="Sign Up initial, git test" />
     <MESSAGE value="Fix to make it better for mobile and PC" />
     <MESSAGE value="Sign-up Page!" />
@@ -570,6 +563,8 @@
     <MESSAGE value="Unused className for styling in the hero &amp; footer.tsx" />
     <MESSAGE value="Auth0 Fully implemented base wise" />
     <MESSAGE value="Footer for about and terms privacy policy and whatnot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Footer for about and terms privacy policy and whatnot" />
+    <MESSAGE value="User routes for API" />
+    <MESSAGE value="Get Check for Users" />
+    <option name="LAST_COMMIT_MESSAGE" value="Get Check for Users" />
   </component>
 </project>
