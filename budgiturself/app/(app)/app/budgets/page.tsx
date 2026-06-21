@@ -1,16 +1,16 @@
-import {auth0} from "@/lib/auth/auth0";
+import {getCurrentUser} from "@/lib/auth/session";
 
 export default async function BudgetsPage() {
-    const session = await auth0.getSession();
+    const user = await getCurrentUser();
 
     return (
         <div className="app-container">
             <div className="main-card-wrapper">
-                <p>Logged in as {session?.user.email}</p>
+                <p>Logged in as {user?.email}</p>
 
                 {/* Display user info (name, email, etc.) */}
                 <h1>User Profile</h1>
-                <pre>{JSON.stringify(session?.user, null, 2)}</pre>
+                <pre>{JSON.stringify(user, null, 2)}</pre>
 
                 {/* Ends the session and redirects to Auth0 to log out */}
                 <a href="/auth/logout">Logout</a>
