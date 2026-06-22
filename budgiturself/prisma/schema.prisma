@@ -4,6 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// use this comment for migrations -> npx prisma migrate dev --name init_user
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,8 +17,10 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement()) @map("id")
-  userName String @map("UserName")
-
-  @@map("Users")
+  id        String   @id @default(uuid())
+  auth0Sub  String   @unique
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

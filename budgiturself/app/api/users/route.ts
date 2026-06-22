@@ -1,22 +1,24 @@
 import {NextResponse} from "next/server";
 import {prisma} from "@/lib/db/prisma";
+import {getCurrentUser} from "@/lib/auth/session";
 
 // GET Operations
 export async function GET() {
-    const userRequest = 1;
+    const authUser = await getCurrentUser();
+
+    if (!authUser?.sub) {
+        return NextResponse.json({error: "Unauthorized"}, {status: 401});
+    }
 
     try {
         const user = await prisma.user.findUnique({
-            where: {id: userRequest},
-            select: {id: true, userName: true}
+            where: {auth0Sub: authUser.sub},
+            select: {id: true, email: true, name: true}
         });
 
-        return Response.json({
-            status: 200,
-            user,
-        });
+        return NextResponse.json({user});
     } catch (error) {
-        return Response.json(
+        return NextResponse.json(
             {error: error instanceof Error ? error.message : "Unknown error"},
             {status: 500}
         );

@@ -6,15 +6,8 @@ export async function GET() {
         // Connection sanity check
         await prisma.$queryRaw`SELECT 1`;
 
-        // Fetch the row from your Users table
-        const user = await prisma.user.findUnique({
-            where: {id: 1},
-            select: {id: true, userName: true},
-        });
-
         return Response.json({
             status: "ok",
-            user,
         });
     } catch (error) {
         return Response.json(
