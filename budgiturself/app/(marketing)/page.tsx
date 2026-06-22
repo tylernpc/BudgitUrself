@@ -10,7 +10,7 @@ export default async function MarketingPage() {
     const session = await auth0.getSession();
 
     if (session) {
-        redirect("/app/budgets");
+        redirect("/app/dashboard");
     }
 
     return (
