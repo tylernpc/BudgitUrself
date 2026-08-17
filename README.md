@@ -15,7 +15,7 @@ BudgitUrself is a personal budgeting web app built around the idea that manual b
 - Tailwind CSS for styling, with Radix UI primitives
 - [Prisma](https://www.prisma.io) ORM on PostgreSQL ([Supabase](https://supabase.com))
 - [Auth0](https://auth0.com) for authentication
-- Stripe (webhook scaffolded, not yet wired up) for billing
+- Stripe (webhook scaffolded, not yet wired up) to import bank info
 - Deployed on [Vercel](https://vercel.com)
 
 ## Status
