@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Budget } from "@/lib/budget/types";
-import { useBudget } from "../_lib/use-budget";
+import { useBudget } from "../lib/use-budget";
 import { AddBillDialog } from "./add-bill-dialog";
 import { AddExpenseDialog } from "./add-expense-dialog";
 import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";

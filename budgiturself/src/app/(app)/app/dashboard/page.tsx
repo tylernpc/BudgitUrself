@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
-import { BudgetWorkspace } from "./_components/budget-workspace";
-import { DashboardHeader } from "./_components/dashboard-header";
-import { sampleBudget } from "./_lib/sample-budget";
+import { BudgetWorkspace } from "./components/budget-workspace";
+import { DashboardHeader } from "./components/dashboard-header";
+import { sampleBudget } from "./lib/sample-budget";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
