@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BudgitUrself — Next.js app
 
-## Getting Started
+The application itself. For what the product is and how it is structured, see the
+[repository README](../README.md).
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20.9 or newer
+- A PostgreSQL database (the project uses Supabase)
+- An Auth0 tenant with a Regular Web Application
+
+## Setup
 
 ```bash
+npm install
+cp .env.example .env.local   # then fill in the values
+npm run db:deploy            # apply migrations
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Auth0 needs `http://localhost:3000/auth/callback` as an allowed callback URL and
+`http://localhost:3000` as an allowed logout URL.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+| Script                            | What it does                                           |
+| --------------------------------- | ------------------------------------------------------ |
+| `npm run dev`                     | Start the dev server                                   |
+| `npm run build`                   | Generate the Prisma client and build for production    |
+| `npm start`                       | Serve the production build                             |
+| `npm run lint` / `lint:fix`       | ESLint                                                 |
+| `npm run format` / `format:check` | Prettier                                               |
+| `npm run typecheck`               | `tsc --noEmit`                                         |
+| `npm test` / `test:watch`         | Vitest                                                 |
+| `npm run verify`                  | Format check, lint, typecheck and tests — what CI runs |
+| `npm run db:migrate`              | Create and apply a migration in development            |
+| `npm run db:deploy`               | Apply pending migrations (CI/production)               |
+| `npm run db:studio`               | Open Prisma Studio                                     |
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Every variable in [`.env.example`](.env.example) is required. They are validated
+once at startup by [`src/lib/env.ts`](src/lib/env.ts), so a missing or malformed
+value fails immediately with a named error rather than at the first query.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Layout
 
-## Deploy on Vercel
+```
+src/
+  app/            routes, colocated _components and _lib per route
+  components/ui/  shared design-system primitives
+  lib/            domain modules — auth, budget, db, env, format
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See the [architecture section of the repository README](../README.md#architecture)
+for the rules these folders follow.
