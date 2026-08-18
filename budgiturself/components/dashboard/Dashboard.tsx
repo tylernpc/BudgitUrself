@@ -13,16 +13,18 @@ import {
   Wallet,
   Receipt,
   Home,
-  Zap,
-  LogOut
+  LogOut,
+  Users,
+  X
 } from "lucide-react";
 import { AddExpenseDialog } from "@/components/dashboard/AddExpenseDialog";
+import { AddMonthlyExpenseDialog } from "@/components/dashboard/AddMonthlyExpenseDialog";
 import { AddBillDialog } from "@/components/dashboard/AddBillDialog";
 import { EditIncomeDialog } from "@/components/dashboard/EditIncomeDialog";
-import type { CreditCard, OneOffExpense, Bill } from "@/components/dashboard/types";
+import type { CreditCard, OneOffExpense, MonthlyExpense, Bill } from "@/components/dashboard/types";
 
 export function Dashboard() {
-  // Section 1: Current Financial State
+  // Section 1 (This Month): Balance & Cards
   const [bankBalance, setBankBalance] = useState(3250.00);
   const [creditCards, setCreditCards] = useState<CreditCard[]>([
     { id: "1", name: "Chase Sapphire", balance: 850.00, limit: 10000, color: "blue" },
@@ -34,23 +36,27 @@ export function Dashboard() {
     { id: "2", name: "Car Maintenance", amount: 350.00, date: "2026-02-15" },
   ]);
 
-  // Section 2: Income & Fixed Expenses
+  // Section 2 (Expenses): Income & flexible monthly expenses
   const [monthlyIncome, setMonthlyIncome] = useState(5200.00);
-  const [baseRent, setBaseRent] = useState(1800.00);
-  const [utilities, setUtilities] = useState(150.00);
+  const [monthlyExpenses, setMonthlyExpenses] = useState<MonthlyExpense[]>([
+    { id: "1", name: "Housing", amount: 1800.00 },
+    { id: "2", name: "Utilities", amount: 150.00 },
+  ]);
 
-  // Section 3: Monthly Bills
+  // Section 3 (Monthly Bills): Digital bills + personal owed bills
   const [bills, setBills] = useState<Bill[]>([
-    { id: "1", name: "Netflix", amount: 15.99, chargeDate: 1, card: "Chase Sapphire", category: "Entertainment" },
-    { id: "2", name: "Spotify", amount: 10.99, chargeDate: 5, card: "Chase Sapphire", category: "Entertainment" },
-    { id: "3", name: "Adobe Creative Cloud", amount: 54.99, chargeDate: 10, card: "AmEx Gold", category: "Software" },
-    { id: "4", name: "Planet Fitness", amount: 24.99, chargeDate: 15, card: "Discover It", category: "Health" },
-    { id: "5", name: "Amazon Prime", amount: 14.99, chargeDate: 20, card: "Chase Sapphire", category: "Shopping" },
-    { id: "6", name: "iCloud Storage", amount: 2.99, chargeDate: 8, card: "Chase Sapphire", category: "Software" },
+    { id: "1", name: "Netflix", amount: 15.99, chargeDate: 1, type: "digital", card: "Chase Sapphire", category: "Entertainment" },
+    { id: "2", name: "Spotify", amount: 10.99, chargeDate: 5, type: "digital", card: "Chase Sapphire", category: "Entertainment" },
+    { id: "3", name: "Adobe Creative Cloud", amount: 54.99, chargeDate: 10, type: "digital", card: "AmEx Gold", category: "Software" },
+    { id: "4", name: "Planet Fitness", amount: 24.99, chargeDate: 15, type: "digital", card: "Discover It", category: "Health" },
+    { id: "5", name: "Amazon Prime", amount: 14.99, chargeDate: 20, type: "digital", card: "Chase Sapphire", category: "Shopping" },
+    { id: "6", name: "iCloud Storage", amount: 2.99, chargeDate: 8, type: "digital", card: "Chase Sapphire", category: "Software" },
+    { id: "7", name: "YMCA Membership", amount: 20.00, chargeDate: 1, type: "personal", owedTo: "Dad" },
   ]);
 
   // Dialogs state
   const [showAddExpense, setShowAddExpense] = useState(false);
+  const [showAddMonthlyExpense, setShowAddMonthlyExpense] = useState(false);
   const [showAddBill, setShowAddBill] = useState(false);
   const [showEditIncome, setShowEditIncome] = useState(false);
 
@@ -59,11 +65,17 @@ export function Dashboard() {
   const totalOneOffExpenses = oneOffExpenses.reduce((sum, exp) => sum + exp.amount, 0);
   const totalCurrentObligations = totalCreditCardDebt + totalOneOffExpenses;
 
-  const digitalBillsTotal = bills.reduce((sum, bill) => sum + bill.amount, 0);
-  const totalFixedExpenses = baseRent + utilities + digitalBillsTotal;
+  const digitalBills = bills.filter((bill) => bill.type === "digital");
+  const personalBills = bills.filter((bill) => bill.type === "personal");
+  const digitalBillsTotal = digitalBills.reduce((sum, bill) => sum + bill.amount, 0);
+  const personalBillsTotal = personalBills.reduce((sum, bill) => sum + bill.amount, 0);
+  const totalMonthlyBills = digitalBillsTotal + personalBillsTotal;
+
+  const monthlyExpensesTotal = monthlyExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+  const totalFixedExpenses = monthlyExpensesTotal + totalMonthlyBills;
   const safeToSpend = monthlyIncome - totalFixedExpenses;
 
-  // Section 4: The Final Math
+  // Section 4 (Spending): The Final Math
   const trueLiquidWealth = bankBalance - totalCurrentObligations;
   const horizonView = bankBalance + monthlyIncome - totalCurrentObligations - totalFixedExpenses;
 
@@ -76,6 +88,14 @@ export function Dashboard() {
     setOneOffExpenses([...oneOffExpenses, newExpense]);
   };
 
+  const handleAddMonthlyExpense = (expense: Omit<MonthlyExpense, "id">) => {
+    const newExpense = {
+      ...expense,
+      id: Date.now().toString(),
+    };
+    setMonthlyExpenses([...monthlyExpenses, newExpense]);
+  };
+
   const handleAddBill = (bill: Omit<Bill, "id">) => {
     const newBill = {
       ...bill,
@@ -86,6 +106,10 @@ export function Dashboard() {
 
   const handleRemoveExpense = (id: string) => {
     setOneOffExpenses(oneOffExpenses.filter(exp => exp.id !== id));
+  };
+
+  const handleRemoveMonthlyExpense = (id: string) => {
+    setMonthlyExpenses(monthlyExpenses.filter(exp => exp.id !== id));
   };
 
   const handleRemoveBill = (id: string) => {
@@ -101,7 +125,7 @@ export function Dashboard() {
             <div className="bg-gradient-to-br from-blue-500 to-cyan-400 p-2.5 rounded-xl shadow-lg shadow-blue-500/50 transition-transform hover:scale-105">
               <DollarSign className="size-5 text-white" />
             </div>
-            <span className="text-lg text-white font-medium">Smart Ledger</span>
+            <span className="text-lg text-white font-medium">BudgitUrself</span>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/">
@@ -237,12 +261,12 @@ export function Dashboard() {
                       <div className="flex items-center gap-3">
                         <span className="text-sm text-gray-300 font-medium">${expense.amount.toFixed(2)}</span>
                         <Button
-                          size="sm"
-                          variant="ghost"
+                          size="icon"
+                          variant="outline"
                           onClick={() => handleRemoveExpense(expense.id)}
-                          className="size-6 p-0 hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-all"
+                          className="size-8 rounded-lg border-gray-700 bg-slate-800 text-gray-400 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-all"
                         >
-                          ×
+                          <X className="size-3.5" />
                         </Button>
                       </div>
                     </div>
@@ -269,9 +293,9 @@ export function Dashboard() {
                 <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-2 rounded-lg shadow-lg shadow-green-500/50 transition-transform hover:scale-110">
                   <TrendingUp className="size-5 text-white" />
                 </div>
-                Income & Fixed Expenses
+                Expenses
               </CardTitle>
-              <CardDescription className="text-gray-400">Your monthly income and non-negotiable costs</CardDescription>
+              <CardDescription className="text-gray-400">Your monthly income and where it goes</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
               {/* Monthly Income */}
@@ -288,54 +312,72 @@ export function Dashboard() {
                 </div>
               </div>
 
-              {/* Fixed Expenses */}
+              {/* Expenses */}
               <div>
-                <h3 className="text-sm text-gray-300 mb-3 font-medium">Fixed Expenses</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm text-gray-300 font-medium">Expenses</h3>
+                  <Button size="sm" onClick={() => setShowAddMonthlyExpense(true)} className="h-8 text-xs bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg shadow-green-500/30 transition-all hover:shadow-green-500/50 hover:scale-105">
+                    <Plus className="size-3 mr-1" />
+                    Add
+                  </Button>
+                </div>
                 <div className="space-y-2">
-                  <div className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 group">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-purple-500/20 p-1.5 rounded-lg transition-all group-hover:bg-purple-500/30">
-                        <Home className="size-4 text-purple-400" />
+                  {monthlyExpenses.map((expense) => (
+                    <div key={expense.id} className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 group">
+                      <div className="flex items-center gap-2">
+                        <div className="bg-purple-500/20 p-1.5 rounded-lg transition-all group-hover:bg-purple-500/30">
+                          <Home className="size-4 text-purple-400" />
+                        </div>
+                        <span className="text-sm text-white">{expense.name}</span>
                       </div>
-                      <span className="text-sm text-white">Base Rent</span>
-                    </div>
-                    <span className="text-sm text-gray-300 font-medium">${baseRent.toFixed(2)}</span>
-                  </div>
-                  <div className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between transition-all hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/10 group">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-yellow-500/20 p-1.5 rounded-lg transition-all group-hover:bg-yellow-500/30">
-                        <Zap className="size-4 text-yellow-400" />
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm text-gray-300 font-medium">${expense.amount.toFixed(2)}</span>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => handleRemoveMonthlyExpense(expense.id)}
+                          className="size-8 rounded-lg border-gray-700 bg-slate-800 text-gray-400 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                        >
+                          <X className="size-3.5" />
+                        </Button>
                       </div>
-                      <span className="text-sm text-white">Utilities</span>
                     </div>
-                    <span className="text-sm text-gray-300 font-medium">${utilities.toFixed(2)}</span>
-                  </div>
-                  <div className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between transition-all hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 group">
+                  ))}
+                  <div className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="bg-cyan-500/20 p-1.5 rounded-lg transition-all group-hover:bg-cyan-500/30">
+                      <div className="bg-cyan-500/20 p-1.5 rounded-lg">
                         <Receipt className="size-4 text-cyan-400" />
                       </div>
                       <span className="text-sm text-white">Digital Bills</span>
                     </div>
                     <span className="text-sm text-gray-300 font-medium">${digitalBillsTotal.toFixed(2)}</span>
                   </div>
+                  <div className="bg-slate-800/50 rounded-xl p-3 border border-gray-700 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-orange-500/20 p-1.5 rounded-lg">
+                        <Users className="size-4 text-orange-400" />
+                      </div>
+                      <span className="text-sm text-white">Personal Owed Bills</span>
+                    </div>
+                    <span className="text-sm text-gray-300 font-medium">${personalBillsTotal.toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Total Fixed Expenses */}
+              {/* Total after expenses */}
               <div className="bg-slate-800/50 rounded-xl p-4 border border-gray-700 transition-all hover:border-gray-500">
-                <p className="text-xs text-gray-400 mb-1 uppercase tracking-wide font-medium">Total Fixed Expenses</p>
+                <p className="text-xs text-gray-400 mb-1 uppercase tracking-wide font-medium">Total Expenses</p>
                 <p className="text-2xl text-white font-bold">${totalFixedExpenses.toFixed(2)}</p>
               </div>
 
-              {/* Safe to Spend */}
+              {/* Total after expenses */}
               <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 rounded-xl p-4 shadow-xl shadow-blue-500/30 transition-all hover:shadow-blue-500/50 hover:scale-[1.02] relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-                <p className="text-xs text-blue-100 mb-1 uppercase tracking-wide font-bold relative z-10">Safe to Spend (Monthly)</p>
+                <p className="text-xs text-blue-100 mb-1 uppercase tracking-wide font-bold relative z-10">Total After Expenses</p>
                 <p className={`text-2xl relative z-10 font-bold ${safeToSpend >= 0 ? 'text-white' : 'text-red-200'}`}>
                   ${safeToSpend.toFixed(2)}
                 </p>
-                <p className="text-xs text-blue-100 mt-2 relative z-10">Income - Fixed Expenses</p>
+                <p className="text-xs text-blue-100 mt-2 relative z-10">Income - Expenses</p>
               </div>
             </CardContent>
           </Card>
@@ -350,9 +392,11 @@ export function Dashboard() {
                   <div className="bg-gradient-to-br from-indigo-500 to-purple-500 p-2 rounded-lg shadow-lg shadow-indigo-500/50 transition-transform hover:scale-110">
                     <Calendar className="size-5 text-white" />
                   </div>
-                  Monthly Bills Breakdown
+                  Monthly Bills
                 </CardTitle>
-                <CardDescription className="text-gray-400">Your subscriptions and recurring charges</CardDescription>
+                <CardDescription className="text-gray-400">
+                  A deeper breakdown of your recurring charges — what's paying out and when.
+                </CardDescription>
               </div>
               <Button onClick={() => setShowAddBill(true)} className="h-9 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50 hover:scale-105">
                 <Plus className="size-4 mr-2" />
@@ -360,58 +404,127 @@ export function Dashboard() {
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              {bills
-                .sort((a, b) => a.chargeDate - b.chargeDate)
-                .map((bill) => (
-                  <div key={bill.id} className="bg-slate-800/50 rounded-xl p-4 border border-gray-700 transition-all hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10 group">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="text-sm text-white font-medium">{bill.name}</h4>
-                          <span className="text-xs bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-full">
-                            {bill.category}
-                          </span>
+          <CardContent className="pt-6 space-y-8">
+            {/* Digital Bills */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm text-gray-300 font-medium flex items-center gap-2">
+                  <Receipt className="size-4 text-indigo-400" />
+                  Digital Bills
+                </h3>
+                <span className="text-sm bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-3 py-1 rounded-full font-medium">
+                  ${digitalBillsTotal.toFixed(2)}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {digitalBills
+                  .sort((a, b) => a.chargeDate - b.chargeDate)
+                  .map((bill) => (
+                    <div key={bill.id} className="bg-slate-800/50 rounded-xl p-4 border border-gray-700 transition-all hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10 group">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h4 className="text-sm text-white font-medium">{bill.name}</h4>
+                            <span className="text-xs bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-full">
+                              {bill.category}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4 text-xs text-gray-400">
+                            <span className="flex items-center gap-1.5">
+                              <div className="bg-indigo-500/20 p-1 rounded transition-all group-hover:bg-indigo-500/30">
+                                <Calendar className="size-3 text-indigo-400" />
+                              </div>
+                              {bill.chargeDate}{bill.chargeDate === 1 ? 'st' : bill.chargeDate === 2 ? 'nd' : bill.chargeDate === 3 ? 'rd' : 'th'} of month
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                              <div className="bg-purple-500/20 p-1 rounded transition-all group-hover:bg-purple-500/30">
+                                <CreditCardIcon className="size-3 text-purple-400" />
+                              </div>
+                              {bill.card}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4 text-xs text-gray-400">
-                          <span className="flex items-center gap-1.5">
-                            <div className="bg-indigo-500/20 p-1 rounded transition-all group-hover:bg-indigo-500/30">
-                              <Calendar className="size-3 text-indigo-400" />
-                            </div>
-                            {bill.chargeDate}{bill.chargeDate === 1 ? 'st' : bill.chargeDate === 2 ? 'nd' : bill.chargeDate === 3 ? 'rd' : 'th'} of month
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <div className="bg-purple-500/20 p-1 rounded transition-all group-hover:bg-purple-500/30">
-                              <CreditCardIcon className="size-3 text-purple-400" />
-                            </div>
-                            {bill.card}
-                          </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm text-gray-300 font-medium">${bill.amount.toFixed(2)}</span>
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            onClick={() => handleRemoveBill(bill.id)}
+                            className="size-8 rounded-lg border-gray-700 bg-slate-800 text-gray-400 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                          >
+                            <X className="size-3.5" />
+                          </Button>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-300 font-medium">${bill.amount.toFixed(2)}</span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleRemoveBill(bill.id)}
-                          className="size-7 p-0 hover:bg-red-500/20 text-gray-400 hover:text-red-400 transition-all"
-                        >
-                          ×
-                        </Button>
                       </div>
                     </div>
-                  </div>
-                ))}
-              {bills.length === 0 && (
-                <p className="text-center text-gray-500 py-8 text-sm">No bills added yet</p>
-              )}
+                  ))}
+                {digitalBills.length === 0 && (
+                  <p className="text-center text-gray-500 py-4 text-sm">No digital bills added yet</p>
+                )}
+              </div>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-800">
+            {/* Personal Owed Bills */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm text-gray-300 font-medium flex items-center gap-2">
+                  <Users className="size-4 text-orange-400" />
+                  Personal Owed Bills
+                </h3>
+                <span className="text-sm bg-gradient-to-r from-orange-500 to-amber-500 text-white px-3 py-1 rounded-full font-medium">
+                  ${personalBillsTotal.toFixed(2)}
+                </span>
+              </div>
+              <p className="text-xs text-gray-500 mb-3">
+                Money you owe someone else each month — like paying a family member back for a shared membership or bill.
+              </p>
+              <div className="space-y-2">
+                {personalBills
+                  .sort((a, b) => a.chargeDate - b.chargeDate)
+                  .map((bill) => (
+                    <div key={bill.id} className="bg-slate-800/50 rounded-xl p-4 border border-gray-700 transition-all hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-500/10 group">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h4 className="text-sm text-white font-medium mb-2">{bill.name}</h4>
+                          <div className="flex items-center gap-4 text-xs text-gray-400">
+                            <span className="flex items-center gap-1.5">
+                              <div className="bg-orange-500/20 p-1 rounded transition-all group-hover:bg-orange-500/30">
+                                <Calendar className="size-3 text-orange-400" />
+                              </div>
+                              {bill.chargeDate}{bill.chargeDate === 1 ? 'st' : bill.chargeDate === 2 ? 'nd' : bill.chargeDate === 3 ? 'rd' : 'th'} of month
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                              <div className="bg-amber-500/20 p-1 rounded transition-all group-hover:bg-amber-500/30">
+                                <Users className="size-3 text-amber-400" />
+                              </div>
+                              Owed to {bill.owedTo}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm text-gray-300 font-medium">${bill.amount.toFixed(2)}</span>
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            onClick={() => handleRemoveBill(bill.id)}
+                            className="size-8 rounded-lg border-gray-700 bg-slate-800 text-gray-400 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                          >
+                            <X className="size-3.5" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                {personalBills.length === 0 && (
+                  <p className="text-center text-gray-500 py-4 text-sm">No personal owed bills added yet</p>
+                )}
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-gray-800">
               <div className="flex items-center justify-between bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-xl p-4 border border-indigo-500/30">
                 <span className="text-sm text-gray-300 font-medium">Total Monthly Bills</span>
-                <span className="text-xl text-white font-bold">${digitalBillsTotal.toFixed(2)}</span>
+                <span className="text-xl text-white font-bold">${totalMonthlyBills.toFixed(2)}</span>
               </div>
             </div>
           </CardContent>
@@ -424,6 +537,11 @@ export function Dashboard() {
         onOpenChange={setShowAddExpense}
         onAdd={handleAddOneOffExpense}
       />
+      <AddMonthlyExpenseDialog
+        open={showAddMonthlyExpense}
+        onOpenChange={setShowAddMonthlyExpense}
+        onAdd={handleAddMonthlyExpense}
+      />
       <AddBillDialog
         open={showAddBill}
         onOpenChange={setShowAddBill}
@@ -435,10 +553,6 @@ export function Dashboard() {
         onOpenChange={setShowEditIncome}
         currentIncome={monthlyIncome}
         onSave={setMonthlyIncome}
-        currentRent={baseRent}
-        onSaveRent={setBaseRent}
-        currentUtilities={utilities}
-        onSaveUtilities={setUtilities}
       />
     </div>
   );

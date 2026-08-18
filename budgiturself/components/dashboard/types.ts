@@ -13,11 +13,21 @@ export interface OneOffExpense {
   date: string;
 }
 
+export interface MonthlyExpense {
+  id: string;
+  name: string;
+  amount: number;
+}
+
+export type BillType = "digital" | "personal";
+
 export interface Bill {
   id: string;
   name: string;
   amount: number;
   chargeDate: number;
-  card: string;
-  category: string;
+  type: BillType;
+  card?: string;
+  category?: string;
+  owedTo?: string;
 }
