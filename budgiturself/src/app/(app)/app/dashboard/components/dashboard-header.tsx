@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Home, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function DashboardHeader() {
@@ -13,15 +12,9 @@ export function DashboardHeader() {
         </div>
         <nav className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/" className="text-gray-300 hover:bg-blue-900/30 hover:text-white">
-              <Home className="mr-2 size-4" />
-              Home
-            </Link>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
             <a href="/auth/logout" className="text-gray-300 hover:bg-blue-900/30 hover:text-white">
               <LogOut className="mr-2 size-4" />
-              Sign Out
+              Log Out
             </a>
           </Button>
         </nav>
