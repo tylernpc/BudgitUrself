@@ -1,5 +1,11 @@
 import { z } from "zod";
-import type { Bill, DistributiveOmit, MonthlyExpense, OneOffExpense } from "@/lib/budget/types";
+import type {
+  Bill,
+  CreditCard,
+  DistributiveOmit,
+  MonthlyExpense,
+  OneOffExpense,
+} from "@/lib/budget/types";
 
 export const BILL_CATEGORIES = [
   "Entertainment",
@@ -32,6 +38,16 @@ export const monthlyIncomeSchema = z.object({
   monthlyIncome: z.coerce.number().min(0).max(9_999_999),
 });
 
+export const bankBalanceSchema = z.object({
+  bankBalance: z.coerce.number().min(0).max(9_999_999),
+});
+
+export const creditCardSchema = z.object({
+  name,
+  balance: z.coerce.number().min(0).max(9_999_999),
+  limit: z.coerce.number().positive("Enter a limit above zero").max(9_999_999),
+});
+
 export const billSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("digital"),
@@ -53,3 +69,4 @@ export const billSchema = z.discriminatedUnion("type", [
 export type OneOffExpenseInput = Omit<OneOffExpense, "id">;
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
 export type BillInput = DistributiveOmit<Bill, "id">;
+export type CreditCardInput = Omit<CreditCard, "id">;

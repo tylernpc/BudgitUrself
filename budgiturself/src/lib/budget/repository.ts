@@ -1,0 +1,37 @@
+import type {
+  BillInput,
+  CreditCardInput,
+  MonthlyExpenseInput,
+  OneOffExpenseInput,
+} from "@/lib/budget/schemas";
+import type { Bill, Budget, CreditCard, MonthlyExpense, OneOffExpense } from "@/lib/budget/types";
+
+/**
+ * Port for the Budget aggregate. Every method is scoped by `userId`; this
+ * is the ownership boundary, and callers must resolve the current user (see
+ * `requireCurrentUser` in `@/lib/auth/dal`) before reaching this interface.
+ *
+ * Signatures are expressed purely in domain types (`@/lib/budget/types`,
+ * `@/lib/budget/schemas`). No Prisma-generated type may appear here. That
+ * keeps this file safe to import from Server Components, Server Actions, or
+ * a future non-Prisma implementation (e.g. an in-memory fake for tests)
+ * without dragging `@prisma/client` into the bundle.
+ */
+export interface BudgetRepository {
+  getBudget(userId: string): Promise<Budget>;
+
+  setBankBalance(userId: string, bankBalance: number): Promise<void>;
+  setMonthlyIncome(userId: string, monthlyIncome: number): Promise<void>;
+
+  addCreditCard(userId: string, input: CreditCardInput): Promise<CreditCard>;
+  removeCreditCard(userId: string, id: string): Promise<void>;
+
+  addOneOffExpense(userId: string, input: OneOffExpenseInput): Promise<OneOffExpense>;
+  removeOneOffExpense(userId: string, id: string): Promise<void>;
+
+  addMonthlyExpense(userId: string, input: MonthlyExpenseInput): Promise<MonthlyExpense>;
+  removeMonthlyExpense(userId: string, id: string): Promise<void>;
+
+  addBill(userId: string, input: BillInput): Promise<Bill>;
+  removeBill(userId: string, id: string): Promise<void>;
+}

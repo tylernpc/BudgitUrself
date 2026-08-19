@@ -12,10 +12,81 @@ datasource db {
 }
 
 model User {
+  id            String   @id @default(uuid())
+  auth0Sub      String   @unique
+  email         String   @unique
+  name          String?
+  bankBalance   Decimal  @default(0) @db.Decimal(12, 2)
+  monthlyIncome Decimal  @default(0) @db.Decimal(12, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  creditCards     CreditCard[]
+  oneOffExpenses  OneOffExpense[]
+  monthlyExpenses MonthlyExpense[]
+  bills           Bill[]
+}
+
+model CreditCard {
   id        String   @id @default(uuid())
-  auth0Sub  String   @unique
-  email     String   @unique
-  name      String?
+  userId    String
+  name      String
+  balance   Decimal  @db.Decimal(12, 2)
+  limit     Decimal  @db.Decimal(12, 2)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model OneOffExpense {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  amount    Decimal  @db.Decimal(12, 2)
+  date      DateTime @db.Date
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model MonthlyExpense {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  amount    Decimal  @db.Decimal(12, 2)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum BillType {
+  DIGITAL
+  PERSONAL
+}
+
+/// Digital bills carry `card` + `category`; personal bills carry `owedTo`.
+/// The pairing is enforced in the database via a CHECK constraint (see the
+/// migration) and re-validated by the mapper. Prisma has no native
+/// discriminated-union column type.
+model Bill {
+  id         String   @id @default(uuid())
+  userId     String
+  name       String
+  amount     Decimal  @db.Decimal(12, 2)
+  chargeDate Int
+  type       BillType
+  card       String?
+  category   String?
+  owedTo     String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
