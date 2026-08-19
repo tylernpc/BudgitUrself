@@ -144,7 +144,7 @@ inside the DAL, because a layout is not a security boundary.
 | Rule | How it shows up here |
 | --- | --- |
 | Routes compose, domains do the work | `page.tsx` files read data and lay out sections; the math lives in `lib/budget/calculations.ts` |
-| Colocate until reuse is real | Route-only UI lives in `_components/`, route-only logic in `_lib/`; only genuinely shared primitives sit in `components/ui/` |
+| Colocate until reuse is real | Route-only UI lives in `app/<route>/components/`, route-only logic in `app/<route>/lib/`; only genuinely shared primitives sit in the top-level `components/ui/` |
 | Group by product domain, not technical layer | `lib/budget/`, `lib/auth/` — no `services/`, `helpers/` or `utils/` grab-bags |
 | Keep the client boundary low | Only `BudgetWorkspace` and the dialogs are `"use client"`; the header, page shell and marketing pages stay on the server |
 | Validate at every boundary | Zod schemas parse dialog input; `lib/env.ts` validates environment variables at startup |
@@ -167,7 +167,7 @@ inside the DAL, because a layout is not a security boundary.
         │   ├── layout.tsx       root layout, fonts, metadata
         │   ├── not-found.tsx
         │   ├── (marketing)/     public site
-        │   │   ├── _components/ hero, features, interactive-demo, categories, footer
+        │   │   ├── components/  hero, features, interactive-demo, categories, footer
         │   │   └── about, privacy, terms
         │   ├── (app)/           authenticated area
         │   │   ├── layout.tsx   session gate
@@ -196,8 +196,8 @@ inside the DAL, because a layout is not a security boundary.
 
 | You are adding… | Put it in |
 | --- | --- |
-| UI used by exactly one route | `app/<route>/_components/` |
-| A hook or helper used by exactly one route | `app/<route>/_lib/` |
+| UI used by exactly one route | `app/<route>/components/` |
+| A hook or helper used by exactly one route | `app/<route>/lib/` |
 | A primitive reused across routes | `components/ui/` |
 | Business rules, calculations, validation | `lib/<domain>/` |
 | A mutation triggered by this app's own UI | a Server Action in `actions.ts` beside the route |
