@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, DollarSign } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const benefits = [
@@ -54,7 +55,7 @@ export function SiteFooter() {
                 href="/"
                 className="mb-4 flex items-center gap-2 text-white transition-colors hover:text-gray-200"
               >
-                <DollarSign className="size-8 text-blue-500" />
+                <Image src="/logo.png" alt="" width={32} height={32} className="size-8" />
                 <span className="text-xl">BudgitUrself</span>
               </Link>
               <p className="mb-4 text-sm text-gray-400">
