@@ -12,6 +12,9 @@ interface CurrentStateCardProps {
   creditCards: CreditCard[];
   oneOffExpenses: OneOffExpense[];
   summary: BudgetSummary;
+  onEditBankBalance: () => void;
+  onAddCreditCard: () => void;
+  onRemoveCreditCard: (id: string) => void;
   onAddExpense: () => void;
   onRemoveExpense: (id: string) => void;
 }
@@ -21,6 +24,9 @@ export function CurrentStateCard({
   creditCards,
   oneOffExpenses,
   summary,
+  onEditBankBalance,
+  onAddCreditCard,
+  onRemoveCreditCard,
   onAddExpense,
   onRemoveExpense,
 }: CurrentStateCardProps) {
@@ -40,44 +46,77 @@ export function CurrentStateCard({
 
       <CardContent className="space-y-6 pt-6">
         <div className="rounded-xl border border-green-500/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-4">
-          <p className="mb-1 text-xs font-medium tracking-wide text-green-400 uppercase">
-            Bank Account Balance
-          </p>
+          <div className="mb-1 flex items-center justify-between">
+            <p className="text-xs font-medium tracking-wide text-green-400 uppercase">
+              Bank Account Balance
+            </p>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={onEditBankBalance}
+              className="h-7 border-gray-600 text-xs text-gray-300 hover:border-green-500 hover:bg-slate-800 hover:text-white"
+            >
+              Edit
+            </Button>
+          </div>
           <p className="text-2xl font-bold text-white">{formatCurrency(bankBalance)}</p>
         </div>
 
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-sm font-medium text-gray-300">Credit Cards</h3>
-            <span className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-3 py-1 text-sm font-medium text-white">
-              {formatCurrency(summary.creditCardDebt)}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-3 py-1 text-sm font-medium text-white">
+                {formatCurrency(summary.creditCardDebt)}
+              </span>
+              <Button
+                size="sm"
+                onClick={onAddCreditCard}
+                className="h-8 bg-gradient-to-r from-blue-600 to-cyan-600 text-xs shadow-lg shadow-blue-500/30 hover:from-blue-700 hover:to-cyan-700"
+              >
+                <Plus className="mr-1 size-3" />
+                Add
+              </Button>
+            </div>
           </div>
-          <ul className="space-y-3">
-            {creditCards.map((card) => (
-              <li key={card.id} className="rounded-xl border border-gray-700 bg-slate-800/50 p-4">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="flex items-center gap-2 text-sm text-white">
-                    <CreditCardIcon className="size-4 text-blue-400" />
-                    {card.name}
-                  </span>
-                  <span className="text-sm font-medium text-gray-300">
-                    {formatCurrency(card.balance)}
-                  </span>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
-                    style={{ width: formatPercent(creditUtilization(card)) }}
-                  />
-                </div>
-                <p className="mt-2 text-xs text-gray-400">
-                  {formatPercent(creditUtilization(card))} of {formatWholeCurrency(card.limit)}{" "}
-                  limit
-                </p>
-              </li>
-            ))}
-          </ul>
+          {creditCards.length === 0 ? (
+            <p className="py-4 text-center text-sm text-gray-500">No credit cards added yet</p>
+          ) : (
+            <ul className="space-y-3">
+              {creditCards.map((card) => (
+                <li
+                  key={card.id}
+                  className="rounded-xl border border-gray-700 bg-slate-800/50 p-4"
+                >
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-sm text-white">
+                      <CreditCardIcon className="size-4 text-blue-400" />
+                      {card.name}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium text-gray-300">
+                        {formatCurrency(card.balance)}
+                      </span>
+                      <RemoveButton
+                        label={`Remove ${card.name}`}
+                        onClick={() => onRemoveCreditCard(card.id)}
+                      />
+                    </div>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
+                      style={{ width: formatPercent(creditUtilization(card)) }}
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-gray-400">
+                    {formatPercent(creditUtilization(card))} of {formatWholeCurrency(card.limit)}{" "}
+                    limit
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <section>

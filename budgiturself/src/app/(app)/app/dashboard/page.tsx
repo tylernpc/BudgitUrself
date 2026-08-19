@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
+import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
-import { sampleBudget } from "./lib/sample-budget";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
+  const budget = await budgetRepository.getBudget(user.id);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
@@ -25,7 +26,7 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        <BudgetWorkspace initialBudget={sampleBudget} />
+        <BudgetWorkspace budget={budget} />
       </main>
     </div>
   );
