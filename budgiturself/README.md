@@ -49,7 +49,7 @@ value fails immediately with a named error rather than at the first query.
 
 ```
 src/
-  app/            routes, colocated _components and _lib per route
+  app/            routes, colocated components/ and lib/ per route (dashboard); _components/_lib elsewhere
   components/ui/  shared design-system primitives
   lib/            domain modules — auth, budget, db, env, format
 ```

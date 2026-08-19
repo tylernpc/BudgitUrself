@@ -176,8 +176,8 @@ inside the DAL, because a layout is not a security boundary.
         │   │       ├── dashboard/
         │   │       │   ├── page.tsx        server component
         │   │       │   ├── loading.tsx
-        │   │       │   ├── _components/    workspace, section cards, dialogs
-        │   │       │   └── _lib/           reducer hook, placeholder data
+        │   │       │   ├── components/     workspace, section cards, dialogs
+        │   │       │   └── lib/            reducer hook, placeholder data
         │   │       └── accounts, budgets, transactions, settings
         │   └── api/
         │       ├── health, health/db       ops probes
