@@ -8,7 +8,12 @@ import type {
   MonthlyExpense as MonthlyExpenseRow,
   OneOffExpense as OneOffExpenseRow,
 } from "@prisma/client";
-import type { BillInput, CreditCardInput, MonthlyExpenseInput, OneOffExpenseInput } from "@/lib/budget/schemas";
+import type {
+  BillInput,
+  CreditCardInput,
+  MonthlyExpenseInput,
+  OneOffExpenseInput,
+} from "@/lib/budget/schemas";
 import type { Bill, Budget, CreditCard, MonthlyExpense, OneOffExpense } from "@/lib/budget/types";
 
 /**
@@ -59,7 +64,12 @@ export function toDomainMonthlyExpense(row: MonthlyExpenseRow): MonthlyExpense {
  * the UI a `Bill` that satisfies neither branch of the domain union.
  */
 export function toDomainBill(row: BillRow): Bill {
-  const base = { id: row.id, name: row.name, amount: row.amount.toNumber(), chargeDate: row.chargeDate };
+  const base = {
+    id: row.id,
+    name: row.name,
+    amount: row.amount.toNumber(),
+    chargeDate: row.chargeDate,
+  };
 
   if (row.type === "DIGITAL") {
     if (row.card === null || row.category === null) {
@@ -132,7 +142,10 @@ const billTypeToRow: Record<Bill["type"], BillTypeRow> = {
   personal: "PERSONAL",
 };
 
-export function toBillCreateData(userId: string, input: BillInput): Prisma.BillUncheckedCreateInput {
+export function toBillCreateData(
+  userId: string,
+  input: BillInput,
+): Prisma.BillUncheckedCreateInput {
   const base = {
     userId,
     name: input.name,

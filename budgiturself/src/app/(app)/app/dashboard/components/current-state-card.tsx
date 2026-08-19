@@ -84,10 +84,7 @@ export function CurrentStateCard({
           ) : (
             <ul className="space-y-3">
               {creditCards.map((card) => (
-                <li
-                  key={card.id}
-                  className="rounded-xl border border-gray-700 bg-slate-800/50 p-4"
-                >
+                <li key={card.id} className="rounded-xl border border-gray-700 bg-slate-800/50 p-4">
                   <div className="mb-2 flex items-center justify-between">
                     <span className="flex items-center gap-2 text-sm text-white">
                       <CreditCardIcon className="size-4 text-blue-400" />
