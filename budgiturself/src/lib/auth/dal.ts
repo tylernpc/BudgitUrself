@@ -17,6 +17,8 @@ export interface AppUser {
   id: string;
   email: string;
   name: string | null;
+  firstName: string | null;
+  lastName: string | null;
 }
 
 /**
@@ -61,7 +63,7 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
 
   return db.user.findUnique({
     where: { auth0Sub: sessionUser.auth0Sub },
-    select: { id: true, email: true, name: true },
+    select: { id: true, email: true, name: true, firstName: true, lastName: true },
   });
 });
 
@@ -81,6 +83,6 @@ export const requireCurrentUser = cache(async (): Promise<AppUser> => {
       name: sessionUser.name,
     },
     update: { email: sessionUser.email, name: sessionUser.name },
-    select: { id: true, email: true, name: true },
+    select: { id: true, email: true, name: true, firstName: true, lastName: true },
   });
 });

@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { summarizeBudget } from "@/lib/budget/calculations";
-import type { Budget, CreditCard } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard } from "@/lib/budget/types";
 import {
   addBillAction,
   addCreditCardAction,
@@ -15,10 +15,11 @@ import {
   removeOneOffExpenseAction,
   setBankBalanceAction,
   setMonthlyIncomeAction,
+  updateBillAction,
   updateCreditCardAction,
   type ActionResult,
 } from "../lib/actions";
-import { AddBillDialog } from "./add-bill-dialog";
+import { BillDialog } from "./bill-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
 import { AddExpenseDialog } from "./add-expense-dialog";
 import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";
@@ -37,11 +38,15 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [openDialog, setOpenDialog] = useState<DialogName | null>(null);
   // Held separately from `openDialog`: this dialog needs to know *which* card.
   const [editingCard, setEditingCard] = useState<CreditCard | null>(null);
+  const [editingBill, setEditingBill] = useState<Bill | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
   const summary = summarizeBudget(budget);
 
-  const close = () => setOpenDialog(null);
+  const close = () => {
+    setOpenDialog(null);
+    setEditingBill(null);
+  };
 
   const run = (action: () => Promise<ActionResult>) => {
     setError(undefined);
@@ -104,6 +109,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
           <MonthlyBillsCard
             summary={summary}
             onAddBill={() => setOpenDialog("bill")}
+            onEditBill={setEditingBill}
             onRemoveBill={(id) => run(() => removeBillAction(id))}
           />
         </Reveal>
@@ -131,10 +137,13 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         onOpenChange={close}
         onAdd={(expense) => run(() => addMonthlyExpenseAction(expense))}
       />
-      <AddBillDialog
-        open={openDialog === "bill"}
+      <BillDialog
+        key={editingBill?.id ?? "new-bill"}
+        open={openDialog === "bill" || editingBill !== null}
+        bill={editingBill}
         onOpenChange={close}
         onAdd={(bill) => run(() => addBillAction(bill))}
+        onSave={(bill) => run(() => updateBillAction(bill))}
         creditCards={budget.creditCards.map((card) => card.name)}
       />
       <AddCreditCardDialog

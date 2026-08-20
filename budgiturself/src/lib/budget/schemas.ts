@@ -54,26 +54,36 @@ export const creditCardUpdateSchema = z.object({
   limit: z.coerce.number().positive("Enter a limit above zero").max(9_999_999),
 });
 
-export const billSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("digital"),
-    name,
-    amount,
-    chargeDate,
-    card: z.string().min(1, "Choose a card"),
-    category: z.enum(BILL_CATEGORIES),
-  }),
-  z.object({
-    type: z.literal("personal"),
-    name,
-    amount,
-    chargeDate,
-    owedTo: name,
-  }),
+const digitalBill = z.object({
+  type: z.literal("digital"),
+  name,
+  amount,
+  chargeDate,
+  card: z.string().min(1, "Choose a card"),
+  category: z.enum(BILL_CATEGORIES),
+});
+
+const personalBill = z.object({
+  type: z.literal("personal"),
+  name,
+  amount,
+  chargeDate,
+  owedTo: name,
+});
+
+const billId = z.string().min(1);
+
+export const billSchema = z.discriminatedUnion("type", [digitalBill, personalBill]);
+
+/** The same union, addressed to an existing row. Editing may switch the type. */
+export const billUpdateSchema = z.discriminatedUnion("type", [
+  digitalBill.extend({ id: billId }),
+  personalBill.extend({ id: billId }),
 ]);
 
 export type OneOffExpenseInput = Omit<OneOffExpense, "id">;
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
 export type BillInput = DistributiveOmit<Bill, "id">;
+export type BillUpdateInput = Bill;
 export type CreditCardInput = Omit<CreditCard, "id">;
 export type CreditCardUpdateInput = Pick<CreditCard, "id" | "balance" | "limit">;

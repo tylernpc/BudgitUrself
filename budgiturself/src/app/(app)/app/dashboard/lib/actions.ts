@@ -6,6 +6,7 @@ import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import {
   bankBalanceSchema,
   billSchema,
+  billUpdateSchema,
   creditCardSchema,
   creditCardUpdateSchema,
   monthlyExpenseSchema,
@@ -129,6 +130,18 @@ export async function addBillAction(input: unknown): Promise<ActionResult> {
 
   const user = await requireCurrentUser();
   await budgetRepository.addBill(user.id, parsed.data);
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+export async function updateBillAction(input: unknown): Promise<ActionResult> {
+  const parsed = billUpdateSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Check the values above" };
+  }
+
+  const user = await requireCurrentUser();
+  await budgetRepository.updateBill(user.id, parsed.data);
   revalidatePath(DASHBOARD_PATH);
   return {};
 }

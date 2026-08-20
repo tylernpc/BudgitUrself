@@ -4,6 +4,7 @@ import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import {
   toBillCreateData,
+  toBillUpdateData,
   toCreditCardCreateData,
   toCreditCardUpdateData,
   toDomainBill,
@@ -17,6 +18,7 @@ import {
 import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
   BillInput,
+  BillUpdateInput,
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
@@ -96,6 +98,13 @@ class PrismaBudgetRepository implements BudgetRepository {
   async addBill(userId: string, input: BillInput) {
     const row = await db.bill.create({ data: toBillCreateData(userId, input) });
     return toDomainBill(row);
+  }
+
+  async updateBill(userId: string, input: BillUpdateInput) {
+    await db.bill.updateMany({
+      where: { id: input.id, userId },
+      data: toBillUpdateData(input),
+    });
   }
 
   async removeBill(userId: string, id: string) {

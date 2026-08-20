@@ -1,9 +1,9 @@
 import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
-import type { DigitalBill, PersonalBill } from "@/lib/budget/types";
+import type { Bill, DigitalBill, PersonalBill } from "@/lib/budget/types";
 import { formatCurrency, formatDayOfMonth } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, RemoveButton } from "./actions";
+import { AddButton, EditButton, RemoveButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
@@ -11,6 +11,7 @@ import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 interface MonthlyBillsCardProps {
   summary: BudgetSummary;
   onAddBill: () => void;
+  onEditBill: (bill: Bill) => void;
   onRemoveBill: (id: string) => void;
 }
 
@@ -36,8 +37,9 @@ function BillRow({
   badge,
   meta,
   amount,
+  onEdit,
   onRemove,
-  removeLabel,
+  actionLabel,
 }: {
   day: number;
   tint: string;
@@ -45,8 +47,9 @@ function BillRow({
   badge?: string;
   meta: React.ReactNode;
   amount: number;
+  onEdit: () => void;
   onRemove: () => void;
-  removeLabel: string;
+  actionLabel: string;
 }) {
   return (
     <li className="surface-quiet flex items-center gap-3 px-3 py-3 sm:px-3.5">
@@ -64,13 +67,22 @@ function BillRow({
       </div>
       <span className="flex shrink-0 items-center gap-1">
         <span className="num text-sm text-ink-muted">{formatCurrency(amount)}</span>
-        <RemoveButton label={removeLabel} onClick={onRemove} />
+        <EditButton label={`Edit ${actionLabel}`} onClick={onEdit} />
+        <RemoveButton label={`Remove ${actionLabel}`} onClick={onRemove} />
       </span>
     </li>
   );
 }
 
-function DigitalBillRow({ bill, onRemove }: { bill: DigitalBill; onRemove: () => void }) {
+function DigitalBillRow({
+  bill,
+  onEdit,
+  onRemove,
+}: {
+  bill: DigitalBill;
+  onEdit: () => void;
+  onRemove: () => void;
+}) {
   return (
     <BillRow
       day={bill.chargeDate}
@@ -86,13 +98,22 @@ function DigitalBillRow({ bill, onRemove }: { bill: DigitalBill; onRemove: () =>
         </>
       }
       amount={bill.amount}
+      onEdit={onEdit}
       onRemove={onRemove}
-      removeLabel={`Remove ${bill.name}`}
+      actionLabel={bill.name}
     />
   );
 }
 
-function PersonalBillRow({ bill, onRemove }: { bill: PersonalBill; onRemove: () => void }) {
+function PersonalBillRow({
+  bill,
+  onEdit,
+  onRemove,
+}: {
+  bill: PersonalBill;
+  onEdit: () => void;
+  onRemove: () => void;
+}) {
   return (
     <BillRow
       day={bill.chargeDate}
@@ -107,13 +128,19 @@ function PersonalBillRow({ bill, onRemove }: { bill: PersonalBill; onRemove: () 
         </>
       }
       amount={bill.amount}
+      onEdit={onEdit}
       onRemove={onRemove}
-      removeLabel={`Remove ${bill.name}`}
+      actionLabel={bill.name}
     />
   );
 }
 
-export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBillsCardProps) {
+export function MonthlyBillsCard({
+  summary,
+  onAddBill,
+  onEditBill,
+  onRemoveBill,
+}: MonthlyBillsCardProps) {
   return (
     <Panel>
       <PanelHeader
@@ -148,6 +175,7 @@ export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBi
                   <DigitalBillRow
                     key={bill.id}
                     bill={bill}
+                    onEdit={() => onEditBill(bill)}
                     onRemove={() => onRemoveBill(bill.id)}
                   />
                 ))}
@@ -177,6 +205,7 @@ export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBi
                   <PersonalBillRow
                     key={bill.id}
                     bill={bill}
+                    onEdit={() => onEditBill(bill)}
                     onRemove={() => onRemoveBill(bill.id)}
                   />
                 ))}

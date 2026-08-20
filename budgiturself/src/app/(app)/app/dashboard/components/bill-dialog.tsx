@@ -10,8 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BILL_CATEGORIES, billSchema, type BillInput } from "@/lib/budget/schemas";
-import type { BillType } from "@/lib/budget/types";
+import {
+  BILL_CATEGORIES,
+  billSchema,
+  billUpdateSchema,
+  type BillInput,
+  type BillUpdateInput,
+} from "@/lib/budget/schemas";
+import type { Bill, BillType } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
@@ -19,38 +25,65 @@ const selectContentClass =
   "rounded-xl border-hairline bg-panel text-ink shadow-2xl backdrop-blur-xl";
 const selectItemClass = "rounded-lg text-ink focus:bg-chip focus:text-ink";
 
-interface AddBillDialogProps {
+interface BillDialogProps {
   open: boolean;
+  /** The bill being edited, or `null` to add a new one. */
+  bill: Bill | null;
   onOpenChange: (open: boolean) => void;
   onAdd: (bill: BillInput) => void;
+  onSave: (bill: BillUpdateInput) => void;
   creditCards: string[];
 }
 
-export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBillDialogProps) {
-  const [type, setType] = useState<BillType>("digital");
-  const [card, setCard] = useState("");
-  const [category, setCategory] = useState("");
+/**
+ * One form for adding and editing, so the two can never drift apart. The
+ * caller remounts it with a `key` when the target bill changes, which reseeds
+ * the pieces of the form that live in state rather than in the DOM.
+ */
+export function BillDialog({
+  open,
+  bill,
+  onOpenChange,
+  onAdd,
+  onSave,
+  creditCards,
+}: BillDialogProps) {
+  const editing = bill !== null;
+  const [type, setType] = useState<BillType>(bill?.type ?? "digital");
+  const [card, setCard] = useState(bill?.type === "digital" ? bill.card : "");
+  const [category, setCategory] = useState(bill?.type === "digital" ? bill.category : "");
   const [error, setError] = useState<string>();
 
   const close = () => {
-    setType("digital");
-    setCard("");
-    setCategory("");
     setError(undefined);
     onOpenChange(false);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const parsed = billSchema.safeParse({ ...Object.fromEntries(form), type, card, category });
+    const fields = {
+      ...Object.fromEntries(new FormData(event.currentTarget)),
+      type,
+      card,
+      category,
+    };
 
-    if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Check the values above");
-      return;
+    if (editing) {
+      const parsed = billUpdateSchema.safeParse({ ...fields, id: bill.id });
+      if (!parsed.success) {
+        setError(parsed.error.issues[0]?.message ?? "Check the values above");
+        return;
+      }
+      onSave(parsed.data);
+    } else {
+      const parsed = billSchema.safeParse(fields);
+      if (!parsed.success) {
+        setError(parsed.error.issues[0]?.message ?? "Check the values above");
+        return;
+      }
+      onAdd(parsed.data);
     }
 
-    onAdd(parsed.data);
     close();
   };
 
@@ -58,7 +91,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
     <BudgetDialog
       open={open}
       onOpenChange={(next) => (next ? onOpenChange(true) : close())}
-      title="Add monthly bill"
+      title={editing ? "Edit monthly bill" : "Add monthly bill"}
       description="A recurring subscription, service, or a person you pay back each month."
     >
       <form key={String(open)} onSubmit={handleSubmit}>
@@ -88,6 +121,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
               id="bill-name"
               name="name"
               placeholder={type === "digital" ? "e.g., Netflix, Spotify" : "e.g., YMCA Membership"}
+              defaultValue={bill?.name}
               required
               className={fieldClass}
             />
@@ -103,6 +137,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
                 step="0.01"
                 min="0.01"
                 placeholder="0.00"
+                defaultValue={bill?.amount}
                 required
                 className={fieldClass}
               />
@@ -115,7 +150,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
                 type="number"
                 min="1"
                 max="31"
-                defaultValue={1}
+                defaultValue={bill?.chargeDate ?? 1}
                 required
                 className={fieldClass}
               />
@@ -162,6 +197,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
                 id="bill-owed-to"
                 name="owedTo"
                 placeholder="e.g., Dad"
+                defaultValue={bill?.type === "personal" ? bill.owedTo : undefined}
                 required
                 className={fieldClass}
               />
@@ -171,7 +207,7 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
           <FieldError message={error} />
         </div>
 
-        <DialogActions onCancel={close} submitLabel="Add bill" />
+        <DialogActions onCancel={close} submitLabel={editing ? "Save changes" : "Add bill"} />
       </form>
     </BudgetDialog>
   );

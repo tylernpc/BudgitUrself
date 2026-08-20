@@ -1,5 +1,6 @@
 import type {
   BillInput,
+  BillUpdateInput,
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
@@ -35,5 +36,6 @@ export interface BudgetRepository {
   removeMonthlyExpense(userId: string, id: string): Promise<void>;
 
   addBill(userId: string, input: BillInput): Promise<Bill>;
+  updateBill(userId: string, input: BillUpdateInput): Promise<void>;
   removeBill(userId: string, id: string): Promise<void>;
 }

@@ -10,6 +10,7 @@ import type {
 } from "@prisma/client";
 import type {
   BillInput,
+  BillUpdateInput,
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
@@ -149,12 +150,13 @@ const billTypeToRow: Record<Bill["type"], BillTypeRow> = {
   personal: "PERSONAL",
 };
 
-export function toBillCreateData(
-  userId: string,
-  input: BillInput,
-): Prisma.BillUncheckedCreateInput {
+/**
+ * The branch columns are always written as a pair: the active branch set, the
+ * other explicitly nulled. `Bill_type_fields_check` rejects any row where a
+ * leftover `card` or `owedTo` survives a change of type.
+ */
+function toBillColumns(input: BillInput) {
   const base = {
-    userId,
     name: input.name,
     amount: input.amount,
     chargeDate: input.chargeDate,
@@ -164,4 +166,18 @@ export function toBillCreateData(
   return input.type === "digital"
     ? { ...base, card: input.card, category: input.category, owedTo: null }
     : { ...base, owedTo: input.owedTo, card: null, category: null };
+}
+
+export function toBillCreateData(
+  userId: string,
+  input: BillInput,
+): Prisma.BillUncheckedCreateInput {
+  return { userId, ...toBillColumns(input) };
+}
+
+export function toBillUpdateData({
+  id: _id,
+  ...input
+}: BillUpdateInput): Prisma.BillUncheckedUpdateInput {
+  return toBillColumns(input);
 }
