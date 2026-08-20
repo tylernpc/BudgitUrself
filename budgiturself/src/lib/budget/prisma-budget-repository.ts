@@ -11,9 +11,7 @@ import {
   toDomainBudget,
   toDomainCreditCard,
   toDomainMonthlyExpense,
-  toDomainOneOffExpense,
   toMonthlyExpenseCreateData,
-  toOneOffExpenseCreateData,
 } from "@/lib/budget/mappers";
 import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
@@ -22,14 +20,12 @@ import type {
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
-  OneOffExpenseInput,
 } from "@/lib/budget/schemas";
 
 const budgetSelect = {
   bankBalance: true,
   monthlyIncome: true,
   creditCards: { orderBy: { createdAt: "asc" } },
-  oneOffExpenses: { orderBy: { date: "desc" } },
   monthlyExpenses: { orderBy: { createdAt: "asc" } },
   bills: { orderBy: { chargeDate: "asc" } },
 } satisfies Prisma.UserSelect;
@@ -75,15 +71,6 @@ class PrismaBudgetRepository implements BudgetRepository {
 
   async removeCreditCard(userId: string, id: string) {
     await db.creditCard.deleteMany({ where: { id, userId } });
-  }
-
-  async addOneOffExpense(userId: string, input: OneOffExpenseInput) {
-    const row = await db.oneOffExpense.create({ data: toOneOffExpenseCreateData(userId, input) });
-    return toDomainOneOffExpense(row);
-  }
-
-  async removeOneOffExpense(userId: string, id: string) {
-    await db.oneOffExpense.deleteMany({ where: { id, userId } });
   }
 
   async addMonthlyExpense(userId: string, input: MonthlyExpenseInput) {

@@ -5,13 +5,6 @@ export interface CreditCard {
   limit: number;
 }
 
-export interface OneOffExpense {
-  id: string;
-  name: string;
-  amount: number;
-  date: string;
-}
-
 export interface MonthlyExpense {
   id: string;
   name: string;
@@ -47,7 +40,6 @@ export interface Budget {
   bankBalance: number;
   monthlyIncome: number;
   creditCards: CreditCard[];
-  oneOffExpenses: OneOffExpense[];
   monthlyExpenses: MonthlyExpense[];
   bills: Bill[];
 }

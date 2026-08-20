@@ -2,8 +2,6 @@ import type { Bill, Budget, DigitalBill, PersonalBill } from "@/lib/budget/types
 
 export interface BudgetSummary {
   creditCardDebt: number;
-  oneOffExpensesTotal: number;
-  currentObligations: number;
   digitalBills: DigitalBill[];
   personalBills: PersonalBill[];
   digitalBillsTotal: number;
@@ -33,8 +31,6 @@ export function byChargeDate<T extends Bill>(bills: readonly T[]): T[] {
 
 export function summarizeBudget(budget: Budget): BudgetSummary {
   const creditCardDebt = budget.creditCards.reduce((total, card) => total + card.balance, 0);
-  const oneOffExpensesTotal = sum(budget.oneOffExpenses);
-  const currentObligations = creditCardDebt + oneOffExpensesTotal;
 
   const digitalBills = byChargeDate(budget.bills.filter(isDigitalBill));
   const personalBills = byChargeDate(budget.bills.filter(isPersonalBill));
@@ -47,8 +43,6 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
 
   return {
     creditCardDebt,
-    oneOffExpensesTotal,
-    currentObligations,
     digitalBills,
     personalBills,
     digitalBillsTotal,
@@ -57,9 +51,8 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
     monthlyExpensesTotal,
     fixedExpensesTotal,
     safeToSpend: budget.monthlyIncome - fixedExpensesTotal,
-    trueLiquidWealth: budget.bankBalance - currentObligations,
-    horizonView:
-      budget.bankBalance + budget.monthlyIncome - currentObligations - fixedExpensesTotal,
+    trueLiquidWealth: budget.bankBalance - creditCardDebt,
+    horizonView: budget.bankBalance + budget.monthlyIncome - creditCardDebt - fixedExpensesTotal,
   };
 }
 

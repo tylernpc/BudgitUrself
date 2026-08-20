@@ -89,8 +89,8 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
             <AnimatedCurrency value={summary.horizonView} duration={1400} />
           </p>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-faint">
-            This is what you&apos;re on track to have available at the end of the month, after all
-            your bills and expenses are accounted for.
+            This is what you&apos;re on track to have available at the beginning of the month, after
+            all your bills and expenses are accounted for.
           </p>
         </div>
 

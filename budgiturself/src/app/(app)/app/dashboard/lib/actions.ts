@@ -13,7 +13,6 @@ import {
   creditCardUpdateSchema,
   monthlyExpenseSchema,
   monthlyIncomeSchema,
-  oneOffExpenseSchema,
 } from "@/lib/budget/schemas";
 
 export interface ActionResult {
@@ -97,25 +96,6 @@ export async function updateCreditCardAction(input: unknown): Promise<ActionResu
 export async function removeCreditCardAction(id: string): Promise<ActionResult> {
   const user = await requireCurrentUser();
   await budgetRepository.removeCreditCard(user.id, id);
-  revalidatePath(DASHBOARD_PATH);
-  return {};
-}
-
-export async function addOneOffExpenseAction(input: unknown): Promise<ActionResult> {
-  const parsed = oneOffExpenseSchema.safeParse(input);
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Check the values above" };
-  }
-
-  const user = await requireCurrentUser();
-  await budgetRepository.addOneOffExpense(user.id, parsed.data);
-  revalidatePath(DASHBOARD_PATH);
-  return {};
-}
-
-export async function removeOneOffExpenseAction(id: string): Promise<ActionResult> {
-  const user = await requireCurrentUser();
-  await budgetRepository.removeOneOffExpense(user.id, id);
   revalidatePath(DASHBOARD_PATH);
   return {};
 }

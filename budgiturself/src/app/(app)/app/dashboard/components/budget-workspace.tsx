@@ -8,11 +8,9 @@ import {
   addBillAction,
   addCreditCardAction,
   addMonthlyExpenseAction,
-  addOneOffExpenseAction,
   removeBillAction,
   removeCreditCardAction,
   removeMonthlyExpenseAction,
-  removeOneOffExpenseAction,
   setBankBalanceAction,
   setMonthlyIncomeAction,
   updateBillAction,
@@ -21,7 +19,6 @@ import {
 } from "../lib/actions";
 import { BillDialog } from "./bill-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
-import { AddExpenseDialog } from "./add-expense-dialog";
 import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";
 import { CurrentStateCard } from "./current-state-card";
 import { EditBankBalanceDialog } from "./edit-bank-balance-dialog";
@@ -32,7 +29,7 @@ import { HorizonView } from "./horizon-view";
 import { MonthlyBillsCard } from "./monthly-bills-card";
 import { Reveal } from "./reveal";
 
-type DialogName = "expense" | "monthlyExpense" | "bill" | "income" | "creditCard" | "bankBalance";
+type DialogName = "monthlyExpense" | "bill" | "income" | "creditCard" | "bankBalance";
 
 export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [openDialog, setOpenDialog] = useState<DialogName | null>(null);
@@ -82,14 +79,11 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
             <CurrentStateCard
               bankBalance={budget.bankBalance}
               creditCards={budget.creditCards}
-              oneOffExpenses={budget.oneOffExpenses}
               summary={summary}
               onEditBankBalance={() => setOpenDialog("bankBalance")}
               onAddCreditCard={() => setOpenDialog("creditCard")}
               onEditCreditCard={setEditingCard}
               onRemoveCreditCard={(id) => run(() => removeCreditCardAction(id))}
-              onAddExpense={() => setOpenDialog("expense")}
-              onRemoveExpense={(id) => run(() => removeOneOffExpenseAction(id))}
             />
           </Reveal>
 
@@ -127,11 +121,6 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         </span>
       </div>
 
-      <AddExpenseDialog
-        open={openDialog === "expense"}
-        onOpenChange={close}
-        onAdd={(expense) => run(() => addOneOffExpenseAction(expense))}
-      />
       <AddMonthlyExpenseDialog
         open={openDialog === "monthlyExpense"}
         onOpenChange={close}

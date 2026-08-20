@@ -4,9 +4,8 @@ import type {
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
-  OneOffExpenseInput,
 } from "@/lib/budget/schemas";
-import type { Bill, Budget, CreditCard, MonthlyExpense, OneOffExpense } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard, MonthlyExpense } from "@/lib/budget/types";
 
 /**
  * Port for the Budget aggregate. Every method is scoped by `userId`; this
@@ -28,9 +27,6 @@ export interface BudgetRepository {
   addCreditCard(userId: string, input: CreditCardInput): Promise<CreditCard>;
   updateCreditCard(userId: string, input: CreditCardUpdateInput): Promise<void>;
   removeCreditCard(userId: string, id: string): Promise<void>;
-
-  addOneOffExpense(userId: string, input: OneOffExpenseInput): Promise<OneOffExpense>;
-  removeOneOffExpense(userId: string, id: string): Promise<void>;
 
   addMonthlyExpense(userId: string, input: MonthlyExpenseInput): Promise<MonthlyExpense>;
   removeMonthlyExpense(userId: string, id: string): Promise<void>;

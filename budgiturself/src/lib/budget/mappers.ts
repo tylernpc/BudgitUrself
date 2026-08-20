@@ -6,7 +6,6 @@ import type {
   BillType as BillTypeRow,
   CreditCard as CreditCardRow,
   MonthlyExpense as MonthlyExpenseRow,
-  OneOffExpense as OneOffExpenseRow,
 } from "@prisma/client";
 import type {
   BillInput,
@@ -14,9 +13,8 @@ import type {
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
-  OneOffExpenseInput,
 } from "@/lib/budget/schemas";
-import type { Bill, Budget, CreditCard, MonthlyExpense, OneOffExpense } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard, MonthlyExpense } from "@/lib/budget/types";
 
 /**
  * Explicit, two-way mapping between Prisma's generated row shapes and the
@@ -36,17 +34,6 @@ export function toDomainCreditCard(row: CreditCardRow): CreditCard {
     name: row.name,
     balance: row.balance.toNumber(),
     limit: row.limit.toNumber(),
-  };
-}
-
-export function toDomainOneOffExpense(row: OneOffExpenseRow): OneOffExpense {
-  return {
-    id: row.id,
-    name: row.name,
-    amount: row.amount.toNumber(),
-    // `date` is a Postgres DATE column read back as UTC midnight; slicing the
-    // ISO string avoids re-deriving it through a local-timezone-sensitive API.
-    date: row.date.toISOString().slice(0, 10),
   };
 }
 
@@ -91,7 +78,6 @@ export interface BudgetRow {
   bankBalance: Prisma.Decimal;
   monthlyIncome: Prisma.Decimal;
   creditCards: CreditCardRow[];
-  oneOffExpenses: OneOffExpenseRow[];
   monthlyExpenses: MonthlyExpenseRow[];
   bills: BillRow[];
 }
@@ -101,7 +87,6 @@ export function toDomainBudget(row: BudgetRow): Budget {
     bankBalance: row.bankBalance.toNumber(),
     monthlyIncome: row.monthlyIncome.toNumber(),
     creditCards: row.creditCards.map(toDomainCreditCard),
-    oneOffExpenses: row.oneOffExpenses.map(toDomainOneOffExpense),
     monthlyExpenses: row.monthlyExpenses.map(toDomainMonthlyExpense),
     bills: row.bills.map(toDomainBill),
   };
@@ -122,20 +107,6 @@ export function toCreditCardUpdateData(
   input: CreditCardUpdateInput,
 ): Prisma.CreditCardUncheckedUpdateInput {
   return { balance: input.balance, limit: input.limit };
-}
-
-export function toOneOffExpenseCreateData(
-  userId: string,
-  input: OneOffExpenseInput,
-): Prisma.OneOffExpenseUncheckedCreateInput {
-  return {
-    userId,
-    name: input.name,
-    amount: input.amount,
-    // Mirrors formatIsoDate's convention: pin the date-only string to UTC
-    // midnight explicitly so it never drifts a day under a local timezone.
-    date: new Date(`${input.date}T00:00:00Z`),
-  };
 }
 
 export function toMonthlyExpenseCreateData(

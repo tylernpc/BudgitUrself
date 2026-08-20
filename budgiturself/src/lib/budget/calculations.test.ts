@@ -9,7 +9,6 @@ const budget: Budget = {
     { id: "a", name: "A", balance: 200, limit: 1000 },
     { id: "b", name: "B", balance: 300, limit: 2000 },
   ],
-  oneOffExpenses: [{ id: "o1", name: "Repair", amount: 150, date: "2026-03-01" }],
   monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200 }],
   bills: [
     {
@@ -37,10 +36,8 @@ const budget: Budget = {
 describe("summarizeBudget", () => {
   const summary = summarizeBudget(budget);
 
-  it("totals credit card debt and one-off expenses into current obligations", () => {
+  it("totals credit card debt", () => {
     expect(summary.creditCardDebt).toBe(500);
-    expect(summary.oneOffExpensesTotal).toBe(150);
-    expect(summary.currentObligations).toBe(650);
   });
 
   it("splits bills by type and totals them", () => {
@@ -57,8 +54,8 @@ describe("summarizeBudget", () => {
   });
 
   it("derives liquid wealth and the horizon view", () => {
-    expect(summary.trueLiquidWealth).toBe(350);
-    expect(summary.horizonView).toBe(1000 + 4000 - 650 - 1260);
+    expect(summary.trueLiquidWealth).toBe(500);
+    expect(summary.horizonView).toBe(1000 + 4000 - 500 - 1260);
   });
 
   it("reports a negative horizon when obligations exceed resources", () => {

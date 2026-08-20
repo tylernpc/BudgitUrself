@@ -56,7 +56,7 @@ export function HeroPreview() {
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           <Tile label="Liquid cash" value={BANK_BALANCE} />
-          <Tile label="After obligations" value={afterObligations} />
+          <Tile label="After debts" value={afterObligations} />
         </div>
 
         <div className="mt-5">

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatCurrency, formatDayOfMonth, formatIsoDate, formatPercent } from "./format";
+import { formatCurrency, formatDayOfMonth, formatPercent } from "./format";
 
 describe("formatCurrency", () => {
   it("formats to two decimal places with a symbol", () => {
@@ -24,16 +24,6 @@ describe("formatDayOfMonth", () => {
     expect(formatDayOfMonth(22)).toBe("22nd");
     expect(formatDayOfMonth(23)).toBe("23rd");
     expect(formatDayOfMonth(31)).toBe("31st");
-  });
-});
-
-describe("formatIsoDate", () => {
-  it("keeps the calendar date regardless of local timezone", () => {
-    expect(formatIsoDate("2026-02-20")).toBe("Feb 20, 2026");
-  });
-
-  it("passes through values it cannot parse", () => {
-    expect(formatIsoDate("not-a-date")).toBe("not-a-date");
   });
 });
 
