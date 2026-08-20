@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCurrentUser } from "@/lib/auth/dal";
+import { nameSchema } from "@/lib/auth/schemas";
+import { db } from "@/lib/db";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import {
   bankBalanceSchema,
@@ -28,6 +30,21 @@ const DASHBOARD_PATH = "/app/dashboard";
  * resolves the current user via the DAL (establishing ownership) before it
  * ever reaches the repository.
  */
+
+export async function updateNameAction(input: unknown): Promise<ActionResult> {
+  const parsed = nameSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Enter a valid name" };
+  }
+
+  const user = await requireCurrentUser();
+  await db.user.update({
+    where: { id: user.id },
+    data: { firstName: parsed.data.firstName, lastName: parsed.data.lastName },
+  });
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
 
 export async function setBankBalanceAction(input: unknown): Promise<ActionResult> {
   const parsed = bankBalanceSchema.safeParse(input);

@@ -13,14 +13,15 @@ const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "nume
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   const budget = await budgetRepository.getBudget(user.id);
-  const firstName = user.name?.trim().split(/\s+/)[0];
+  const fallbackName = user.name?.trim().split(/\s+/)[0];
+  const greetingName = user.firstName ?? (fallbackName?.includes("@") ? undefined : fallbackName);
 
   return (
     <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
       <AuroraBackdrop />
 
       <div className="relative z-10">
-        <DashboardHeader />
+        <DashboardHeader firstName={user.firstName} lastName={user.lastName} email={user.email} />
 
         <main className="mx-auto max-w-7xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 lg:px-8">
           <Reveal className="mb-9 sm:mb-12">
@@ -28,7 +29,7 @@ export default async function DashboardPage() {
               {monthLabel.format(new Date())}
             </p>
             <h1 className="mt-3 text-[2rem] leading-tight font-semibold tracking-tight text-ink sm:text-[2.75rem]">
-              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+              {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
             </h1>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-faint sm:text-[15px]">
               Everything you owe and everything you keep, resolved into one honest number.
