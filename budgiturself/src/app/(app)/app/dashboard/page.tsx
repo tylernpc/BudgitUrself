@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
-import { AuroraCanvas } from "./components/aurora-canvas";
+import { AuroraCanvas } from "@/components/ui/aurora-canvas";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
 import { Reveal } from "./components/reveal";

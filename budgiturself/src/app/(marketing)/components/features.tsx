@@ -1,58 +1,63 @@
-import { CreditCard, DollarSign, PieChart, TrendingUp } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CalendarClock, CreditCard, TrendingUp, Wallet } from "lucide-react";
 
 const features = [
   {
-    icon: DollarSign,
-    title: "Track Your Paycheck",
-    description: "Input your total paycheck and let us help you allocate every dollar wisely.",
+    icon: Wallet,
+    tone: "text-tone-violet",
+    title: "Track your paycheck",
+    description: "Enter what you take home and let every dollar get a job before you spend it.",
   },
   {
     icon: TrendingUp,
-    title: "Manage Expenses",
-    description: "Subtract your fixed expenses automatically and see what's left for spending.",
+    tone: "text-tone-emerald",
+    title: "Subtract what is fixed",
+    description: "Housing, groceries, the bills that arrive whether you think about them or not.",
   },
   {
-    icon: PieChart,
-    title: "Know Your Budget",
-    description:
-      "Instantly see how much you're allowed to spend on extras after covering essentials.",
+    icon: CalendarClock,
+    tone: "text-tone-cyan",
+    title: "See when it leaves",
+    description: "Every recurring charge, broken out by the day of the month it actually lands.",
   },
   {
     icon: CreditCard,
-    title: "Categorize Everything",
-    description: "Organize spending by card and category to understand where your money goes.",
+    tone: "text-tone-indigo",
+    title: "Count what you owe",
+    description: "Card balances and one-off costs come off the top, not out of next month's hope.",
   },
 ];
 
 export function Features() {
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-2xl text-center">
-          <h2 className="mb-4 text-4xl text-gray-900 sm:text-5xl">
-            Everything You Need to Budget Smarter
-          </h2>
-          <p className="text-xl text-gray-600">
-            Simple tools that help you take control of your finances
-          </p>
-        </div>
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="reveal mx-auto max-w-2xl text-center">
+        <span className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
+          How it works
+        </span>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem]">
+          Four numbers, honestly counted
+        </h2>
+        <p className="mt-3 text-base leading-relaxed text-ink-faint">
+          Nothing here is estimated on your behalf. That is the whole point.
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {features.map(({ icon: Icon, title, description }) => (
-            <Card key={title} className="border-2 transition-shadow hover:shadow-lg">
-              <CardHeader>
-                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-blue-100">
-                  <Icon className="size-6 text-blue-600" />
-                </div>
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">{description}</CardDescription>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {features.map(({ icon: Icon, tone, title, description }, index) => (
+          <article
+            key={title}
+            className="surface lift reveal p-6"
+            style={{ animationDelay: `${100 + index * 80}ms` }}
+          >
+            <span
+              className={`grid size-10 place-items-center rounded-2xl bg-chip ring-1 ring-hairline ${tone}`}
+            >
+              <Icon className="size-[18px]" />
+            </span>
+            <h3 className="mt-4 text-[15px] font-medium tracking-tight text-ink">{title}</h3>
+            <p className="mt-2 text-[13px] leading-relaxed text-ink-faint">{description}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

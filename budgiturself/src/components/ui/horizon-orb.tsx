@@ -10,7 +10,7 @@ import {
   prefersDark,
   prefersReducedMotion,
   runFrameLoop,
-} from "../lib/three-scene";
+} from "@/lib/webgl";
 
 const vertexShader = /* glsl */ `
   attribute vec3 aNormal;
@@ -172,7 +172,7 @@ function toPoints(three: typeof THREE, cloud: Cloud, uniforms: OrbUniforms, dark
  * red through blue to green and how far the surface breathes — a mood ring for
  * the month, not a chart.
  */
-export function HorizonOrb({ health }: { health: number }) {
+export function HorizonOrb({ health = 0.7 }: { health?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const healthRef = useRef(health);
 

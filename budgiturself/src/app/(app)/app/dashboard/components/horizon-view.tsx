@@ -6,7 +6,7 @@ import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { healthFromSummary } from "../lib/visual-health";
 import { AnimatedCurrency } from "./animated-number";
-import { HorizonOrb } from "./horizon-orb";
+import { HorizonOrb } from "@/components/ui/horizon-orb";
 import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {

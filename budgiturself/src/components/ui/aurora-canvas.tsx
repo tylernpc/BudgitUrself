@@ -10,7 +10,7 @@ import {
   prefersDark,
   prefersReducedMotion,
   runFrameLoop,
-} from "../lib/three-scene";
+} from "@/lib/webgl";
 
 const vertexShader = /* glsl */ `
   void main() {
@@ -99,8 +99,11 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-/** Full-viewport shader backdrop. Tinted by `health`, drawn toward the pointer. */
-export function AuroraCanvas({ health }: { health: number }) {
+/**
+ * Full-viewport shader backdrop, drawn toward the pointer. `health` (0–1) tints
+ * it; pages with nothing to report leave it at the default calm setting.
+ */
+export function AuroraCanvas({ health = 0.7 }: { health?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const healthRef = useRef(health);
 

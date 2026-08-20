@@ -1,104 +1,115 @@
 import { CreditCard, Tag } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatWholeCurrency } from "@/lib/format";
 
 const cards = [
-  { name: "Chase Sapphire", type: "Credit", amount: 432, color: "bg-blue-500" },
-  { name: "Bank of America", type: "Debit", amount: 289, color: "bg-green-500" },
-  { name: "Amex Gold", type: "Credit", amount: 156, color: "bg-yellow-500" },
+  { name: "Chase Sapphire", type: "Credit", amount: 432, dot: "bg-tone-sky" },
+  { name: "Bank of America", type: "Debit", amount: 289, dot: "bg-tone-emerald" },
+  { name: "Amex Gold", type: "Credit", amount: 156, dot: "bg-tone-amber" },
 ];
 
 const categories = [
-  { name: "Groceries", amount: 340, color: "bg-emerald-500" },
-  { name: "Dining", amount: 220, color: "bg-orange-500" },
-  { name: "Entertainment", amount: 180, color: "bg-purple-500" },
-  { name: "Shopping", amount: 137, color: "bg-pink-500" },
+  { name: "Groceries", amount: 340, hue: "wash-emerald" },
+  { name: "Dining", amount: 220, hue: "wash-amber" },
+  { name: "Entertainment", amount: 180, hue: "wash-violet" },
+  { name: "Shopping", amount: 137, hue: "wash-rose" },
 ];
 
 const cardsTotal = cards.reduce((total, card) => total + card.amount, 0);
 const categoriesTotal = categories.reduce((total, category) => total + category.amount, 0);
 
+function PanelHead({ icon, tone, title }: { icon: React.ReactNode; tone: string; title: string }) {
+  return (
+    <header className="flex items-center gap-3 border-b border-hairline px-5 py-4 sm:px-7">
+      <span
+        className={`grid size-10 place-items-center rounded-2xl bg-chip ring-1 ring-hairline [&_svg]:size-[18px] ${tone}`}
+      >
+        {icon}
+      </span>
+      <h3 className="text-[15px] font-medium tracking-tight text-ink">{title}</h3>
+    </header>
+  );
+}
+
 export function Categories() {
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-2xl text-center">
-          <h2 className="mb-4 text-4xl text-gray-900 sm:text-5xl">Track Every Dollar</h2>
-          <p className="text-xl text-gray-600">
-            Organize your spending by card and category to see the full picture
-          </p>
-        </div>
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="reveal mx-auto max-w-2xl text-center">
+        <span className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
+          The detail
+        </span>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem]">
+          Track every dollar
+        </h2>
+        <p className="mt-3 text-base leading-relaxed text-ink-faint">
+          Organised by card and by category, so the total is never a mystery.
+        </p>
+      </div>
 
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
-          <Card className="border-2">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-indigo-100">
-                  <CreditCard className="size-6 text-indigo-600" />
-                </div>
-                <CardTitle>Spending by Card</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {cards.map((card) => (
-                <div
-                  key={card.name}
-                  className="flex items-center justify-between rounded-lg border bg-gray-50 p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`size-3 rounded-full ${card.color}`} />
-                    <div>
-                      <p className="text-gray-900">{card.name}</p>
-                      <Badge variant="outline" className="mt-1 text-xs">
-                        {card.type}
-                      </Badge>
-                    </div>
+      <div className="mt-9 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <section className="surface lift reveal" style={{ animationDelay: "100ms" }}>
+          <PanelHead icon={<CreditCard />} tone="text-tone-indigo" title="Spending by card" />
+          <div className="space-y-2.5 px-5 py-5 sm:px-7">
+            {cards.map((card) => (
+              <div
+                key={card.name}
+                className="surface-quiet flex items-center justify-between gap-3 px-4 py-3.5"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className={`${card.dot} size-2.5 shrink-0 rounded-full`} />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm text-ink">{card.name}</p>
+                    <p className="mt-0.5 text-[11px] tracking-wide text-ink-ghost uppercase">
+                      {card.type}
+                    </p>
                   </div>
-                  <p className="text-xl text-gray-900">{formatWholeCurrency(card.amount)}</p>
                 </div>
-              ))}
-              <div className="flex items-center justify-between border-t pt-4">
-                <p className="text-gray-600">Total Spending</p>
-                <p className="text-2xl text-gray-900">{formatWholeCurrency(cardsTotal)}</p>
+                <p className="num shrink-0 text-sm text-ink-muted">
+                  {formatWholeCurrency(card.amount)}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+            <div className="flex items-center justify-between border-t border-hairline pt-4">
+              <span className="text-[10px] font-medium tracking-[0.18em] text-ink-faint uppercase">
+                Total spending
+              </span>
+              <span className="num text-xl font-medium text-ink">
+                {formatWholeCurrency(cardsTotal)}
+              </span>
+            </div>
+          </div>
+        </section>
 
-          <Card className="border-2">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100">
-                  <Tag className="size-6 text-violet-600" />
+        <section className="surface lift reveal" style={{ animationDelay: "180ms" }}>
+          <PanelHead icon={<Tag />} tone="text-tone-violet" title="Spending by category" />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            {categories.map((category) => (
+              <div key={category.name} className="space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm text-ink">{category.name}</p>
+                  <p className="num text-sm text-ink-muted">
+                    {formatWholeCurrency(category.amount)}
+                  </p>
                 </div>
-                <CardTitle>Spending by Category</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {categories.map((category) => (
-                <div key={category.name} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`size-3 rounded-full ${category.color}`} />
-                      <p className="text-gray-900">{category.name}</p>
-                    </div>
-                    <p className="text-gray-900">{formatWholeCurrency(category.amount)}</p>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-gray-200">
-                    <div
-                      className={`h-full ${category.color}`}
-                      style={{ width: `${Math.round((category.amount / categoriesTotal) * 100)}%` }}
-                    />
-                  </div>
+                <div className="h-1.5 overflow-hidden rounded-full bg-chip">
+                  <div
+                    className={`ribbon meter h-full rounded-full ${category.hue}`}
+                    style={{
+                      width: `${Math.round((category.amount / categoriesTotal) * 100)}%`,
+                    }}
+                  />
                 </div>
-              ))}
-              <div className="flex items-center justify-between border-t pt-4">
-                <p className="text-gray-600">Total Categorized</p>
-                <p className="text-2xl text-gray-900">{formatWholeCurrency(categoriesTotal)}</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            ))}
+            <div className="flex items-center justify-between border-t border-hairline pt-4">
+              <span className="text-[10px] font-medium tracking-[0.18em] text-ink-faint uppercase">
+                Total categorised
+              </span>
+              <span className="num text-xl font-medium text-ink">
+                {formatWholeCurrency(categoriesTotal)}
+              </span>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   );
