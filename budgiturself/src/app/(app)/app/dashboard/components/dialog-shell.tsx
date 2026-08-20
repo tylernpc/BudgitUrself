@@ -48,15 +48,12 @@ export function BudgetDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          "max-w-md gap-0 overflow-hidden rounded-3xl border-hairline bg-panel p-6 text-ink",
+          "max-w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-3xl border-hairline sm:max-w-md",
+          "bg-panel p-6 text-ink",
           "shadow-[0_50px_140px_-50px_var(--dash-modal-shadow)] backdrop-blur-2xl",
         )}
       >
-        <div
-          aria-hidden
-          className="wash-surplus pointer-events-none absolute inset-x-0 top-0 h-32 opacity-70"
-        />
-        <DialogHeader className="relative">
+        <DialogHeader>
           <DialogTitle className="text-lg font-medium tracking-tight text-ink">{title}</DialogTitle>
           <DialogDescription className="text-[13px] leading-relaxed text-ink-faint">
             {description}
