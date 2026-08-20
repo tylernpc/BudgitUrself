@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  EXPENSE_COLOR_KEYS,
   EXPENSE_ICON_KEYS,
   type Bill,
   type CreditCard,
@@ -27,6 +28,7 @@ export const monthlyExpenseSchema = z.object({
   name,
   amount,
   icon: z.enum(EXPENSE_ICON_KEYS),
+  color: z.enum(EXPENSE_COLOR_KEYS),
 });
 
 export const monthlyExpenseUpdateSchema = monthlyExpenseSchema.extend({

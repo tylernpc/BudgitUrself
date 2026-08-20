@@ -451,6 +451,16 @@
     letter-spacing: -0.025em;
   }
 
+  /* Scrolling stays functional; the native scrollbar chrome is just hidden. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .reveal {
     animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   }

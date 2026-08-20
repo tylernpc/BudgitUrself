@@ -15,7 +15,14 @@ import type {
   MonthlyExpenseInput,
   MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
-import type { Bill, Budget, CreditCard, ExpenseIconKey, MonthlyExpense } from "@/lib/budget/types";
+import type {
+  Bill,
+  Budget,
+  CreditCard,
+  ExpenseColorKey,
+  ExpenseIconKey,
+  MonthlyExpense,
+} from "@/lib/budget/types";
 
 /**
  * Explicit, two-way mapping between Prisma's generated row shapes and the
@@ -43,9 +50,11 @@ export function toDomainMonthlyExpense(row: MonthlyExpenseRow): MonthlyExpense {
     id: row.id,
     name: row.name,
     amount: row.amount.toNumber(),
-    // Written only through `monthlyExpenseSchema`, which restricts it to
-    // `EXPENSE_ICON_KEYS` — safe to widen back from the DB's plain `TEXT` column.
+    // Written only through `monthlyExpenseSchema`, which restricts these to
+    // `EXPENSE_ICON_KEYS`/`EXPENSE_COLOR_KEYS` — safe to widen back from the
+    // DB's plain `TEXT` columns.
     icon: row.icon as ExpenseIconKey,
+    color: row.color as ExpenseColorKey,
   };
 }
 
@@ -117,13 +126,19 @@ export function toMonthlyExpenseCreateData(
   userId: string,
   input: MonthlyExpenseInput,
 ): Prisma.MonthlyExpenseUncheckedCreateInput {
-  return { userId, name: input.name, amount: input.amount, icon: input.icon };
+  return {
+    userId,
+    name: input.name,
+    amount: input.amount,
+    icon: input.icon,
+    color: input.color,
+  };
 }
 
 export function toMonthlyExpenseUpdateData(
   input: MonthlyExpenseUpdateInput,
 ): Prisma.MonthlyExpenseUncheckedUpdateInput {
-  return { name: input.name, amount: input.amount, icon: input.icon };
+  return { name: input.name, amount: input.amount, icon: input.icon, color: input.color };
 }
 
 const billTypeToRow: Record<Bill["type"], BillTypeRow> = {

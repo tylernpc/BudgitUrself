@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { AddButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
-import { ExpenseIcon } from "./expense-icon";
+import { EXPENSE_COLOR_MAP, ExpenseIcon } from "./expense-icon";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 
 interface ExpensesCardProps {
@@ -98,8 +98,13 @@ export function ExpensesCard({
                 className="surface-quiet relative flex items-center justify-between gap-3 px-4 py-3"
               >
                 <span className="flex min-w-0 items-center gap-2.5">
-                  <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-tone-violet/15">
-                    <ExpenseIcon icon={expense.icon} className="size-3.5 text-tone-violet" />
+                  <span
+                    className={cn(
+                      "grid size-7 shrink-0 place-items-center rounded-lg",
+                      EXPENSE_COLOR_MAP[expense.color].bg,
+                    )}
+                  >
+                    <ExpenseIcon icon={expense.icon} color={expense.color} className="size-3.5" />
                   </span>
                   <span className="truncate text-sm text-ink">{expense.name}</span>
                 </span>

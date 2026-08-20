@@ -8,9 +8,9 @@ import {
   type MonthlyExpenseInput,
   type MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
-import type { ExpenseIconKey, MonthlyExpense } from "@/lib/budget/types";
+import type { ExpenseColorKey, ExpenseIconKey, MonthlyExpense } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { IconPicker } from "./expense-icon";
+import { ColorPicker, IconPicker } from "./expense-icon";
 import { FieldError } from "./field-error";
 
 interface MonthlyExpenseDialogProps {
@@ -32,6 +32,7 @@ export function MonthlyExpenseDialog({
 }: MonthlyExpenseDialogProps) {
   const editing = expense !== null;
   const [icon, setIcon] = useState<ExpenseIconKey>(expense?.icon ?? "home");
+  const [color, setColor] = useState<ExpenseColorKey>(expense?.color ?? "violet");
   const [error, setError] = useState<string>();
 
   const close = () => {
@@ -41,7 +42,7 @@ export function MonthlyExpenseDialog({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const fields = { ...Object.fromEntries(new FormData(event.currentTarget)), icon };
+    const fields = { ...Object.fromEntries(new FormData(event.currentTarget)), icon, color };
 
     if (editing) {
       const parsed = monthlyExpenseUpdateSchema.safeParse({ ...fields, id: expense.id });
@@ -98,8 +99,12 @@ export function MonthlyExpenseDialog({
             />
           </div>
           <div className="space-y-2.5">
+            <FieldLabel htmlFor="monthly-expense-color">Color</FieldLabel>
+            <ColorPicker id="monthly-expense-color" value={color} onChange={setColor} />
+          </div>
+          <div className="space-y-2.5">
             <FieldLabel htmlFor="monthly-expense-icon">Icon</FieldLabel>
-            <IconPicker id="monthly-expense-icon" value={icon} onChange={setIcon} />
+            <IconPicker id="monthly-expense-icon" value={icon} color={color} onChange={setIcon} />
           </div>
           <FieldError message={error} />
         </div>

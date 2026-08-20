@@ -9,7 +9,7 @@ const budget: Budget = {
     { id: "a", name: "A", balance: 200, limit: 1000 },
     { id: "b", name: "B", balance: 300, limit: 2000 },
   ],
-  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200, icon: "home" }],
+  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200, icon: "home", color: "violet" }],
   bills: [
     {
       id: "b1",

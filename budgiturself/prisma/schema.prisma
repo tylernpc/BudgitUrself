@@ -46,6 +46,7 @@ model MonthlyExpense {
   name      String
   amount    Decimal  @db.Decimal(12, 2)
   icon      String   @default("home")
+  color     String   @default("violet")
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
