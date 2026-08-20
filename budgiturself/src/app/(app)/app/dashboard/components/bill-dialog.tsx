@@ -96,7 +96,7 @@ export function BillDialog({
     >
       <form key={String(open)} onSubmit={handleSubmit}>
         <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="pt-6">
-          <TabsList className="grid w-full grid-cols-2 rounded-xl border border-hairline bg-quiet p-1">
+          <TabsList className="grid w-full grid-cols-2 items-stretch rounded-xl border border-hairline bg-quiet p-1">
             <TabsTrigger
               value="digital"
               className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"

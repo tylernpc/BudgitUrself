@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { getSessionUser } from "@/lib/auth/dal";
-import { Categories } from "./components/categories";
 import { Features } from "./components/features";
 import { Hero } from "./components/hero";
 import { InteractiveDemo } from "./components/interactive-demo";
+import { MonthlyBillsPreview } from "./components/monthly-bills-preview";
 import { SiteFooter } from "./components/site-footer";
 
 export default async function MarketingPage() {
@@ -21,7 +21,7 @@ export default async function MarketingPage() {
           <Hero />
           <Features />
           <InteractiveDemo />
-          <Categories />
+          <MonthlyBillsPreview />
         </main>
         <SiteFooter />
       </div>

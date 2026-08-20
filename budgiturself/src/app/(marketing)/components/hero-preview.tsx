@@ -8,33 +8,21 @@ import { formatCurrency } from "@/lib/format";
  */
 const BANK_BALANCE = 4820.55;
 const MONTHLY_INCOME = 5400;
-const OBLIGATIONS = 825.25;
+const CREDIT_CARD_DEBT = 825.25;
 const MONTHLY_EXPENSES = 2370;
 const BILLS = 57.94;
 
 const fixedTotal = MONTHLY_EXPENSES + BILLS;
-const afterObligations = BANK_BALANCE - OBLIGATIONS;
-const leftOver = MONTHLY_INCOME - fixedTotal;
-const horizon = BANK_BALANCE + MONTHLY_INCOME - OBLIGATIONS - fixedTotal;
+const safeToSpend = MONTHLY_INCOME - fixedTotal;
+const horizon = BANK_BALANCE + MONTHLY_INCOME - CREDIT_CARD_DEBT - fixedTotal;
+const scale = Math.max(MONTHLY_INCOME, fixedTotal + CREDIT_CARD_DEBT, 1);
 
 const segments = [
   { label: "Expenses", value: MONTHLY_EXPENSES, hue: "wash-violet", dot: "bg-tone-violet" },
   { label: "Bills", value: BILLS, hue: "wash-sky", dot: "bg-tone-sky" },
-  { label: "Left over", value: leftOver, hue: "wash-emerald", dot: "bg-tone-emerald" },
+  { label: "Credit cards", value: CREDIT_CARD_DEBT, hue: "wash-amber", dot: "bg-tone-amber" },
+  { label: "Left over", value: safeToSpend, hue: "wash-emerald", dot: "bg-tone-emerald" },
 ];
-
-function Tile({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="surface-quiet px-4 py-3">
-      <span className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase">
-        {label}
-      </span>
-      <p className="num mt-1.5 text-lg font-medium tracking-tight text-ink">
-        {formatCurrency(value)}
-      </p>
-    </div>
-  );
-}
 
 export function HeroPreview() {
   return (
@@ -54,18 +42,24 @@ export function HeroPreview() {
           {formatCurrency(horizon)}
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <Tile label="Liquid cash" value={BANK_BALANCE} />
-          <Tile label="After debts" value={afterObligations} />
-        </div>
-
         <div className="mt-5">
-          <div className="flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
+          <span className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase">
+            Monthly income breakdown
+          </span>
+          <p className="mt-1.5 text-xs text-ink-ghost">
+            <span className="num text-ink-faint">
+              {formatCurrency(BANK_BALANCE + MONTHLY_INCOME)}
+            </span>{" "}
+            <span className="text-[11px]">
+              ({formatCurrency(BANK_BALANCE)} liquid + {formatCurrency(MONTHLY_INCOME)} income)
+            </span>
+          </p>
+          <div className="mt-3 flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
             {segments.map((segment) => (
               <div
                 key={segment.label}
                 className={`ribbon meter h-full rounded-full ${segment.hue}`}
-                style={{ width: `${(segment.value / MONTHLY_INCOME) * 100}%` }}
+                style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
               />
             ))}
           </div>

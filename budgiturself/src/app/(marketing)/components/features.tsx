@@ -23,7 +23,8 @@ const features = [
     icon: CreditCard,
     tone: "text-tone-indigo",
     title: "Count what you owe",
-    description: "Card balances and one-off costs come off the top, not out of next month's hope.",
+    description:
+      "Card balances come off the top of what's coming in, not out of next month's hope.",
   },
 ];
 

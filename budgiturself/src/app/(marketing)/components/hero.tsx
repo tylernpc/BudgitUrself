@@ -19,7 +19,7 @@ export function Hero() {
 
           <p className="mt-4 max-w-lg text-base leading-relaxed text-ink-faint sm:text-lg">
             You enter what you earn and what you owe — no sync engine guessing at your categories.
-            Every obligation is counted, and what is left is genuinely yours.
+            Every bill and balance is counted, and what is left is genuinely yours.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
