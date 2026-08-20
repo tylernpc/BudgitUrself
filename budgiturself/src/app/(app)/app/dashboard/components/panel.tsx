@@ -28,7 +28,7 @@ interface PanelHeaderProps {
 export function PanelHeader({ icon, accent, title, description, action }: PanelHeaderProps) {
   return (
     <header className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline px-5 py-5 sm:px-7 sm:py-6">
-      <div className="flex min-w-0 items-start gap-3.5">
+      <div className="flex min-w-0 items-center gap-3.5">
         <span
           className={cn(
             "grid size-10 shrink-0 place-items-center rounded-2xl bg-chip ring-1 ring-hairline [&_svg]:size-[18px]",
