@@ -1,75 +1,144 @@
-import { TrendingUp } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/format";
+"use client";
+
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
+import { formatCurrency } from "@/lib/format";
+import { cn } from "@/lib/utils";
+import { healthFromSummary } from "../lib/visual-health";
+import { AnimatedCurrency } from "./animated-number";
+import { HorizonOrb } from "./horizon-orb";
+import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {
   bankBalance: number;
+  monthlyIncome: number;
   summary: BudgetSummary;
 }
 
-export function HorizonView({ bankBalance, summary }: HorizonViewProps) {
+function Figure({ label, value, positive }: { label: string; value: number; positive: boolean }) {
   return (
-    <Card className="mb-8 border-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 shadow-2xl shadow-blue-500/30">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-3 text-2xl text-white">
-          <div className="rounded-xl bg-white/20 p-2.5 backdrop-blur">
-            <TrendingUp className="size-6 text-white" />
-          </div>
-          The Horizon View
-        </CardTitle>
-        <CardDescription className="text-blue-50">
-          Your true financial position after all obligations
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="rounded-xl bg-white/95 p-6 backdrop-blur">
-            <p className="mb-2 text-xs font-medium tracking-wide text-blue-600 uppercase">
-              Current Liquid Cash
-            </p>
-            <p className="text-3xl font-bold text-gray-900">{formatCurrency(bankBalance)}</p>
-            <div className="mt-3 h-1 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
+    <div className="surface-quiet px-4 py-3.5">
+      <SectionLabel>{label}</SectionLabel>
+      <p
+        className={cn(
+          "mt-1.5 text-xl font-medium tracking-tight sm:text-2xl",
+          positive ? "text-ink" : "text-tone-rose",
+        )}
+      >
+        <AnimatedCurrency value={value} />
+      </p>
+    </div>
+  );
+}
+
+export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonViewProps) {
+  const clear = summary.horizonView >= 0;
+  const health = healthFromSummary(summary, monthlyIncome);
+
+  // Allocation ribbon: the same figures the summary already computed, laid out
+  // against whichever is larger — what comes in, or what is spoken for.
+  const scale = Math.max(monthlyIncome, summary.fixedExpensesTotal, 1);
+  const segments = [
+    {
+      label: "Expenses",
+      value: summary.monthlyExpensesTotal,
+      bar: "ribbon wash-violet",
+      dot: "bg-tone-violet",
+    },
+    {
+      label: "Bills",
+      value: summary.monthlyBillsTotal,
+      bar: "ribbon wash-sky",
+      dot: "bg-tone-sky",
+    },
+    clear || summary.safeToSpend >= 0
+      ? {
+          label: "Left over",
+          value: Math.max(summary.safeToSpend, 0),
+          bar: "ribbon wash-emerald",
+          dot: "bg-tone-emerald",
+        }
+      : {
+          label: "Shortfall",
+          value: Math.abs(summary.safeToSpend),
+          bar: "ribbon wash-rose",
+          dot: "bg-tone-rose",
+        },
+  ].filter((segment) => segment.value > 0);
+
+  return (
+    <section className="surface overflow-hidden">
+      <div className="grid lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
+        <div className="order-2 px-5 pb-7 sm:px-8 sm:pb-9 lg:order-1 lg:py-10">
+          <div className="flex flex-wrap items-center gap-3">
+            <SectionLabel>The Horizon View</SectionLabel>
+            <span
+              className={cn(
+                "wash inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium",
+                clear ? "wash-emerald text-tone-emerald" : "wash-rose text-tone-rose",
+              )}
+            >
+              {clear ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
+              {clear ? "Clear to spend" : "Short this month"}
+            </span>
           </div>
 
-          <div className="rounded-xl bg-white/95 p-6 backdrop-blur">
-            <p className="mb-2 text-xs font-medium tracking-wide text-blue-600 uppercase">
-              After Current Obligations
-            </p>
-            <p
-              className={`text-3xl font-bold ${
-                summary.trueLiquidWealth >= 0 ? "text-gray-900" : "text-red-600"
-              }`}
-            >
-              {formatCurrency(summary.trueLiquidWealth)}
-            </p>
-            <div
-              className={`mt-3 h-1 rounded-full ${
-                summary.trueLiquidWealth >= 0
-                  ? "bg-gradient-to-r from-green-500 to-emerald-500"
-                  : "bg-gradient-to-r from-red-500 to-rose-500"
-              }`}
+          <p
+            className={cn(
+              "mt-4 text-[2.75rem] leading-[1.05] font-semibold tracking-tight sm:text-6xl",
+              clear ? "text-ink" : "text-tone-rose",
+            )}
+          >
+            <AnimatedCurrency value={summary.horizonView} duration={1400} />
+          </p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-faint">
+            What is genuinely yours once the balance, this month&apos;s income and every obligation
+            have all been counted.
+          </p>
+
+          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            <Figure label="Liquid cash" value={bankBalance} positive={bankBalance >= 0} />
+            <Figure
+              label="After obligations"
+              value={summary.trueLiquidWealth}
+              positive={summary.trueLiquidWealth >= 0}
             />
           </div>
 
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 p-6">
-            <div className="absolute -top-10 -right-10 size-40 rounded-full bg-white/10 blur-3xl" />
-            <p className="relative z-10 mb-2 text-xs font-bold tracking-wide text-yellow-950 uppercase">
-              True Leftover (This Month)
-            </p>
-            <p
-              className={`relative z-10 text-3xl font-bold ${
-                summary.horizonView >= 0 ? "text-white" : "text-red-900"
-              }`}
-            >
-              {formatCurrency(summary.horizonView)}
-            </p>
-            <p className="relative z-10 mt-2 text-xs text-yellow-950/80">
-              Balance + Income − All Obligations
-            </p>
-          </div>
+          {segments.length > 0 && (
+            <div className="mt-7">
+              <div className="flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
+                {segments.map((segment) => (
+                  <div
+                    key={segment.label}
+                    className={cn(
+                      "h-full rounded-full transition-[width] duration-700",
+                      segment.bar,
+                    )}
+                    style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
+                  />
+                ))}
+              </div>
+              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+                {segments.map((segment) => (
+                  <li
+                    key={segment.label}
+                    className="flex items-center gap-2 text-xs text-ink-faint"
+                  >
+                    <span className={cn("size-1.5 rounded-full", segment.dot)} />
+                    {segment.label}
+                    <span className="num text-ink">{formatCurrency(segment.value)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-      </CardContent>
-    </Card>
+
+        <div className="order-1 h-52 w-full sm:h-64 lg:order-2 lg:h-[420px]">
+          <HorizonOrb health={health} />
+        </div>
+      </div>
+    </section>
   );
 }

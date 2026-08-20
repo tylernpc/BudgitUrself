@@ -1,17 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,7 +12,12 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BILL_CATEGORIES, billSchema, type BillInput } from "@/lib/budget/schemas";
 import type { BillType } from "@/lib/budget/types";
+import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
+
+const selectContentClass =
+  "rounded-xl border-hairline bg-panel text-ink shadow-2xl backdrop-blur-xl";
+const selectItemClass = "rounded-lg text-ink focus:bg-chip focus:text-ink";
 
 interface AddBillDialogProps {
   open: boolean;
@@ -60,38 +55,47 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
   };
 
   return (
-    <Dialog open={open} onOpenChange={(next) => (next ? onOpenChange(true) : close())}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Add Monthly Bill</DialogTitle>
-          <DialogDescription>
-            Add a recurring subscription, service, or personal debt you pay monthly.
-          </DialogDescription>
-        </DialogHeader>
-        <form key={String(open)} onSubmit={handleSubmit}>
-          <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="py-4">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="digital">Digital Bill</TabsTrigger>
-              <TabsTrigger value="personal">Personal Owed</TabsTrigger>
-            </TabsList>
-          </Tabs>
+    <BudgetDialog
+      open={open}
+      onOpenChange={(next) => (next ? onOpenChange(true) : close())}
+      title="Add monthly bill"
+      description="A recurring subscription, service, or a person you pay back each month."
+    >
+      <form key={String(open)} onSubmit={handleSubmit}>
+        <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="pt-6">
+          <TabsList className="grid w-full grid-cols-2 rounded-xl border border-hairline bg-quiet p-1">
+            <TabsTrigger
+              value="digital"
+              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
+            >
+              Digital bill
+            </TabsTrigger>
+            <TabsTrigger
+              value="personal"
+              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
+            >
+              Personal owed
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
 
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="bill-name">
-                {type === "digital" ? "Service Name" : "What's it for"}
-              </Label>
-              <Input
-                id="bill-name"
-                name="name"
-                placeholder={
-                  type === "digital" ? "e.g., Netflix, Spotify" : "e.g., YMCA Membership"
-                }
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="bill-amount">Monthly Amount</Label>
+        <div className="space-y-4 pt-5">
+          <div className="space-y-2.5">
+            <FieldLabel htmlFor="bill-name">
+              {type === "digital" ? "Service name" : "What's it for"}
+            </FieldLabel>
+            <Input
+              id="bill-name"
+              name="name"
+              placeholder={type === "digital" ? "e.g., Netflix, Spotify" : "e.g., YMCA Membership"}
+              required
+              className={fieldClass}
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="bill-amount">Monthly amount</FieldLabel>
               <Input
                 id="bill-amount"
                 name="amount"
@@ -100,10 +104,11 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
                 min="0.01"
                 placeholder="0.00"
                 required
+                className={fieldClass}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="bill-charge-date">Charge Date (Day of Month)</Label>
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="bill-charge-date">Charge day</FieldLabel>
               <Input
                 id="bill-charge-date"
                 name="chargeDate"
@@ -112,60 +117,62 @@ export function AddBillDialog({ open, onOpenChange, onAdd, creditCards }: AddBil
                 max="31"
                 defaultValue={1}
                 required
+                className={fieldClass}
               />
             </div>
-
-            {type === "digital" ? (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="bill-card">Charged to Card</Label>
-                  <Select value={card} onValueChange={setCard}>
-                    <SelectTrigger id="bill-card">
-                      <SelectValue placeholder="Select a card" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {creditCards.map((cardName) => (
-                        <SelectItem key={cardName} value={cardName}>
-                          {cardName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bill-category">Category</Label>
-                  <Select value={category} onValueChange={setCategory}>
-                    <SelectTrigger id="bill-category">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {BILL_CATEGORIES.map((name) => (
-                        <SelectItem key={name} value={name}>
-                          {name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </>
-            ) : (
-              <div className="space-y-2">
-                <Label htmlFor="bill-owed-to">Who You Owe</Label>
-                <Input id="bill-owed-to" name="owedTo" placeholder="e.g., Dad" required />
-              </div>
-            )}
-
-            <FieldError message={error} />
           </div>
 
-          <DialogFooter className="mt-4">
-            <Button type="button" variant="outline" onClick={close}>
-              Cancel
-            </Button>
-            <Button type="submit">Add Bill</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          {type === "digital" ? (
+            <>
+              <div className="space-y-2.5">
+                <FieldLabel htmlFor="bill-card">Charged to card</FieldLabel>
+                <Select value={card} onValueChange={setCard}>
+                  <SelectTrigger id="bill-card" className={fieldClass}>
+                    <SelectValue placeholder="Select a card" />
+                  </SelectTrigger>
+                  <SelectContent className={selectContentClass}>
+                    {creditCards.map((cardName) => (
+                      <SelectItem key={cardName} value={cardName} className={selectItemClass}>
+                        {cardName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2.5">
+                <FieldLabel htmlFor="bill-category">Category</FieldLabel>
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger id="bill-category" className={fieldClass}>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent className={selectContentClass}>
+                    {BILL_CATEGORIES.map((name) => (
+                      <SelectItem key={name} value={name} className={selectItemClass}>
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
+          ) : (
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="bill-owed-to">Who you owe</FieldLabel>
+              <Input
+                id="bill-owed-to"
+                name="owedTo"
+                placeholder="e.g., Dad"
+                required
+                className={fieldClass}
+              />
+            </div>
+          )}
+
+          <FieldError message={error} />
+        </div>
+
+        <DialogActions onCancel={close} submitLabel="Add bill" />
+      </form>
+    </BudgetDialog>
   );
 }

@@ -1,18 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { creditCardSchema, type CreditCardInput } from "@/lib/budget/schemas";
+import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
 interface AddCreditCardDialogProps {
@@ -40,20 +31,27 @@ export function AddCreditCardDialog({ open, onOpenChange, onAdd }: AddCreditCard
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Credit Card</DialogTitle>
-          <DialogDescription>Track a card&apos;s balance and limit.</DialogDescription>
-        </DialogHeader>
-        <form key={String(open)} onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="card-name">Card Name</Label>
-              <Input id="card-name" name="name" placeholder="e.g., Chase Sapphire" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="card-balance">Current Balance</Label>
+    <BudgetDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Add credit card"
+      description="Track a card's balance and limit."
+    >
+      <form key={String(open)} onSubmit={handleSubmit}>
+        <div className="space-y-4 pt-6">
+          <div className="space-y-2.5">
+            <FieldLabel htmlFor="card-name">Card name</FieldLabel>
+            <Input
+              id="card-name"
+              name="name"
+              placeholder="e.g., Chase Sapphire"
+              required
+              className={fieldClass}
+            />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="card-balance">Current balance</FieldLabel>
               <Input
                 id="card-balance"
                 name="balance"
@@ -62,10 +60,11 @@ export function AddCreditCardDialog({ open, onOpenChange, onAdd }: AddCreditCard
                 min="0"
                 placeholder="0.00"
                 required
+                className={fieldClass}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="card-limit">Credit Limit</Label>
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="card-limit">Credit limit</FieldLabel>
               <Input
                 id="card-limit"
                 name="limit"
@@ -74,18 +73,14 @@ export function AddCreditCardDialog({ open, onOpenChange, onAdd }: AddCreditCard
                 min="0.01"
                 placeholder="0.00"
                 required
+                className={fieldClass}
               />
             </div>
-            <FieldError message={error} />
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Add Card</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <FieldError message={error} />
+        </div>
+        <DialogActions onCancel={() => onOpenChange(false)} submitLabel="Add card" />
+      </form>
+    </BudgetDialog>
   );
 }

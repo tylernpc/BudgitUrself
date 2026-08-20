@@ -1,19 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { oneOffExpenseSchema, type OneOffExpenseInput } from "@/lib/budget/schemas";
 import { todayIsoDate } from "@/lib/format";
+import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
 interface AddExpenseDialogProps {
@@ -41,22 +32,27 @@ export function AddExpenseDialog({ open, onOpenChange, onAdd }: AddExpenseDialog
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add One-Off Expense</DialogTitle>
-          <DialogDescription>
-            Add a one-time expense like a medical bill, car repair, or any unexpected cost.
-          </DialogDescription>
-        </DialogHeader>
-        <form key={String(open)} onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="expense-name">Expense Name</Label>
-              <Input id="expense-name" name="name" placeholder="e.g., Medical Co-Pay" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="expense-amount">Amount</Label>
+    <BudgetDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Add one-off expense"
+      description="A one-time cost — a medical bill, a car repair, anything unexpected."
+    >
+      <form key={String(open)} onSubmit={handleSubmit}>
+        <div className="space-y-4 pt-6">
+          <div className="space-y-2.5">
+            <FieldLabel htmlFor="expense-name">Expense name</FieldLabel>
+            <Input
+              id="expense-name"
+              name="name"
+              placeholder="e.g., Medical Co-Pay"
+              required
+              className={fieldClass}
+            />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="expense-amount">Amount</FieldLabel>
               <Input
                 id="expense-amount"
                 name="amount"
@@ -65,28 +61,25 @@ export function AddExpenseDialog({ open, onOpenChange, onAdd }: AddExpenseDialog
                 min="0.01"
                 placeholder="0.00"
                 required
+                className={fieldClass}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="expense-date">Date</Label>
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="expense-date">Date</FieldLabel>
               <Input
                 id="expense-date"
                 name="date"
                 type="date"
                 defaultValue={todayIsoDate()}
                 required
+                className={`${fieldClass} [&::-webkit-calendar-picker-indicator]:invert`}
               />
             </div>
-            <FieldError message={error} />
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Add Expense</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <FieldError message={error} />
+        </div>
+        <DialogActions onCancel={() => onOpenChange(false)} submitLabel="Add expense" />
+      </form>
+    </BudgetDialog>
   );
 }

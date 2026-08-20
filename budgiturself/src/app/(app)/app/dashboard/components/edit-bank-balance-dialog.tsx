@@ -1,18 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { bankBalanceSchema } from "@/lib/budget/schemas";
+import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
 interface EditBankBalanceDialogProps {
@@ -46,34 +37,29 @@ export function EditBankBalanceDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit Bank Balance</DialogTitle>
-          <DialogDescription>Update what&apos;s currently in your bank account.</DialogDescription>
-        </DialogHeader>
-        <form key={String(open)} onSubmit={handleSubmit}>
-          <div className="space-y-2 py-4">
-            <Label htmlFor="bank-balance">Bank Account Balance</Label>
-            <Input
-              id="bank-balance"
-              name="bankBalance"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={currentBalance}
-              required
-            />
-            <FieldError message={error} />
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Save Changes</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <BudgetDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Edit bank balance"
+      description="Update what's currently in your bank account."
+    >
+      <form key={String(open)} onSubmit={handleSubmit}>
+        <div className="space-y-2.5 pt-6">
+          <FieldLabel htmlFor="bank-balance">Bank account balance</FieldLabel>
+          <Input
+            id="bank-balance"
+            name="bankBalance"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={currentBalance}
+            required
+            className={fieldClass}
+          />
+          <FieldError message={error} />
+        </div>
+        <DialogActions onCancel={() => onOpenChange(false)} submitLabel="Save changes" />
+      </form>
+    </BudgetDialog>
   );
 }

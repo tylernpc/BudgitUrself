@@ -1,18 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { monthlyIncomeSchema } from "@/lib/budget/schemas";
+import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
 interface EditIncomeDialogProps {
@@ -46,37 +37,32 @@ export function EditIncomeDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Edit Monthly Income</DialogTitle>
-          <DialogDescription>Update your monthly take-home income.</DialogDescription>
-        </DialogHeader>
-        <form key={String(open)} onSubmit={handleSubmit}>
-          <div className="space-y-2 py-4">
-            <Label htmlFor="monthly-income">Monthly Income (After Tax)</Label>
-            <Input
-              id="monthly-income"
-              name="monthlyIncome"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={currentIncome}
-              required
-            />
-            <p className="text-sm text-muted-foreground">
-              Enter your take-home pay after all taxes and deductions.
-            </p>
-            <FieldError message={error} />
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Save Changes</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <BudgetDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Edit monthly income"
+      description="Update your monthly take-home income."
+    >
+      <form key={String(open)} onSubmit={handleSubmit}>
+        <div className="space-y-2.5 pt-6">
+          <FieldLabel htmlFor="monthly-income">Monthly income (after tax)</FieldLabel>
+          <Input
+            id="monthly-income"
+            name="monthlyIncome"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={currentIncome}
+            required
+            className={fieldClass}
+          />
+          <p className="text-[13px] text-ink-ghost">
+            Your take-home pay after all taxes and deductions.
+          </p>
+          <FieldError message={error} />
+        </div>
+        <DialogActions onCancel={() => onOpenChange(false)} submitLabel="Save changes" />
+      </form>
+    </BudgetDialog>
   );
 }

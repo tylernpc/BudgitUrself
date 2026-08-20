@@ -23,20 +23,20 @@ npm run db:deploy            # apply migrations
 npm run dev
 ```
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Dev server |
-| `npm run build` | `prisma generate` + production build |
-| `npm run verify` | Format check, lint, typecheck, test — what CI runs. Run before handing work back. |
-| `npm run format` / `format:check` | Prettier |
-| `npm run lint` / `lint:fix` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm test` / `test:watch` | Vitest |
-| `npx vitest run src/lib/budget/calculations.test.ts` | Run a single test file |
-| `npx vitest run -t "test name"` | Run tests matching a name |
-| `npm run db:migrate` | Create + apply a migration in dev (writes to `prisma/migrations/`) |
-| `npm run db:deploy` | Apply pending migrations (CI/production, no new migration) |
-| `npm run db:studio` | Prisma Studio |
+| Command                                              | Purpose                                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `npm run dev`                                        | Dev server                                                                        |
+| `npm run build`                                      | `prisma generate` + production build                                              |
+| `npm run verify`                                     | Format check, lint, typecheck, test — what CI runs. Run before handing work back. |
+| `npm run format` / `format:check`                    | Prettier                                                                          |
+| `npm run lint` / `lint:fix`                          | ESLint                                                                            |
+| `npm run typecheck`                                  | `tsc --noEmit`                                                                    |
+| `npm test` / `test:watch`                            | Vitest                                                                            |
+| `npx vitest run src/lib/budget/calculations.test.ts` | Run a single test file                                                            |
+| `npx vitest run -t "test name"`                      | Run tests matching a name                                                         |
+| `npm run db:migrate`                                 | Create + apply a migration in dev (writes to `prisma/migrations/`)                |
+| `npm run db:deploy`                                  | Apply pending migrations (CI/production, no new migration)                        |
+| `npm run db:studio`                                  | Prisma Studio                                                                     |
 
 CI (`.github/workflows/ci.yml`) runs `prisma generate`, `format:check`, `lint`, `typecheck`, `test`
 on every push/PR — the same set as `npm run verify`.
@@ -60,7 +60,7 @@ The app follows [Next.js App Router Architecture in 2026](https://www.pean.dev/b
   client validation ran). `lib/env.ts` validates all environment variables once at startup so a
   missing var fails immediately with a named error, not at first query.
 - Auth is Auth0 (`@auth0/nextjs-auth0`). `proxy.ts` (Next.js middleware) refreshes the session
-  cookie; the `(app)` layout redirects anonymous users — but that redirect is the *first* gate, not
+  cookie; the `(app)` layout redirects anonymous users — but that redirect is the _first_ gate, not
   the only one. `lib/auth/dal.ts` re-establishes ownership on every read: `getSessionUser`/
   `requireSessionUser` read the Auth0 session, `getCurrentUser`/`requireCurrentUser` upsert/select
   the app's own `User` row by `auth0Sub`, both cached per-request via React `cache()`. Never treat
@@ -91,11 +91,11 @@ The app follows [Next.js App Router Architecture in 2026](https://www.pean.dev/b
 
 ### Where new code goes
 
-| Adding… | Goes in |
-| --- | --- |
-| UI used by exactly one route | `app/<route>/components/` |
-| A hook/helper used by exactly one route | `app/<route>/lib/` |
-| A primitive reused across routes | `components/ui/` |
-| Business rules, calculations, validation | `lib/<domain>/` |
-| A mutation triggered by this app's own UI | a Server Action in that route's `actions.ts` |
-| An endpoint for something outside this app | `app/api/…/route.ts` |
+| Adding…                                    | Goes in                                      |
+| ------------------------------------------ | -------------------------------------------- |
+| UI used by exactly one route               | `app/<route>/components/`                    |
+| A hook/helper used by exactly one route    | `app/<route>/lib/`                           |
+| A primitive reused across routes           | `components/ui/`                             |
+| Business rules, calculations, validation   | `lib/<domain>/`                              |
+| A mutation triggered by this app's own UI  | a Server Action in that route's `actions.ts` |
+| An endpoint for something outside this app | `app/api/…/route.ts`                         |

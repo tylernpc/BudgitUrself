@@ -1,33 +1,44 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
+import { AuroraCanvas } from "./components/aurora-canvas";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
+import { Reveal } from "./components/reveal";
+import { visualHealth } from "./lib/visual-health";
 
 export const metadata: Metadata = { title: "Dashboard" };
+
+const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" });
 
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   const budget = await budgetRepository.getBudget(user.id);
+  const firstName = user.name?.trim().split(/\s+/)[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900">
-      <DashboardHeader />
+    <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
+      <AuroraCanvas health={visualHealth(budget)} />
 
-      <main className="mx-auto max-w-7xl px-6 py-12">
-        <div className="mb-12">
-          <h1 className="mb-2 bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-4xl font-bold text-transparent">
-            Dashboard
-          </h1>
-          <p className="text-gray-400">
-            {user.name
-              ? `${user.name}'s complete financial overview`
-              : "Your complete financial overview"}
-          </p>
-        </div>
+      <div className="relative z-10">
+        <DashboardHeader />
 
-        <BudgetWorkspace budget={budget} />
-      </main>
+        <main className="mx-auto max-w-7xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 lg:px-8">
+          <Reveal className="mb-9 sm:mb-12">
+            <p className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
+              {monthLabel.format(new Date())}
+            </p>
+            <h1 className="mt-3 text-[2rem] leading-tight font-semibold tracking-tight text-ink sm:text-[2.75rem]">
+              {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
+            </h1>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-faint sm:text-[15px]">
+              Everything you owe and everything you keep, resolved into one honest number.
+            </p>
+          </Reveal>
+
+          <BudgetWorkspace budget={budget} />
+        </main>
+      </div>
     </div>
   );
 }

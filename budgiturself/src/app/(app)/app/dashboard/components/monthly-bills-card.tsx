@@ -1,10 +1,12 @@
-import { Calendar, CreditCard as CreditCardIcon, Plus, Receipt, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { DigitalBill, PersonalBill } from "@/lib/budget/types";
 import { formatCurrency, formatDayOfMonth } from "@/lib/format";
-import { RemoveButton } from "./remove-button";
+import { cn } from "@/lib/utils";
+import { AddButton, RemoveButton } from "./actions";
+import { AnimatedCurrency } from "./animated-number";
+import { EmptyState } from "./empty-state";
+import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 
 interface MonthlyBillsCardProps {
   summary: BudgetSummary;
@@ -12,157 +14,180 @@ interface MonthlyBillsCardProps {
   onRemoveBill: (id: string) => void;
 }
 
-function BillMeta({ children }: { children: React.ReactNode }) {
-  return <span className="flex items-center gap-1.5">{children}</span>;
+/** The charge-day chip that anchors each row — bills arrive already date-sorted. */
+function DayChip({ day, tint }: { day: number; tint: string }) {
+  return (
+    <span
+      className={cn(
+        "grid size-11 shrink-0 place-content-center justify-items-center rounded-xl ring-1",
+        tint,
+      )}
+    >
+      <span className="text-[9px] tracking-[0.14em] text-ink-ghost uppercase">day</span>
+      <span className="num text-sm leading-tight font-medium text-ink">{day}</span>
+    </span>
+  );
+}
+
+function BillRow({
+  day,
+  tint,
+  name,
+  badge,
+  meta,
+  amount,
+  onRemove,
+  removeLabel,
+}: {
+  day: number;
+  tint: string;
+  name: string;
+  badge?: string;
+  meta: React.ReactNode;
+  amount: number;
+  onRemove: () => void;
+  removeLabel: string;
+}) {
+  return (
+    <li className="surface-quiet flex items-center gap-3 px-3 py-3 sm:px-3.5">
+      <DayChip day={day} tint={tint} />
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <h4 className="truncate text-sm font-medium text-ink">{name}</h4>
+          {badge && (
+            <span className="rounded-full bg-chip px-2 py-0.5 text-[10px] text-ink-faint ring-1 ring-hairline">
+              {badge}
+            </span>
+          )}
+        </div>
+        <p className="mt-1 flex items-center gap-1.5 text-[11px] text-ink-ghost">{meta}</p>
+      </div>
+      <span className="flex shrink-0 items-center gap-1">
+        <span className="num text-sm text-ink-muted">{formatCurrency(amount)}</span>
+        <RemoveButton label={removeLabel} onClick={onRemove} />
+      </span>
+    </li>
+  );
 }
 
 function DigitalBillRow({ bill, onRemove }: { bill: DigitalBill; onRemove: () => void }) {
   return (
-    <li className="rounded-xl border border-gray-700 bg-slate-800/50 p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <div className="mb-2 flex items-center gap-3">
-            <h4 className="text-sm font-medium text-white">{bill.name}</h4>
-            <span className="rounded-full border border-indigo-500/30 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2.5 py-1 text-xs text-indigo-300">
-              {bill.category}
-            </span>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <BillMeta>
-              <span className="rounded bg-indigo-500/20 p-1">
-                <Calendar className="size-3 text-indigo-400" />
-              </span>
-              {formatDayOfMonth(bill.chargeDate)} of month
-            </BillMeta>
-            <BillMeta>
-              <span className="rounded bg-purple-500/20 p-1">
-                <CreditCardIcon className="size-3 text-purple-400" />
-              </span>
-              {bill.card}
-            </BillMeta>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-300">{formatCurrency(bill.amount)}</span>
-          <RemoveButton label={`Remove ${bill.name}`} onClick={onRemove} />
-        </div>
-      </div>
-    </li>
+    <BillRow
+      day={bill.chargeDate}
+      tint="bg-tone-indigo/12 ring-tone-indigo/25"
+      name={bill.name}
+      badge={bill.category}
+      meta={
+        <>
+          <CreditCardIcon className="size-3" />
+          {bill.card}
+          <span className="text-ink-ghost/50">·</span>
+          {formatDayOfMonth(bill.chargeDate)} of month
+        </>
+      }
+      amount={bill.amount}
+      onRemove={onRemove}
+      removeLabel={`Remove ${bill.name}`}
+    />
   );
 }
 
 function PersonalBillRow({ bill, onRemove }: { bill: PersonalBill; onRemove: () => void }) {
   return (
-    <li className="rounded-xl border border-gray-700 bg-slate-800/50 p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <h4 className="mb-2 text-sm font-medium text-white">{bill.name}</h4>
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <BillMeta>
-              <span className="rounded bg-orange-500/20 p-1">
-                <Calendar className="size-3 text-orange-400" />
-              </span>
-              {formatDayOfMonth(bill.chargeDate)} of month
-            </BillMeta>
-            <BillMeta>
-              <span className="rounded bg-amber-500/20 p-1">
-                <Users className="size-3 text-amber-400" />
-              </span>
-              Owed to {bill.owedTo}
-            </BillMeta>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-300">{formatCurrency(bill.amount)}</span>
-          <RemoveButton label={`Remove ${bill.name}`} onClick={onRemove} />
-        </div>
-      </div>
-    </li>
+    <BillRow
+      day={bill.chargeDate}
+      tint="bg-tone-amber/12 ring-tone-amber/25"
+      name={bill.name}
+      meta={
+        <>
+          <Users className="size-3" />
+          Owed to {bill.owedTo}
+          <span className="text-ink-ghost/50">·</span>
+          {formatDayOfMonth(bill.chargeDate)} of month
+        </>
+      }
+      amount={bill.amount}
+      onRemove={onRemove}
+      removeLabel={`Remove ${bill.name}`}
+    />
   );
 }
 
 export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBillsCardProps) {
   return (
-    <Card className="border-0 bg-slate-900/50 shadow-xl backdrop-blur-xl">
-      <CardHeader className="border-b border-gray-800">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-3 text-lg text-white">
-              <div className="rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 p-2 shadow-lg shadow-indigo-500/50">
-                <Calendar className="size-5 text-white" />
-              </div>
-              Monthly Bills
-            </CardTitle>
-            <CardDescription className="text-gray-400">
-              A deeper breakdown of your recurring charges — what&apos;s paying out and when.
-            </CardDescription>
-          </div>
-          <Button
-            onClick={onAddBill}
-            className="h-9 bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/30 hover:from-indigo-700 hover:to-purple-700"
-          >
-            <Plus className="mr-2 size-4" />
-            Add Bill
-          </Button>
-        </div>
-      </CardHeader>
+    <Panel>
+      <PanelHeader
+        icon={<CalendarClock />}
+        accent="cyan"
+        title="Monthly bills"
+        description="The recurring charges behind your expenses — what leaves, and on which day."
+        action={<AddButton label="Add bill" onClick={onAddBill} />}
+      />
 
-      <CardContent className="space-y-8 pt-6">
-        <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-medium text-gray-300">
-              <Receipt className="size-4 text-indigo-400" />
-              Digital Bills
-            </h3>
-            <span className="rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-3 py-1 text-sm font-medium text-white">
-              {formatCurrency(summary.digitalBillsTotal)}
-            </span>
-          </div>
-          {summary.digitalBills.length === 0 ? (
-            <p className="py-4 text-center text-sm text-gray-500">No digital bills added yet</p>
-          ) : (
-            <ul className="space-y-2">
-              {summary.digitalBills.map((bill) => (
-                <DigitalBillRow key={bill.id} bill={bill} onRemove={() => onRemoveBill(bill.id)} />
-              ))}
-            </ul>
-          )}
-        </section>
+      <PanelBody className="space-y-8">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+          <section>
+            <div className="mb-3.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+                <Receipt className="size-4 text-tone-indigo" />
+                Digital bills
+              </h3>
+              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+                {formatCurrency(summary.digitalBillsTotal)}
+              </span>
+            </div>
+            {summary.digitalBills.length === 0 ? (
+              <EmptyState>No subscriptions tracked yet</EmptyState>
+            ) : (
+              <ul className="space-y-2">
+                {summary.digitalBills.map((bill) => (
+                  <DigitalBillRow
+                    key={bill.id}
+                    bill={bill}
+                    onRemove={() => onRemoveBill(bill.id)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
 
-        <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-medium text-gray-300">
-              <Users className="size-4 text-orange-400" />
-              Personal Owed Bills
-            </h3>
-            <span className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1 text-sm font-medium text-white">
-              {formatCurrency(summary.personalBillsTotal)}
-            </span>
-          </div>
-          <p className="mb-3 text-xs text-gray-500">
-            Money you owe someone else each month — like paying a family member back for a shared
-            membership or bill.
-          </p>
-          {summary.personalBills.length === 0 ? (
-            <p className="py-4 text-center text-sm text-gray-500">
-              No personal owed bills added yet
+          <section>
+            <div className="mb-3.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+                <Users className="size-4 text-tone-amber" />
+                Personal owed bills
+              </h3>
+              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+                {formatCurrency(summary.personalBillsTotal)}
+              </span>
+            </div>
+            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+              Money you owe a person each month — paying a family member back for a shared
+              membership, say.
             </p>
-          ) : (
-            <ul className="space-y-2">
-              {summary.personalBills.map((bill) => (
-                <PersonalBillRow key={bill.id} bill={bill} onRemove={() => onRemoveBill(bill.id)} />
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <div className="flex items-center justify-between rounded-xl border border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 p-4">
-          <span className="text-sm font-medium text-gray-300">Total Monthly Bills</span>
-          <span className="text-xl font-bold text-white">
-            {formatCurrency(summary.monthlyBillsTotal)}
-          </span>
+            {summary.personalBills.length === 0 ? (
+              <EmptyState>Nobody to pay back right now</EmptyState>
+            ) : (
+              <ul className="space-y-2">
+                {summary.personalBills.map((bill) => (
+                  <PersonalBillRow
+                    key={bill.id}
+                    bill={bill}
+                    onRemove={() => onRemoveBill(bill.id)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
         </div>
-      </CardContent>
-    </Card>
+
+        <div className="wash wash-indigo flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+          <SectionLabel className="text-tone-indigo">Total monthly bills</SectionLabel>
+          <p className="text-xl font-medium tracking-tight text-ink">
+            <AnimatedCurrency value={summary.monthlyBillsTotal} />
+          </p>
+        </div>
+      </PanelBody>
+    </Panel>
   );
 }

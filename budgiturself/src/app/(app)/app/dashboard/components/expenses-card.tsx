@@ -1,10 +1,12 @@
-import { Home, Plus, Receipt, TrendingUp, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Home, Receipt, TrendingUp, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { MonthlyExpense } from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
-import { RemoveButton } from "./remove-button";
+import { cn } from "@/lib/utils";
+import { AddButton, RemoveButton, SubtleButton } from "./actions";
+import { AnimatedCurrency } from "./animated-number";
+import { EmptyState } from "./empty-state";
+import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 
 interface ExpensesCardProps {
   monthlyIncome: number;
@@ -15,6 +17,34 @@ interface ExpensesCardProps {
   onRemoveExpense: (id: string) => void;
 }
 
+/** Rows the user cannot delete here — they are totals rolled up from the bills panel. */
+function RolledUpRow({
+  icon,
+  label,
+  amount,
+  tint,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  amount: number;
+  tint: string;
+}) {
+  return (
+    <li className="flex items-center justify-between gap-3 rounded-2xl border border-dashed border-hairline px-4 py-3">
+      <span className="flex min-w-0 items-center gap-2.5">
+        <span className={cn("grid size-7 shrink-0 place-items-center rounded-lg", tint)}>
+          {icon}
+        </span>
+        <span className="truncate text-sm text-ink">{label}</span>
+        <span className="hidden shrink-0 text-[10px] tracking-[0.16em] text-ink-ghost uppercase sm:inline">
+          rolled up
+        </span>
+      </span>
+      <span className="num shrink-0 pr-2 text-sm text-ink-muted">{formatCurrency(amount)}</span>
+    </li>
+  );
+}
+
 export function ExpensesCard({
   monthlyIncome,
   monthlyExpenses,
@@ -23,64 +53,55 @@ export function ExpensesCard({
   onAddExpense,
   onRemoveExpense,
 }: ExpensesCardProps) {
+  const clear = summary.safeToSpend >= 0;
+
   return (
-    <Card className="border-0 bg-slate-900/50 shadow-xl backdrop-blur-xl">
-      <CardHeader className="border-b border-gray-800">
-        <CardTitle className="flex items-center gap-3 text-lg text-white">
-          <div className="rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 p-2 shadow-lg shadow-green-500/50">
-            <TrendingUp className="size-5 text-white" />
-          </div>
-          Expenses
-        </CardTitle>
-        <CardDescription className="text-gray-400">
-          Your monthly income and where it goes
-        </CardDescription>
-      </CardHeader>
+    <Panel className="flex h-full flex-col">
+      <PanelHeader
+        icon={<TrendingUp />}
+        accent="emerald"
+        title="Monthly flow"
+        description="What comes in each month, and everything it is spoken for."
+      />
 
-      <CardContent className="space-y-6 pt-6">
-        <section>
-          <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-300">Monthly Income (After Tax)</h3>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={onEditIncome}
-              className="h-8 border-gray-600 text-xs text-gray-300 hover:border-blue-500 hover:bg-slate-800 hover:text-white"
-            >
-              Edit
-            </Button>
+      <PanelBody className="flex flex-1 flex-col gap-7">
+        <div className="wash wash-sky flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+          <div className="min-w-0">
+            <SectionLabel className="text-tone-sky">Monthly income · after tax</SectionLabel>
+            <p className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-[28px]">
+              <AnimatedCurrency value={monthlyIncome} />
+            </p>
           </div>
-          <div className="rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-4">
-            <p className="text-2xl font-bold text-white">{formatCurrency(monthlyIncome)}</p>
-          </div>
-        </section>
+          <SubtleButton onClick={onEditIncome}>Edit</SubtleButton>
+        </div>
 
         <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-300">Expenses</h3>
-            <Button
-              size="sm"
-              onClick={onAddExpense}
-              className="h-8 bg-gradient-to-r from-green-600 to-emerald-600 text-xs shadow-lg shadow-green-500/30 hover:from-green-700 hover:to-emerald-700"
-            >
-              <Plus className="mr-1 size-3" />
-              Add
-            </Button>
+          <div className="mb-3.5 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <h3 className="text-sm font-medium text-ink">Fixed expenses</h3>
+              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+                {formatCurrency(summary.monthlyExpensesTotal)}
+              </span>
+            </div>
+            <AddButton label="Add expense" onClick={onAddExpense} />
           </div>
+
           <ul className="space-y-2">
+            {monthlyExpenses.length === 0 && <EmptyState>No fixed expenses yet</EmptyState>}
+
             {monthlyExpenses.map((expense) => (
               <li
                 key={expense.id}
-                className="flex items-center justify-between rounded-xl border border-gray-700 bg-slate-800/50 p-3"
+                className="surface-quiet flex items-center justify-between gap-3 px-4 py-3"
               >
-                <span className="flex items-center gap-2">
-                  <span className="rounded-lg bg-purple-500/20 p-1.5">
-                    <Home className="size-4 text-purple-400" />
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-tone-violet/15">
+                    <Home className="size-3.5 text-tone-violet" />
                   </span>
-                  <span className="text-sm text-white">{expense.name}</span>
+                  <span className="truncate text-sm text-ink">{expense.name}</span>
                 </span>
-                <span className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-gray-300">
+                <span className="flex shrink-0 items-center gap-1.5">
+                  <span className="num text-sm text-ink-muted">
                     {formatCurrency(expense.amount)}
                   </span>
                   <RemoveButton
@@ -90,55 +111,47 @@ export function ExpensesCard({
                 </span>
               </li>
             ))}
-            <li className="flex items-center justify-between rounded-xl border border-gray-700 bg-slate-800/50 p-3">
-              <span className="flex items-center gap-2">
-                <span className="rounded-lg bg-cyan-500/20 p-1.5">
-                  <Receipt className="size-4 text-cyan-400" />
-                </span>
-                <span className="text-sm text-white">Digital Bills</span>
-              </span>
-              <span className="text-sm font-medium text-gray-300">
-                {formatCurrency(summary.digitalBillsTotal)}
-              </span>
-            </li>
-            <li className="flex items-center justify-between rounded-xl border border-gray-700 bg-slate-800/50 p-3">
-              <span className="flex items-center gap-2">
-                <span className="rounded-lg bg-orange-500/20 p-1.5">
-                  <Users className="size-4 text-orange-400" />
-                </span>
-                <span className="text-sm text-white">Personal Owed Bills</span>
-              </span>
-              <span className="text-sm font-medium text-gray-300">
-                {formatCurrency(summary.personalBillsTotal)}
-              </span>
-            </li>
+
+            <RolledUpRow
+              icon={<Receipt className="size-3.5 text-tone-cyan" />}
+              label="Digital bills"
+              amount={summary.digitalBillsTotal}
+              tint="bg-tone-cyan/15"
+            />
+            <RolledUpRow
+              icon={<Users className="size-3.5 text-tone-amber" />}
+              label="Personal owed bills"
+              amount={summary.personalBillsTotal}
+              tint="bg-tone-amber/15"
+            />
           </ul>
         </section>
 
-        <div className="rounded-xl border border-gray-700 bg-slate-800/50 p-4">
-          <p className="mb-1 text-xs font-medium tracking-wide text-gray-400 uppercase">
-            Total Expenses
-          </p>
-          <p className="text-2xl font-bold text-white">
-            {formatCurrency(summary.fixedExpensesTotal)}
-          </p>
-        </div>
+        <div className="mt-auto space-y-3">
+          <div className="flex items-center justify-between gap-4 rounded-2xl bg-quiet px-4 py-3.5 ring-1 ring-hairline">
+            <SectionLabel>Total expenses</SectionLabel>
+            <p className="num text-lg font-medium tracking-tight text-ink">
+              {formatCurrency(summary.fixedExpensesTotal)}
+            </p>
+          </div>
 
-        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 p-4 shadow-xl shadow-blue-500/30">
-          <div className="absolute -top-10 -right-10 size-40 rounded-full bg-white/10 blur-3xl" />
-          <p className="relative z-10 mb-1 text-xs font-bold tracking-wide text-blue-100 uppercase">
-            Total After Expenses
-          </p>
-          <p
-            className={`relative z-10 text-2xl font-bold ${
-              summary.safeToSpend >= 0 ? "text-white" : "text-red-200"
-            }`}
-          >
-            {formatCurrency(summary.safeToSpend)}
-          </p>
-          <p className="relative z-10 mt-2 text-xs text-blue-100">Income − Expenses</p>
+          <div className="relative overflow-hidden rounded-2xl px-5 py-5 ring-1 ring-hairline">
+            <div
+              className={cn("absolute inset-0 -z-10", clear ? "wash-surplus" : "wash-shortfall")}
+            />
+            <SectionLabel className="text-ink-faint">Total after expenses</SectionLabel>
+            <p
+              className={cn(
+                "mt-2 text-3xl font-semibold tracking-tight",
+                clear ? "text-ink" : "text-tone-rose",
+              )}
+            >
+              <AnimatedCurrency value={summary.safeToSpend} />
+            </p>
+            <p className="mt-2 text-[11px] tracking-wide text-ink-ghost">Income − expenses</p>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </PanelBody>
+    </Panel>
   );
 }
