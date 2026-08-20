@@ -11,6 +11,7 @@ import type {
 import type {
   BillInput,
   CreditCardInput,
+  CreditCardUpdateInput,
   MonthlyExpenseInput,
   OneOffExpenseInput,
 } from "@/lib/budget/schemas";
@@ -114,6 +115,12 @@ export function toCreditCardCreateData(
   input: CreditCardInput,
 ): Prisma.CreditCardUncheckedCreateInput {
   return { userId, name: input.name, balance: input.balance, limit: input.limit };
+}
+
+export function toCreditCardUpdateData(
+  input: CreditCardUpdateInput,
+): Prisma.CreditCardUncheckedUpdateInput {
+  return { balance: input.balance, limit: input.limit };
 }
 
 export function toOneOffExpenseCreateData(

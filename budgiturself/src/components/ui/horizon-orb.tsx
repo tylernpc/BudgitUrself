@@ -36,7 +36,9 @@ const vertexShader = /* glsl */ `
 `;
 
 const fragmentShader = /* glsl */ `
-  precision mediump float;
+  // Must match the vertex stage, which defaults to highp: uHealth is declared in
+  // both, and a link fails if a shared uniform disagrees on precision.
+  precision highp float;
 
   uniform float uHealth;
   uniform float uLight;

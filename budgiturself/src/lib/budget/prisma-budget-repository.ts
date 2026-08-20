@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import {
   toBillCreateData,
   toCreditCardCreateData,
+  toCreditCardUpdateData,
   toDomainBill,
   toDomainBudget,
   toDomainCreditCard,
@@ -17,6 +18,7 @@ import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
   BillInput,
   CreditCardInput,
+  CreditCardUpdateInput,
   MonthlyExpenseInput,
   OneOffExpenseInput,
 } from "@/lib/budget/schemas";
@@ -60,6 +62,13 @@ class PrismaBudgetRepository implements BudgetRepository {
   async addCreditCard(userId: string, input: CreditCardInput) {
     const row = await db.creditCard.create({ data: toCreditCardCreateData(userId, input) });
     return toDomainCreditCard(row);
+  }
+
+  async updateCreditCard(userId: string, input: CreditCardUpdateInput) {
+    await db.creditCard.updateMany({
+      where: { id: input.id, userId },
+      data: toCreditCardUpdateData(input),
+    });
   }
 
   async removeCreditCard(userId: string, id: string) {

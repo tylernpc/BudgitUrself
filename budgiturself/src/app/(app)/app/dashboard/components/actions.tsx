@@ -1,4 +1,4 @@
-import { Plus, X } from "lucide-react";
+import { Pencil, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +45,20 @@ export function SubtleButton({
       className={cn(glass, "h-8 rounded-full px-3 text-xs font-medium", className)}
     >
       {children}
+    </Button>
+  );
+}
+
+export function EditButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <Button
+      size="icon"
+      variant="ghost"
+      aria-label={label}
+      onClick={onClick}
+      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
+    >
+      <Pencil className="size-3.5" />
     </Button>
   );
 }

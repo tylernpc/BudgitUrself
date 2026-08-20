@@ -48,6 +48,12 @@ export const creditCardSchema = z.object({
   limit: z.coerce.number().positive("Enter a limit above zero").max(9_999_999),
 });
 
+export const creditCardUpdateSchema = z.object({
+  id: z.string().min(1),
+  balance: z.coerce.number().min(0).max(9_999_999),
+  limit: z.coerce.number().positive("Enter a limit above zero").max(9_999_999),
+});
+
 export const billSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("digital"),
@@ -70,3 +76,4 @@ export type OneOffExpenseInput = Omit<OneOffExpense, "id">;
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
 export type BillInput = DistributiveOmit<Bill, "id">;
 export type CreditCardInput = Omit<CreditCard, "id">;
+export type CreditCardUpdateInput = Pick<CreditCard, "id" | "balance" | "limit">;

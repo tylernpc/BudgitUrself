@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { summarizeBudget } from "@/lib/budget/calculations";
-import type { Budget } from "@/lib/budget/types";
+import type { Budget, CreditCard } from "@/lib/budget/types";
 import {
   addBillAction,
   addCreditCardAction,
@@ -15,6 +15,7 @@ import {
   removeOneOffExpenseAction,
   setBankBalanceAction,
   setMonthlyIncomeAction,
+  updateCreditCardAction,
   type ActionResult,
 } from "../lib/actions";
 import { AddBillDialog } from "./add-bill-dialog";
@@ -23,6 +24,7 @@ import { AddExpenseDialog } from "./add-expense-dialog";
 import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";
 import { CurrentStateCard } from "./current-state-card";
 import { EditBankBalanceDialog } from "./edit-bank-balance-dialog";
+import { EditCreditCardDialog } from "./edit-credit-card-dialog";
 import { EditIncomeDialog } from "./edit-income-dialog";
 import { ExpensesCard } from "./expenses-card";
 import { HorizonView } from "./horizon-view";
@@ -33,6 +35,8 @@ type DialogName = "expense" | "monthlyExpense" | "bill" | "income" | "creditCard
 
 export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [openDialog, setOpenDialog] = useState<DialogName | null>(null);
+  // Held separately from `openDialog`: this dialog needs to know *which* card.
+  const [editingCard, setEditingCard] = useState<CreditCard | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
   const summary = summarizeBudget(budget);
@@ -77,6 +81,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
               summary={summary}
               onEditBankBalance={() => setOpenDialog("bankBalance")}
               onAddCreditCard={() => setOpenDialog("creditCard")}
+              onEditCreditCard={setEditingCard}
               onRemoveCreditCard={(id) => run(() => removeCreditCardAction(id))}
               onAddExpense={() => setOpenDialog("expense")}
               onRemoveExpense={(id) => run(() => removeOneOffExpenseAction(id))}
@@ -142,6 +147,11 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         onOpenChange={close}
         currentIncome={budget.monthlyIncome}
         onSave={(monthlyIncome) => run(() => setMonthlyIncomeAction({ monthlyIncome }))}
+      />
+      <EditCreditCardDialog
+        card={editingCard}
+        onOpenChange={() => setEditingCard(null)}
+        onSave={(input) => run(() => updateCreditCardAction(input))}
       />
       <EditBankBalanceDialog
         open={openDialog === "bankBalance"}
