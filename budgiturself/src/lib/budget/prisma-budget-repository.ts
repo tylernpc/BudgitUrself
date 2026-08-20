@@ -17,6 +17,7 @@ import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
   BillInput,
   BillUpdateInput,
+  CreditCardChargeInput,
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
@@ -62,10 +63,38 @@ class PrismaBudgetRepository implements BudgetRepository {
     return toDomainCreditCard(row);
   }
 
+  /**
+   * Digital bills reference their card by name, not id (Prisma has no
+   * discriminated-union column type to hang a real relation off). A rename
+   * must cascade into every bill that pointed at the old name, or those
+   * bills silently orphan from the card they were charged to.
+   */
   async updateCreditCard(userId: string, input: CreditCardUpdateInput) {
+    await db.$transaction(async (tx) => {
+      const existing = await tx.creditCard.findFirst({
+        where: { id: input.id, userId },
+        select: { name: true },
+      });
+      if (!existing) return;
+
+      await tx.creditCard.updateMany({
+        where: { id: input.id, userId },
+        data: toCreditCardUpdateData(input),
+      });
+
+      if (existing.name !== input.name) {
+        await tx.bill.updateMany({
+          where: { userId, card: existing.name },
+          data: { card: input.name },
+        });
+      }
+    });
+  }
+
+  async addCreditCardCharge(userId: string, input: CreditCardChargeInput) {
     await db.creditCard.updateMany({
       where: { id: input.id, userId },
-      data: toCreditCardUpdateData(input),
+      data: { balance: { increment: input.amount } },
     });
   }
 

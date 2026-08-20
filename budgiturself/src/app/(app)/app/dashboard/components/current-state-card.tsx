@@ -4,7 +4,7 @@ import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { CreditCard } from "@/lib/budget/types";
 import { formatCurrency, formatPercent, formatWholeCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, EditButton, RemoveButton, SubtleButton } from "./actions";
+import { AddButton, ChargeButton, EditButton, RemoveButton, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
@@ -16,6 +16,7 @@ interface CurrentStateCardProps {
   onEditBankBalance: () => void;
   onAddCreditCard: () => void;
   onEditCreditCard: (card: CreditCard) => void;
+  onAddCharge: (card: CreditCard) => void;
   onRemoveCreditCard: (id: string) => void;
 }
 
@@ -26,6 +27,7 @@ export function CurrentStateCard({
   onEditBankBalance,
   onAddCreditCard,
   onEditCreditCard,
+  onAddCharge,
   onRemoveCreditCard,
 }: CurrentStateCardProps) {
   return (
@@ -76,6 +78,10 @@ export function CurrentStateCard({
                         <span className="num text-sm text-ink-muted">
                           {formatCurrency(card.balance)}
                         </span>
+                        <ChargeButton
+                          label={`Add to ${card.name}`}
+                          onClick={() => onAddCharge(card)}
+                        />
                         <EditButton
                           label={`Edit ${card.name}`}
                           onClick={() => onEditCreditCard(card)}

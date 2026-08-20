@@ -7,6 +7,7 @@ import type { Bill, Budget, CreditCard } from "@/lib/budget/types";
 import {
   addBillAction,
   addCreditCardAction,
+  addCreditCardChargeAction,
   addMonthlyExpenseAction,
   removeBillAction,
   removeCreditCardAction,
@@ -18,6 +19,7 @@ import {
   type ActionResult,
 } from "../lib/actions";
 import { BillDialog } from "./bill-dialog";
+import { AddChargeDialog } from "./add-charge-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
 import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";
 import { CurrentStateCard } from "./current-state-card";
@@ -33,8 +35,9 @@ type DialogName = "monthlyExpense" | "bill" | "income" | "creditCard" | "bankBal
 
 export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [openDialog, setOpenDialog] = useState<DialogName | null>(null);
-  // Held separately from `openDialog`: this dialog needs to know *which* card.
+  // Held separately from `openDialog`: these dialogs need to know *which* card.
   const [editingCard, setEditingCard] = useState<CreditCard | null>(null);
+  const [chargingCard, setChargingCard] = useState<CreditCard | null>(null);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
@@ -83,6 +86,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
               onEditBankBalance={() => setOpenDialog("bankBalance")}
               onAddCreditCard={() => setOpenDialog("creditCard")}
               onEditCreditCard={setEditingCard}
+              onAddCharge={setChargingCard}
               onRemoveCreditCard={(id) => run(() => removeCreditCardAction(id))}
             />
           </Reveal>
@@ -150,6 +154,11 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         card={editingCard}
         onOpenChange={() => setEditingCard(null)}
         onSave={(input) => run(() => updateCreditCardAction(input))}
+      />
+      <AddChargeDialog
+        card={chargingCard}
+        onOpenChange={() => setChargingCard(null)}
+        onSave={(input) => run(() => addCreditCardChargeAction(input))}
       />
       <EditBankBalanceDialog
         open={openDialog === "bankBalance"}

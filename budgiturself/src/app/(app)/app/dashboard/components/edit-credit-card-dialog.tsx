@@ -14,11 +14,6 @@ interface EditCreditCardDialogProps {
   onSave: (input: CreditCardUpdateInput) => void;
 }
 
-/**
- * Balance and limit only. The card's name is deliberately not editable here:
- * digital bills reference their card by name, so a rename would silently
- * orphan every bill charged to it.
- */
 export function EditCreditCardDialog({ card, onOpenChange, onSave }: EditCreditCardDialogProps) {
   const [error, setError] = useState<string>();
 
@@ -50,32 +45,44 @@ export function EditCreditCardDialog({ card, onOpenChange, onSave }: EditCreditC
       description="Update what this card currently carries, and the limit it carries it against."
     >
       <form key={card?.id ?? "none"} onSubmit={handleSubmit}>
-        <div className="grid gap-4 pt-6 sm:grid-cols-2">
+        <div className="space-y-4 pt-6">
           <div className="space-y-2.5">
-            <FieldLabel htmlFor="edit-card-balance">Current balance</FieldLabel>
+            <FieldLabel htmlFor="edit-card-name">Card name</FieldLabel>
             <Input
-              id="edit-card-balance"
-              name="balance"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={card?.balance ?? 0}
+              id="edit-card-name"
+              name="name"
+              defaultValue={card?.name ?? ""}
               required
               className={fieldClass}
             />
           </div>
-          <div className="space-y-2.5">
-            <FieldLabel htmlFor="edit-card-limit">Credit limit</FieldLabel>
-            <Input
-              id="edit-card-limit"
-              name="limit"
-              type="number"
-              step="0.01"
-              min="0.01"
-              defaultValue={card?.limit ?? 0}
-              required
-              className={fieldClass}
-            />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="edit-card-balance">Current balance</FieldLabel>
+              <Input
+                id="edit-card-balance"
+                name="balance"
+                type="number"
+                step="0.01"
+                min="0"
+                defaultValue={card?.balance ?? 0}
+                required
+                className={fieldClass}
+              />
+            </div>
+            <div className="space-y-2.5">
+              <FieldLabel htmlFor="edit-card-limit">Credit limit</FieldLabel>
+              <Input
+                id="edit-card-limit"
+                name="limit"
+                type="number"
+                step="0.01"
+                min="0.01"
+                defaultValue={card?.limit ?? 0}
+                required
+                className={fieldClass}
+              />
+            </div>
           </div>
         </div>
         <div className="pt-4">

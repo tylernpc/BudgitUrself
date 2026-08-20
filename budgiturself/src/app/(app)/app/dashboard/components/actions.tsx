@@ -49,6 +49,20 @@ export function SubtleButton({
   );
 }
 
+export function ChargeButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <Button
+      size="icon"
+      variant="ghost"
+      aria-label={label}
+      onClick={onClick}
+      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
+    >
+      <Plus className="size-3.5" />
+    </Button>
+  );
+}
+
 export function EditButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <Button

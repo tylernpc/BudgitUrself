@@ -38,8 +38,14 @@ export const creditCardSchema = z.object({
 
 export const creditCardUpdateSchema = z.object({
   id: z.string().min(1),
+  name,
   balance: z.coerce.number().min(0).max(9_999_999),
   limit: z.coerce.number().positive("Enter a limit above zero").max(9_999_999),
+});
+
+export const creditCardChargeSchema = z.object({
+  id: z.string().min(1),
+  amount,
 });
 
 const digitalBill = z.object({
@@ -73,4 +79,5 @@ export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
 export type BillInput = DistributiveOmit<Bill, "id">;
 export type BillUpdateInput = Bill;
 export type CreditCardInput = Omit<CreditCard, "id">;
-export type CreditCardUpdateInput = Pick<CreditCard, "id" | "balance" | "limit">;
+export type CreditCardUpdateInput = Pick<CreditCard, "id" | "name" | "balance" | "limit">;
+export type CreditCardChargeInput = { id: string; amount: number };

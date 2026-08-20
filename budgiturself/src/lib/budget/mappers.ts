@@ -106,7 +106,7 @@ export function toCreditCardCreateData(
 export function toCreditCardUpdateData(
   input: CreditCardUpdateInput,
 ): Prisma.CreditCardUncheckedUpdateInput {
-  return { balance: input.balance, limit: input.limit };
+  return { name: input.name, balance: input.balance, limit: input.limit };
 }
 
 export function toMonthlyExpenseCreateData(

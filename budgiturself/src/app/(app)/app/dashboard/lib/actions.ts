@@ -9,6 +9,7 @@ import {
   bankBalanceSchema,
   billSchema,
   billUpdateSchema,
+  creditCardChargeSchema,
   creditCardSchema,
   creditCardUpdateSchema,
   monthlyExpenseSchema,
@@ -89,6 +90,18 @@ export async function updateCreditCardAction(input: unknown): Promise<ActionResu
 
   const user = await requireCurrentUser();
   await budgetRepository.updateCreditCard(user.id, parsed.data);
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+export async function addCreditCardChargeAction(input: unknown): Promise<ActionResult> {
+  const parsed = creditCardChargeSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Enter a valid amount" };
+  }
+
+  const user = await requireCurrentUser();
+  await budgetRepository.addCreditCardCharge(user.id, parsed.data);
   revalidatePath(DASHBOARD_PATH);
   return {};
 }
