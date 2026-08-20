@@ -1,46 +1,138 @@
+<div align="center">
+
+<img src="budgiturself/public/logo.png" alt="BudgitUrself" width="88">
+
 # BudgitUrself
 
-BudgitUrself is a personal budgeting web app built on the idea that **manual budgeting beats
-automated budgeting**. You get a clearer, more honest picture of your money when you are the one
-entering and categorizing it — not a sync engine guessing at your categories.
+**Know exactly what you can spend.**
 
-The app answers one question most budgeting tools bury: *after everything I actually owe, how much
-is genuinely left?*
+A manual-first budgeting app. You enter what you earn and what you owe — no sync engine guessing at
+your categories — and the app answers the one question most budgeting tools bury:
+*after everything I actually owe, how much is genuinely left?*
+
+[![CI](https://github.com/tylernpc/BudgitUrself/actions/workflows/ci.yml/badge.svg)](https://github.com/tylernpc/BudgitUrself/actions/workflows/ci.yml)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Prisma-4169E1?logo=postgresql&logoColor=white)
+![License](https://img.shields.io/badge/license-proprietary-lightgrey)
+
+</div>
+
+<div align="center">
+  <img src="docs/screenshots/dashboard.png" alt="The BudgitUrself dashboard" width="900">
+</div>
 
 ---
 
+## The idea
+
+Automated budgeting tools import a transaction, guess a category, and hand you a number you did not
+build and do not trust. BudgitUrself goes the other way: everything on the dashboard is something you
+typed, so the headline figure is one you can actually defend.
+
+That figure is **the Horizon View** — what you are on track to have at the start of next month once
+every obligation is counted:
+
+```
+horizon view = bank balance + monthly income − credit card debt − fixed expenses
+                                                                  └─ monthly expenses + monthly bills
+```
+
+Four numbers, honestly counted. Nothing is estimated on your behalf — that is the whole point. The
+full model, in the words it was first written in, lives in [docs/budget-model.md](docs/budget-model.md);
+it is the source of truth for anything that touches the math.
+
 ## What it does
 
-- **Paycheck tracking** — log your income and see it allocated across your budget.
-- **Expense management** — track fixed expenses and see what's left to spend after they're covered.
-- **Budget overview** — instantly see how much you're free to spend on extras once essentials are
-  accounted for.
-- **Categorization** — organize spending by card and by category to see exactly where your money
-  goes.
-- **The Horizon View** — the headline number: bank balance + income − current obligations − fixed
-  expenses. Everything else on the dashboard feeds into it.
+- **The Horizon View** — the headline number, with a breakdown bar showing what each slice of your
+  income is already spoken for.
+- **Current position** — bank balance plus every credit card, with balance, limit and utilization.
+- **Monthly flow** — take-home income against fixed expenses, and what survives the subtraction.
+- **Monthly bills** — the recurring charges behind those expenses, split into *digital bills*
+  (subscriptions that charge a card) and *personal owed bills* (the $20 a month you pay your dad),
+  each sorted by the day of the month it actually lands.
+- **Everything is editable in place** — cards, expenses and bills are added, edited and deleted from
+  the dashboard itself, and every number above recalculates immediately.
 
-The financial model the dashboard implements is written up in
-[docs/budget-model.md](docs/budget-model.md).
+## Screens
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/landing.png" alt="Landing page"><br>
+      <b>The pitch</b> — the landing page.
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/interactive-demo.png" alt="Interactive demo"><br>
+      <b>Try it without an account</b> — change any number, the answer moves with it.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/monthly-bills.png" alt="Monthly bills"><br>
+      <b>Every bill, on its day</b> — digital and personal, sorted by charge date.
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/add-bill.png" alt="Add monthly bill dialog"><br>
+      <b>Manual entry, validated</b> — a digital bill needs a card, a personal one needs a person.
+    </td>
+  </tr>
+</table>
+
+<details>
+<summary><b>The whole dashboard, top to bottom</b></summary>
+
+<div align="center">
+  <img src="docs/screenshots/dashboard-full.png" alt="Full dashboard" width="820">
+</div>
+
+</details>
 
 ## Tech stack
 
-| Concern | Choice |
-| --- | --- |
-| Framework | [Next.js](https://nextjs.org) 16 (App Router) + React 19 + TypeScript |
-| Styling | Tailwind CSS v4, Radix UI primitives, shadcn-style components |
-| Validation | [Zod](https://zod.dev) at every trust boundary |
-| Database | [Prisma](https://www.prisma.io) on PostgreSQL ([Supabase](https://supabase.com)) |
-| Auth | [Auth0](https://auth0.com) |
-| Billing | Stripe (webhook endpoint scaffolded, not yet wired up) |
-| Testing | [Vitest](https://vitest.dev) on the domain layer |
-| Hosting | [Vercel](https://vercel.com) |
+| Concern    | Choice                                                          |
+| ---------- | --------------------------------------------------------------- |
+| Framework  | [Next.js](https://nextjs.org) 16 (App Router) + React 19 + TypeScript |
+| Styling    | Tailwind CSS v4, Radix UI primitives, shadcn-style components    |
+| Validation | [Zod](https://zod.dev) at every trust boundary                   |
+| Database   | [Prisma](https://www.prisma.io) on PostgreSQL ([Supabase](https://supabase.com)) |
+| Auth       | [Auth0](https://auth0.com)                                       |
+| Billing    | Stripe (webhook endpoint scaffolded, not yet wired up)           |
+| Testing    | [Vitest](https://vitest.dev) on the domain layer                 |
+| Hosting    | [Vercel](https://vercel.com)                                     |
 
 ## Status
 
-Actively in development. The marketing site is built out. The dashboard renders the full budget
-model against placeholder data — persistence for budgets, accounts and transactions is the next
-piece of work. Auth, the user record, and the schema/migration pipeline are live.
+Actively in development.
+
+- **Live** — marketing site, Auth0 login, the dashboard end to end. Bank balance, income, credit
+  cards, monthly expenses and bills are persisted to PostgreSQL through a Prisma-backed repository,
+  edited through Server Actions, and every mutation is scoped to the signed-in user.
+- **Scaffolded** — the Stripe webhook route (returns `501` until billing is wired up).
+- **Not built yet** — the `accounts`, `budgets` and `transactions` routes are placeholders.
+
+---
+
+## Getting started
+
+```bash
+cd budgiturself
+npm install
+cp .env.example .env.local   # DATABASE_URL, DIRECT_URL, AUTH0_*, APP_BASE_URL
+npm run db:deploy            # apply migrations
+npm run dev
+```
+
+The app runs at `http://localhost:3000`. Auth0 needs `http://localhost:3000/auth/callback` as an
+allowed callback URL and `http://localhost:3000` as an allowed logout URL. Scripts and environment
+variables are documented in [budgiturself/README.md](budgiturself/README.md).
+
+Before opening a pull request:
+
+```bash
+npm run verify   # format check, lint, typecheck, test — the same set CI runs
+```
 
 ---
 
@@ -52,12 +144,10 @@ One sentence carries the whole design:
 
 > **Routes compose, domain modules do the work, and every boundary validates what enters it.**
 
-### The layers
-
 ```mermaid
 flowchart TD
     subgraph browser["Browser"]
-        CC["Client Components<br/>state, events, browser APIs"]
+        CC["Client Components<br/>state, events, dialogs"]
     end
 
     subgraph routes["src/app — routes compose"]
@@ -69,7 +159,7 @@ flowchart TD
     subgraph domain["src/lib — domain modules do the work"]
         DAL["auth/dal.ts<br/>session and ownership"]
         BUD["budget/<br/>types, schemas, calculations"]
-        DB["db.ts<br/>Prisma client"]
+        REPO["budget/repository<br/>port + Prisma adapter"]
         ENV["env.ts<br/>validated at startup"]
     end
 
@@ -82,14 +172,15 @@ flowchart TD
     RSC -->|"props only"| CC
     CC -->|"invoke"| SA
     RSC -->|"direct call, no HTTP"| DAL
+    RSC -->|"read"| REPO
     SA -->|"validate, then call"| BUD
+    SA --> REPO
     RH -->|"verify, then call"| BUD
-    DAL --> DB
-    BUD --> DB
+    DAL --> PG
+    REPO --> PG
     DAL --> A0
-    DB --> PG
     STRIPE -->|"POST webhook"| RH
-    ENV -.->|"guards"| DB
+    ENV -.->|"guards"| REPO
     ENV -.->|"guards"| DAL
 
     classDef browserBox fill:#dbeafe,stroke:#1e40af,color:#0f172a
@@ -99,7 +190,7 @@ flowchart TD
 
     class CC browserBox
     class RSC,RH,SA routeBox
-    class DAL,BUD,DB,ENV domainBox
+    class DAL,BUD,REPO,ENV domainBox
     class A0,PG,STRIPE externalBox
 ```
 
@@ -107,7 +198,25 @@ flowchart TD
 directly. Route Handlers exist only where there is a real HTTP contract — a webhook, a health probe,
 a future mobile or partner endpoint.
 
-### An authenticated request
+### The budget domain
+
+`src/lib/budget/` is a small Clean Architecture split, so the math and the database never contaminate
+each other:
+
+| File                         | Role                                                                          |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| `types.ts`                   | Domain types — no Prisma type leaks past this layer                           |
+| `schemas.ts`                 | A Zod schema per mutation, including the `billSchema` discriminated union      |
+| `calculations.ts`            | The pure math from `docs/budget-model.md` — no I/O, fully unit tested          |
+| `repository.ts`              | The `BudgetRepository` port, domain-typed in and out                           |
+| `mappers.ts`                 | Explicit row ↔ domain conversion, including UTC-midnight date handling         |
+| `prisma-budget-repository.ts`| The Prisma adapter; every mutation scoped by `{ id, userId }`                  |
+
+Server Actions are the only callers, and they all have the same five-step shape: parse with the
+schema → `requireCurrentUser()` → call the repository → `revalidatePath` → return.
+
+<details>
+<summary><b>An authenticated request, end to end</b></summary>
 
 ```mermaid
 sequenceDiagram
@@ -116,8 +225,8 @@ sequenceDiagram
     participant Layout as app layout
     participant Page as dashboard page
     participant DAL as lib/auth/dal.ts
+    participant Repo as budgetRepository
     participant DB as PostgreSQL
-    participant Client as BudgetWorkspace
 
     User->>Proxy: GET /app/dashboard
     Proxy->>Proxy: refresh Auth0 session cookie
@@ -130,34 +239,43 @@ sequenceDiagram
         Page->>DAL: requireCurrentUser()
         DAL->>DB: upsert by auth0Sub, select narrow fields
         DB-->>DAL: id, email, name
-        DAL-->>Page: AppUser
-        Page-->>Client: initial data as props
-        Client-->>User: interactive dashboard
+        Page->>Repo: getBudget(user.id)
+        Repo->>DB: rows scoped to that user
+        Repo-->>Page: domain Budget
+        Page-->>User: interactive dashboard
     end
 ```
 
 The layout redirect is the **first** gate, never the only one. Every read re-establishes ownership
 inside the DAL, because a layout is not a security boundary.
 
-### Rules this codebase follows
+</details>
 
-| Rule | How it shows up here |
-| --- | --- |
-| Routes compose, domains do the work | `page.tsx` files read data and lay out sections; the math lives in `lib/budget/calculations.ts` |
-| Colocate until reuse is real | Route-only UI lives in `app/<route>/components/`, route-only logic in `app/<route>/lib/`; only genuinely shared primitives sit in the top-level `components/ui/` |
-| Group by product domain, not technical layer | `lib/budget/`, `lib/auth/` — no `services/`, `helpers/` or `utils/` grab-bags |
-| Keep the client boundary low | Only `BudgetWorkspace` and the dialogs are `"use client"`; the header, page shell and marketing pages stay on the server |
-| Validate at every boundary | Zod schemas parse dialog input; `lib/env.ts` validates environment variables at startup |
-| Return narrower data than the database holds | The DAL selects `id, email, name` — never a whole row |
-| Loading, error and empty states are product decisions | `loading.tsx`, `error.tsx`, `not-found.tsx`, plus explicit empty states in each list |
-| Don't build layers ahead of complexity | No repository or service indirection, and no `queries.ts` / `mutations.ts` until budgets are actually persisted |
+<details>
+<summary><b>Rules this codebase follows</b></summary>
 
-### Project structure
+| Rule                                             | How it shows up here                                                                                       |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| Routes compose, domains do the work              | `page.tsx` files read data and lay out sections; the math lives in `lib/budget/calculations.ts`             |
+| Colocate until reuse is real                     | Route-only UI in `app/<route>/components/`, route-only logic in `app/<route>/lib/`; only shared primitives sit in `components/ui/` |
+| Group by product domain, not technical layer     | `lib/budget/`, `lib/auth/` — no `services/`, `helpers/` or `utils/` grab-bags                              |
+| Keep the client boundary low                     | Only `BudgetWorkspace` and the dialogs are `"use client"`; the header, page shell and marketing pages stay on the server |
+| Validate at every boundary                       | Zod parses the dialog input *and* the Server Action input again server-side; `lib/env.ts` validates environment variables at startup |
+| Return narrower data than the database holds     | The DAL selects `id, email, firstName, lastName` — never a whole row                                        |
+| Ownership is re-established at the data layer    | Every repository mutation is scoped `{ id, userId }` via `updateMany` / `deleteMany`                        |
+| Loading, error and empty states are product decisions | `loading.tsx`, `error.tsx`, `not-found.tsx`, plus explicit empty states in each list                    |
+
+</details>
+
+<details>
+<summary><b>Project structure</b></summary>
 
 ```
 .
 ├── .github/workflows/ci.yml     format, lint, typecheck, test on every push
-├── docs/budget-model.md         the financial model the dashboard implements
+├── docs/
+│   ├── budget-model.md          the financial model the dashboard implements
+│   └── screenshots/
 └── budgiturself/                the Next.js app
     ├── prisma/                  schema and migrations
     ├── auth0/                   hosted login page template
@@ -167,7 +285,7 @@ inside the DAL, because a layout is not a security boundary.
         │   ├── layout.tsx       root layout, fonts, metadata
         │   ├── not-found.tsx
         │   ├── (marketing)/     public site
-        │   │   ├── components/  hero, features, interactive-demo, categories, footer
+        │   │   ├── components/  hero, features, interactive demo, bills preview, footer
         │   │   └── about, privacy, terms
         │   ├── (app)/           authenticated area
         │   │   ├── layout.tsx   session gate
@@ -177,54 +295,38 @@ inside the DAL, because a layout is not a security boundary.
         │   │       │   ├── page.tsx        server component
         │   │       │   ├── loading.tsx
         │   │       │   ├── components/     workspace, section cards, dialogs
-        │   │       │   └── lib/            reducer hook, placeholder data
-        │   │       └── accounts, budgets, transactions, settings
+        │   │       │   └── lib/            actions.ts, budget reducer
+        │   │       └── accounts, budgets, transactions
         │   └── api/
         │       ├── health, health/db       ops probes
         │       └── webhooks/stripe         real HTTP contract
         ├── components/ui/       shared primitives (button, card, dialog, …)
         └── lib/
             ├── auth/            auth0.ts client, dal.ts data-access layer
-            ├── budget/          types.ts, schemas.ts, calculations.ts
+            ├── budget/          types, schemas, calculations, repository, mappers
             ├── db.ts            Prisma singleton
             ├── env.ts           validated environment
             ├── format.ts        currency and date formatting
             └── utils.ts         cn()
 ```
 
-### Where does new code go?
+</details>
 
-| You are adding… | Put it in |
-| --- | --- |
-| UI used by exactly one route | `app/<route>/components/` |
-| A hook or helper used by exactly one route | `app/<route>/lib/` |
-| A primitive reused across routes | `components/ui/` |
-| Business rules, calculations, validation | `lib/<domain>/` |
-| A mutation triggered by this app's own UI | a Server Action in `actions.ts` beside the route |
-| An endpoint for something outside this app | `app/api/…/route.ts` |
-| Third-party SDK glue | `lib/integrations/<provider>.ts` |
+<details>
+<summary><b>Where does new code go?</b></summary>
 
----
+| You are adding…                            | Put it in                                    |
+| ------------------------------------------ | -------------------------------------------- |
+| UI used by exactly one route               | `app/<route>/components/`                    |
+| A hook or helper used by exactly one route | `app/<route>/lib/`                           |
+| A primitive reused across routes           | `components/ui/`                             |
+| Business rules, calculations, validation   | `lib/<domain>/`                              |
+| A mutation triggered by this app's own UI  | a Server Action in `actions.ts` beside the route |
+| An endpoint for something outside this app | `app/api/…/route.ts`                         |
+| Third-party SDK glue                       | `lib/integrations/<provider>.ts`             |
 
-## Getting started
-
-Setup, scripts and environment variables are documented in
-[budgiturself/README.md](budgiturself/README.md).
-
-```bash
-cd budgiturself
-npm install
-cp .env.example .env.local
-npm run db:deploy
-npm run dev
-```
-
-Before opening a pull request:
-
-```bash
-npm run verify
-```
+</details>
 
 ## License
 
-See [LICENSE](LICENSE).
+Proprietary — all rights reserved. See [LICENSE](LICENSE).
