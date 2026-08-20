@@ -13,6 +13,7 @@ import {
   creditCardSchema,
   creditCardUpdateSchema,
   monthlyExpenseSchema,
+  monthlyExpenseUpdateSchema,
   monthlyIncomeSchema,
 } from "@/lib/budget/schemas";
 
@@ -121,6 +122,18 @@ export async function addMonthlyExpenseAction(input: unknown): Promise<ActionRes
 
   const user = await requireCurrentUser();
   await budgetRepository.addMonthlyExpense(user.id, parsed.data);
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+export async function updateMonthlyExpenseAction(input: unknown): Promise<ActionResult> {
+  const parsed = monthlyExpenseUpdateSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Check the values above" };
+  }
+
+  const user = await requireCurrentUser();
+  await budgetRepository.updateMonthlyExpense(user.id, parsed.data);
   revalidatePath(DASHBOARD_PATH);
   return {};
 }

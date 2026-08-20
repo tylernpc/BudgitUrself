@@ -5,6 +5,7 @@ import type {
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
+  MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
 
 /**
@@ -22,6 +23,7 @@ export type OptimisticBudgetAction =
   | { type: "addCreditCardCharge"; id: string; amount: number }
   | { type: "removeCreditCard"; id: string }
   | { type: "addMonthlyExpense"; id: string; input: MonthlyExpenseInput }
+  | { type: "updateMonthlyExpense"; input: MonthlyExpenseUpdateInput }
   | { type: "removeMonthlyExpense"; id: string }
   | { type: "addBill"; id: string; input: BillInput }
   | { type: "updateBill"; input: BillUpdateInput }
@@ -67,6 +69,14 @@ export function budgetReducer(budget: Budget, action: OptimisticBudgetAction): B
       return {
         ...budget,
         monthlyExpenses: [...budget.monthlyExpenses, { id: action.id, ...action.input }],
+      };
+
+    case "updateMonthlyExpense":
+      return {
+        ...budget,
+        monthlyExpenses: budget.monthlyExpenses.map((expense) =>
+          expense.id === action.input.id ? action.input : expense,
+        ),
       };
 
     case "removeMonthlyExpense":

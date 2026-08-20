@@ -6,7 +6,7 @@ const budget: Budget = {
   bankBalance: 1000,
   monthlyIncome: 4000,
   creditCards: [{ id: "a", name: "A", balance: 200, limit: 1000 }],
-  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200 }],
+  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200, icon: "home" }],
   bills: [{ id: "b1", name: "Gym", amount: 20, chargeDate: 5, type: "personal", owedTo: "Dad" }],
 };
 
@@ -45,13 +45,19 @@ describe("budgetReducer", () => {
     expect(removed.creditCards).toEqual([]);
   });
 
-  it("adds and removes a monthly expense", () => {
+  it("adds, updates and removes a monthly expense", () => {
     const added = budgetReducer(budget, {
       type: "addMonthlyExpense",
       id: "new",
-      input: { name: "Groceries", amount: 300 },
+      input: { name: "Groceries", amount: 300, icon: "shopping-bag" },
     });
     expect(added.monthlyExpenses.map((e) => e.id)).toEqual(["m1", "new"]);
+
+    const updated = budgetReducer(budget, {
+      type: "updateMonthlyExpense",
+      input: { id: "m1", name: "Rent", amount: 1250, icon: "home" },
+    });
+    expect(updated.monthlyExpenses[0]?.amount).toBe(1250);
 
     const removed = budgetReducer(budget, { type: "removeMonthlyExpense", id: "m1" });
     expect(removed.monthlyExpenses).toEqual([]);

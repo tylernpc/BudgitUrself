@@ -1,5 +1,11 @@
 import { z } from "zod";
-import type { Bill, CreditCard, DistributiveOmit, MonthlyExpense } from "@/lib/budget/types";
+import {
+  EXPENSE_ICON_KEYS,
+  type Bill,
+  type CreditCard,
+  type DistributiveOmit,
+  type MonthlyExpense,
+} from "@/lib/budget/types";
 
 export const BILL_CATEGORIES = [
   "Entertainment",
@@ -20,6 +26,11 @@ const chargeDate = z.coerce.number().int().min(1, "Day must be 1-31").max(31, "D
 export const monthlyExpenseSchema = z.object({
   name,
   amount,
+  icon: z.enum(EXPENSE_ICON_KEYS),
+});
+
+export const monthlyExpenseUpdateSchema = monthlyExpenseSchema.extend({
+  id: z.string().min(1),
 });
 
 export const monthlyIncomeSchema = z.object({
@@ -76,6 +87,7 @@ export const billUpdateSchema = z.discriminatedUnion("type", [
 ]);
 
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
+export type MonthlyExpenseUpdateInput = MonthlyExpense;
 export type BillInput = DistributiveOmit<Bill, "id">;
 export type BillUpdateInput = Bill;
 export type CreditCardInput = Omit<CreditCard, "id">;

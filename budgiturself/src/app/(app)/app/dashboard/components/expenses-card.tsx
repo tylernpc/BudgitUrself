@@ -1,11 +1,12 @@
-import { Home, Receipt, TrendingUp, Users } from "lucide-react";
+import { Receipt, TrendingUp, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { MonthlyExpense } from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, RemoveButton, SubtleButton } from "./actions";
+import { AddButton, EditButton, RemoveButton, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
+import { ExpenseIcon } from "./expense-icon";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 
 interface ExpensesCardProps {
@@ -14,6 +15,7 @@ interface ExpensesCardProps {
   summary: BudgetSummary;
   onEditIncome: () => void;
   onAddExpense: () => void;
+  onEditExpense: (expense: MonthlyExpense) => void;
   onRemoveExpense: (id: string) => void;
 }
 
@@ -51,6 +53,7 @@ export function ExpensesCard({
   summary,
   onEditIncome,
   onAddExpense,
+  onEditExpense,
   onRemoveExpense,
 }: ExpensesCardProps) {
   const clear = summary.safeToSpend >= 0;
@@ -96,7 +99,7 @@ export function ExpensesCard({
               >
                 <span className="flex min-w-0 items-center gap-2.5">
                   <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-tone-violet/15">
-                    <Home className="size-3.5 text-tone-violet" />
+                    <ExpenseIcon icon={expense.icon} className="size-3.5 text-tone-violet" />
                   </span>
                   <span className="truncate text-sm text-ink">{expense.name}</span>
                 </span>
@@ -104,6 +107,10 @@ export function ExpensesCard({
                   <span className="num text-sm text-ink-muted">
                     {formatCurrency(expense.amount)}
                   </span>
+                  <EditButton
+                    label={`Edit ${expense.name}`}
+                    onClick={() => onEditExpense(expense)}
+                  />
                   <RemoveButton
                     label={`Remove ${expense.name}`}
                     onClick={() => onRemoveExpense(expense.id)}

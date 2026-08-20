@@ -3,7 +3,7 @@
 import { useOptimistic, useState, useTransition } from "react";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { summarizeBudget } from "@/lib/budget/calculations";
-import type { Bill, Budget, CreditCard } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard, MonthlyExpense } from "@/lib/budget/types";
 import {
   addBillAction,
   addCreditCardAction,
@@ -16,13 +16,14 @@ import {
   setMonthlyIncomeAction,
   updateBillAction,
   updateCreditCardAction,
+  updateMonthlyExpenseAction,
   type ActionResult,
 } from "../lib/actions";
 import { budgetReducer, type OptimisticBudgetAction } from "../lib/budget-reducer";
 import { BillDialog } from "./bill-dialog";
 import { AddChargeDialog } from "./add-charge-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
-import { AddMonthlyExpenseDialog } from "./add-monthly-expense-dialog";
+import { MonthlyExpenseDialog } from "./monthly-expense-dialog";
 import { CurrentStateCard } from "./current-state-card";
 import { EditBankBalanceDialog } from "./edit-bank-balance-dialog";
 import { EditCreditCardDialog } from "./edit-credit-card-dialog";
@@ -40,6 +41,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [editingCard, setEditingCard] = useState<CreditCard | null>(null);
   const [chargingCard, setChargingCard] = useState<CreditCard | null>(null);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
+  const [editingExpense, setEditingExpense] = useState<MonthlyExpense | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
   // Reflects the mutation immediately; if the action below fails, revalidatePath
@@ -51,6 +53,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const close = () => {
     setOpenDialog(null);
     setEditingBill(null);
+    setEditingExpense(null);
   };
 
   const run = (optimisticAction: OptimisticBudgetAction, action: () => Promise<ActionResult>) => {
@@ -106,6 +109,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
               summary={summary}
               onEditIncome={() => setOpenDialog("income")}
               onAddExpense={() => setOpenDialog("monthlyExpense")}
+              onEditExpense={setEditingExpense}
               onRemoveExpense={(id) =>
                 run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
               }
@@ -135,12 +139,19 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         </span>
       </div>
 
-      <AddMonthlyExpenseDialog
-        open={openDialog === "monthlyExpense"}
+      <MonthlyExpenseDialog
+        key={editingExpense?.id ?? "new-expense"}
+        open={openDialog === "monthlyExpense" || editingExpense !== null}
+        expense={editingExpense}
         onOpenChange={close}
         onAdd={(expense) =>
           run({ type: "addMonthlyExpense", id: crypto.randomUUID(), input: expense }, () =>
             addMonthlyExpenseAction(expense),
+          )
+        }
+        onSave={(expense) =>
+          run({ type: "updateMonthlyExpense", input: expense }, () =>
+            updateMonthlyExpenseAction(expense),
           )
         }
       />

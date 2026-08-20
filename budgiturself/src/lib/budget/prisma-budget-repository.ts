@@ -12,6 +12,7 @@ import {
   toDomainCreditCard,
   toDomainMonthlyExpense,
   toMonthlyExpenseCreateData,
+  toMonthlyExpenseUpdateData,
 } from "@/lib/budget/mappers";
 import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
@@ -21,6 +22,7 @@ import type {
   CreditCardInput,
   CreditCardUpdateInput,
   MonthlyExpenseInput,
+  MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
 
 const budgetSelect = {
@@ -105,6 +107,13 @@ class PrismaBudgetRepository implements BudgetRepository {
   async addMonthlyExpense(userId: string, input: MonthlyExpenseInput) {
     const row = await db.monthlyExpense.create({ data: toMonthlyExpenseCreateData(userId, input) });
     return toDomainMonthlyExpense(row);
+  }
+
+  async updateMonthlyExpense(userId: string, input: MonthlyExpenseUpdateInput) {
+    await db.monthlyExpense.updateMany({
+      where: { id: input.id, userId },
+      data: toMonthlyExpenseUpdateData(input),
+    });
   }
 
   async removeMonthlyExpense(userId: string, id: string) {
