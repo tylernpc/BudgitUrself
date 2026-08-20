@@ -47,6 +47,7 @@ export function BudgetDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        onOpenAutoFocus={(event) => event.preventDefault()}
         className={cn(
           "max-w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-3xl border-hairline sm:max-w-md",
           "bg-panel p-6 text-ink",
