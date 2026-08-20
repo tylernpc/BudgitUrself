@@ -8,12 +8,14 @@ import { AnimatedCurrency } from "./animated-number";
 import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {
+  bankBalance: number;
   monthlyIncome: number;
   summary: BudgetSummary;
 }
 
-export function HorizonView({ monthlyIncome, summary }: HorizonViewProps) {
+export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonViewProps) {
   const clear = summary.horizonView >= 0;
+  const totalIncoming = bankBalance + monthlyIncome;
 
   // Allocation ribbon: the same figures the summary already computed, laid out
   // against whichever is larger — what comes in, or what is spoken for.
@@ -87,7 +89,10 @@ export function HorizonView({ monthlyIncome, summary }: HorizonViewProps) {
           <div>
             <SectionLabel>Monthly income breakdown</SectionLabel>
             <p className="mt-1.5 text-xs text-ink-ghost">
-              <span className="num text-ink-faint">{formatCurrency(monthlyIncome)}</span> in income
+              <span className="num text-ink-faint">{formatCurrency(totalIncoming)}</span>{" "}
+              <span className="text-[11px]">
+                ({formatCurrency(bankBalance)} liquid + {formatCurrency(monthlyIncome)} income)
+              </span>
             </p>
             <div className="mt-3 flex h-3 gap-1 overflow-hidden rounded-full bg-chip">
               {segments.map((segment) => (

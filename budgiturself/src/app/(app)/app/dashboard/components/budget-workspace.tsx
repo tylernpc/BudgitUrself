@@ -76,7 +76,11 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
 
       <div className="space-y-6">
         <Reveal delay={80}>
-          <HorizonView monthlyIncome={optimisticBudget.monthlyIncome} summary={summary} />
+          <HorizonView
+            bankBalance={optimisticBudget.bankBalance}
+            monthlyIncome={optimisticBudget.monthlyIncome}
+            summary={summary}
+          />
         </Reveal>
 
         <div className="grid items-stretch gap-6 lg:grid-cols-2">
