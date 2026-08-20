@@ -1,9 +1,9 @@
 import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { Bill, DigitalBill, PersonalBill } from "@/lib/budget/types";
-import { formatCurrency, formatDayOfMonth } from "@/lib/format";
+import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, EditButton, RemoveButton } from "./actions";
+import { AddButton, EditButton, RemoveBadge } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
@@ -52,7 +52,7 @@ function BillRow({
   actionLabel: string;
 }) {
   return (
-    <li className="surface-quiet flex items-center gap-3 px-3 py-3 sm:px-3.5">
+    <li className="surface-quiet relative flex items-center gap-3 px-3 py-3 sm:px-3.5">
       <DayChip day={day} tint={tint} />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -65,11 +65,11 @@ function BillRow({
         </div>
         <p className="mt-1 flex items-center gap-1.5 text-[11px] text-ink-ghost">{meta}</p>
       </div>
-      <span className="flex shrink-0 items-center gap-1">
+      <span className="flex shrink-0 items-center gap-1.5">
         <span className="num text-sm text-ink-muted">{formatCurrency(amount)}</span>
         <EditButton label={`Edit ${actionLabel}`} onClick={onEdit} />
-        <RemoveButton label={`Remove ${actionLabel}`} onClick={onRemove} />
       </span>
+      <RemoveBadge label={`Remove ${actionLabel}`} onClick={onRemove} />
     </li>
   );
 }
@@ -93,8 +93,6 @@ function DigitalBillRow({
         <>
           <CreditCardIcon className="size-3" />
           {bill.card}
-          <span className="text-ink-ghost/50">·</span>
-          {formatDayOfMonth(bill.chargeDate)} of month
         </>
       }
       amount={bill.amount}
@@ -123,8 +121,6 @@ function PersonalBillRow({
         <>
           <Users className="size-3" />
           Owed to {bill.owedTo}
-          <span className="text-ink-ghost/50">·</span>
-          {formatDayOfMonth(bill.chargeDate)} of month
         </>
       }
       amount={bill.amount}
@@ -170,7 +166,7 @@ export function MonthlyBillsCard({
             {summary.digitalBills.length === 0 ? (
               <EmptyState>No subscriptions tracked yet</EmptyState>
             ) : (
-              <ul className="space-y-2">
+              <ul className="space-y-3.5">
                 {summary.digitalBills.map((bill) => (
                   <DigitalBillRow
                     key={bill.id}
@@ -200,7 +196,7 @@ export function MonthlyBillsCard({
             {summary.personalBills.length === 0 ? (
               <EmptyState>Nobody to pay back right now</EmptyState>
             ) : (
-              <ul className="space-y-2">
+              <ul className="space-y-3.5">
                 {summary.personalBills.map((bill) => (
                   <PersonalBillRow
                     key={bill.id}

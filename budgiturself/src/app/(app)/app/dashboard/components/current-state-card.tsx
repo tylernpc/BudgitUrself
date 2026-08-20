@@ -4,7 +4,7 @@ import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { CreditCard } from "@/lib/budget/types";
 import { formatCurrency, formatPercent, formatWholeCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, ChargeButton, EditButton, RemoveButton, SubtleButton } from "./actions";
+import { AddButton, ChargeButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
@@ -68,7 +68,7 @@ export function CurrentStateCard({
               {creditCards.map((card) => {
                 const used = creditUtilization(card);
                 return (
-                  <li key={card.id} className="surface-quiet px-4 py-3.5">
+                  <li key={card.id} className="surface-quiet relative px-4 py-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <span className="flex min-w-0 items-center gap-2.5 text-sm text-ink">
                         <CreditCardIcon className="size-4 shrink-0 text-ink-ghost" />
@@ -86,12 +86,12 @@ export function CurrentStateCard({
                           label={`Edit ${card.name}`}
                           onClick={() => onEditCreditCard(card)}
                         />
-                        <RemoveButton
-                          label={`Remove ${card.name}`}
-                          onClick={() => onRemoveCreditCard(card.id)}
-                        />
                       </span>
                     </div>
+                    <RemoveBadge
+                      label={`Remove ${card.name}`}
+                      onClick={() => onRemoveCreditCard(card.id)}
+                    />
                     <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-chip">
                       <div
                         className={cn(

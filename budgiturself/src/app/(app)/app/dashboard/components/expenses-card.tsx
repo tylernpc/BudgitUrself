@@ -3,7 +3,7 @@ import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { MonthlyExpense } from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, EditButton, RemoveButton, SubtleButton } from "./actions";
+import { AddButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { ExpenseIcon } from "./expense-icon";
@@ -95,7 +95,7 @@ export function ExpensesCard({
             {monthlyExpenses.map((expense) => (
               <li
                 key={expense.id}
-                className="surface-quiet flex items-center justify-between gap-3 px-4 py-3"
+                className="surface-quiet relative flex items-center justify-between gap-3 px-4 py-3"
               >
                 <span className="flex min-w-0 items-center gap-2.5">
                   <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-tone-violet/15">
@@ -111,11 +111,11 @@ export function ExpensesCard({
                     label={`Edit ${expense.name}`}
                     onClick={() => onEditExpense(expense)}
                   />
-                  <RemoveButton
-                    label={`Remove ${expense.name}`}
-                    onClick={() => onRemoveExpense(expense.id)}
-                  />
                 </span>
+                <RemoveBadge
+                  label={`Remove ${expense.name}`}
+                  onClick={() => onRemoveExpense(expense.id)}
+                />
               </li>
             ))}
 

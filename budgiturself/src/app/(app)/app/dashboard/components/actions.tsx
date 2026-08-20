@@ -77,16 +77,16 @@ export function EditButton({ label, onClick }: { label: string; onClick: () => v
   );
 }
 
-export function RemoveButton({ label, onClick }: { label: string; onClick: () => void }) {
+/** Sits in a row's top-right corner instead of crowding its trailing content — the row needs `relative`. */
+export function RemoveBadge({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <Button
-      size="icon"
-      variant="ghost"
+    <button
+      type="button"
       aria-label={label}
       onClick={onClick}
-      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-tone-rose/15 hover:text-tone-rose focus-visible:ring-tone-rose/40"
+      className="absolute -top-2 -right-2 z-10 grid size-5 place-items-center rounded-full bg-tone-rose text-canvas shadow-md shadow-tone-rose/30 transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-tone-rose/50 focus-visible:outline-none"
     >
       <X className="size-3.5" />
-    </Button>
+    </button>
   );
 }
