@@ -46,7 +46,7 @@ export function HeroPreview() {
           </span>
           <span className="wash wash-emerald inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-tone-emerald">
             <ArrowUpRight className="size-3" />
-            Clear to spend
+            Leftover
           </span>
         </div>
 

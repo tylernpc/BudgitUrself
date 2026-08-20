@@ -76,7 +76,7 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
               )}
             >
               {clear ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
-              {clear ? "Clear to spend" : "Short this month"}
+              {clear ? "Leftover" : "Short this month"}
             </span>
           </div>
 
