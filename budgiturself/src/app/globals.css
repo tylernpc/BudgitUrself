@@ -161,6 +161,16 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Scrolling stays functional; the native scrollbar chrome is just hidden. */
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes input-shake {
