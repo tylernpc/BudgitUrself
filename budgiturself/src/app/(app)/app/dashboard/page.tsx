@@ -13,8 +13,7 @@ const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "nume
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   const budget = await budgetRepository.getBudget(user.id);
-  const fallbackName = user.name?.trim().split(/\s+/)[0];
-  const greetingName = user.firstName ?? (fallbackName?.includes("@") ? undefined : fallbackName);
+  const greetingName = user.firstName;
 
   return (
     <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">

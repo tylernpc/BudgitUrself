@@ -10,13 +10,11 @@ export const LOGIN_PATH = "/auth/login";
 export interface SessionUser {
   auth0Sub: string;
   email: string;
-  name: string | null;
 }
 
 export interface AppUser {
   id: string;
   email: string;
-  name: string | null;
   firstName: string | null;
   lastName: string | null;
 }
@@ -36,7 +34,6 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   return {
     auth0Sub: user.sub,
     email: user.email,
-    name: typeof user.name === "string" ? user.name : null,
   };
 });
 
@@ -63,7 +60,7 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
 
   return db.user.findUnique({
     where: { auth0Sub: sessionUser.auth0Sub },
-    select: { id: true, email: true, name: true, firstName: true, lastName: true },
+    select: { id: true, email: true, firstName: true, lastName: true },
   });
 });
 
@@ -80,9 +77,8 @@ export const requireCurrentUser = cache(async (): Promise<AppUser> => {
     create: {
       auth0Sub: sessionUser.auth0Sub,
       email: sessionUser.email,
-      name: sessionUser.name,
     },
-    update: { email: sessionUser.email, name: sessionUser.name },
-    select: { id: true, email: true, name: true, firstName: true, lastName: true },
+    update: { email: sessionUser.email },
+    select: { id: true, email: true, firstName: true, lastName: true },
   });
 });

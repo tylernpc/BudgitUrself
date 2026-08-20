@@ -15,7 +15,6 @@ model User {
   id            String   @id @default(uuid())
   auth0Sub      String   @unique
   email         String   @unique
-  name          String?
   firstName     String?
   lastName      String?
   bankBalance   Decimal  @default(0) @db.Decimal(12, 2)
