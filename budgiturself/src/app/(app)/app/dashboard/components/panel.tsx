@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -11,19 +9,12 @@ const accents = {
 
 export type Accent = keyof typeof accents;
 
-/** Frosted card with a pointer-tracked highlight. */
+/**
+ * Frosted card. `isolation: isolate` on .surface is load-bearing — it gives the
+ * negative-z overlays inside some panels a stacking context to sit in.
+ */
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  const trackPointer = (event: React.PointerEvent<HTMLElement>) => {
-    const box = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--spot-x", `${event.clientX - box.left}px`);
-    event.currentTarget.style.setProperty("--spot-y", `${event.clientY - box.top}px`);
-  };
-
-  return (
-    <section onPointerMove={trackPointer} className={cn("surface spotlight lift", className)}>
-      {children}
-    </section>
-  );
+  return <section className={cn("surface lift", className)}>{children}</section>;
 }
 
 interface PanelHeaderProps {

@@ -4,9 +4,7 @@ import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { healthFromSummary } from "../lib/visual-health";
 import { AnimatedCurrency } from "./animated-number";
-import { HorizonOrb } from "@/components/ui/horizon-orb";
 import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {
@@ -33,7 +31,6 @@ function Figure({ label, value, positive }: { label: string; value: number; posi
 
 export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonViewProps) {
   const clear = summary.horizonView >= 0;
-  const health = healthFromSummary(summary, monthlyIncome);
 
   // Allocation ribbon: the same figures the summary already computed, laid out
   // against whichever is larger — what comes in, or what is spoken for.
@@ -67,9 +64,9 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
   ].filter((segment) => segment.value > 0);
 
   return (
-    <section className="surface overflow-hidden">
-      <div className="grid lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
-        <div className="order-2 px-5 pb-7 sm:px-8 sm:pb-9 lg:order-1 lg:py-10">
+    <section className="surface px-5 py-8 sm:px-8 sm:py-10">
+      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
+        <div>
           <div className="flex flex-wrap items-center gap-3">
             <SectionLabel>The Horizon View</SectionLabel>
             <span
@@ -92,11 +89,13 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
             <AnimatedCurrency value={summary.horizonView} duration={1400} />
           </p>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-faint">
-            What is genuinely yours once the balance, this month&apos;s income and every obligation
-            have all been counted.
+            This is what you&apos;re on track to have available at the end of the month, after all
+            your bills and expenses are accounted for.
           </p>
+        </div>
 
-          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+        <div className="space-y-6">
+          <div className="grid gap-3 sm:grid-cols-2">
             <Figure label="Liquid cash" value={bankBalance} positive={bankBalance >= 0} />
             <Figure
               label="After obligations"
@@ -106,7 +105,7 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
           </div>
 
           {segments.length > 0 && (
-            <div className="mt-7">
+            <div>
               <div className="flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
                 {segments.map((segment) => (
                   <div
@@ -133,10 +132,6 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
               </ul>
             </div>
           )}
-        </div>
-
-        <div className="order-1 h-52 w-full sm:h-64 lg:order-2 lg:h-[420px]">
-          <HorizonOrb health={health} />
         </div>
       </div>
     </section>

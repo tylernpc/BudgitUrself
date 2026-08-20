@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
-import { AuroraCanvas } from "@/components/ui/aurora-canvas";
+import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
 import { Reveal } from "./components/reveal";
-import { visualHealth } from "./lib/visual-health";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -18,7 +17,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
-      <AuroraCanvas health={visualHealth(budget)} />
+      <AuroraBackdrop />
 
       <div className="relative z-10">
         <DashboardHeader />

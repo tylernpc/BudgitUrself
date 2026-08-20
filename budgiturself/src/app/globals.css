@@ -221,7 +221,6 @@
   --dash-raised: #ffffff;
 
   --dash-modal-shadow: rgb(15 23 42 / 0.45);
-  --dash-spot: rgb(2 132 199 / 0.1);
   --dash-lift-edge: rgb(2 132 199 / 0.32);
   --dash-grain-blend: multiply;
   --dash-grain-opacity: 0.05;
@@ -269,7 +268,6 @@
     --dash-raised: rgb(255 255 255 / 0.13);
 
     --dash-modal-shadow: rgb(0 0 0 / 1);
-    --dash-spot: rgb(56 189 248 / 0.14);
     --dash-lift-edge: rgb(125 211 252 / 0.28);
     --dash-grain-blend: overlay;
     --dash-grain-opacity: 0.035;
@@ -419,28 +417,7 @@
 }
 
 @layer utilities {
-  /* Pointer-tracked highlight; hover-capable pointers only, so touch stays flat. */
-  .spotlight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    background: radial-gradient(
-      420px circle at var(--spot-x, 50%) var(--spot-y, 0%),
-      var(--dash-spot),
-      transparent 68%
-    );
-  }
-
   @media (hover: hover) and (pointer: fine) {
-    .spotlight:hover::before {
-      opacity: 1;
-    }
-
     .lift {
       transition:
         transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),

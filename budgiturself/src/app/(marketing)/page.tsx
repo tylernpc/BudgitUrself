@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { AuroraCanvas } from "@/components/ui/aurora-canvas";
+import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { getSessionUser } from "@/lib/auth/dal";
 import { Categories } from "./components/categories";
 import { Features } from "./components/features";
@@ -14,7 +14,7 @@ export default async function MarketingPage() {
 
   return (
     <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
-      <AuroraCanvas />
+      <AuroraBackdrop />
 
       <div className="relative z-10">
         <main>

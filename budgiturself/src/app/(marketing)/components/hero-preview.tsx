@@ -1,5 +1,4 @@
 import { ArrowUpRight } from "lucide-react";
-import { HorizonOrb } from "@/components/ui/horizon-orb";
 import { formatCurrency } from "@/lib/format";
 
 /**
@@ -40,10 +39,6 @@ function Tile({ label, value }: { label: string; value: number }) {
 export function HeroPreview() {
   return (
     <div className="surface overflow-hidden">
-      <div className="relative h-40 border-b border-hairline sm:h-48">
-        <HorizonOrb />
-      </div>
-
       <div className="px-5 py-5 sm:px-7 sm:py-6">
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase">

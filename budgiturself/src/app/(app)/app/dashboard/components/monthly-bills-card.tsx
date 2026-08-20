@@ -125,8 +125,8 @@ export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBi
       />
 
       <PanelBody className="space-y-8">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-          <section>
+        <div className="grid gap-8 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-10 lg:gap-y-0">
+          <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
             <div className="mb-3.5 flex items-center justify-between gap-3">
               <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
                 <Receipt className="size-4 text-tone-indigo" />
@@ -136,6 +136,10 @@ export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBi
                 {formatCurrency(summary.digitalBillsTotal)}
               </span>
             </div>
+            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+              Subscriptions and services that charge a card on their own schedule — streaming,
+              software, the gym app.
+            </p>
             {summary.digitalBills.length === 0 ? (
               <EmptyState>No subscriptions tracked yet</EmptyState>
             ) : (
@@ -151,7 +155,7 @@ export function MonthlyBillsCard({ summary, onAddBill, onRemoveBill }: MonthlyBi
             )}
           </section>
 
-          <section>
+          <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
             <div className="mb-3.5 flex items-center justify-between gap-3">
               <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
                 <Users className="size-4 text-tone-amber" />

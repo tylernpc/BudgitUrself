@@ -2,8 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { formatCurrency } from "@/lib/format";
-import { cn } from "@/lib/utils";
-import { prefersReducedMotion } from "@/lib/webgl";
+import { cn, prefersReducedMotion } from "@/lib/utils";
 
 /** Layout effect on the client, plain effect during SSR, so the first paint never flashes. */
 const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
