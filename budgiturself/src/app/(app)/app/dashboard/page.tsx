@@ -30,9 +30,6 @@ export default async function DashboardPage() {
             <h1 className="mt-3 text-[2rem] leading-tight font-semibold tracking-tight text-ink sm:text-[2.75rem]">
               {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
             </h1>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-faint sm:text-[15px]">
-              Everything you owe and everything you keep, resolved into one honest number.
-            </p>
           </Reveal>
 
           <BudgetWorkspace budget={budget} />

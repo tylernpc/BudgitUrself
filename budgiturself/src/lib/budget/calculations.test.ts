@@ -53,8 +53,7 @@ describe("summarizeBudget", () => {
     expect(summary.safeToSpend).toBe(2740);
   });
 
-  it("derives liquid wealth and the horizon view", () => {
-    expect(summary.trueLiquidWealth).toBe(500);
+  it("derives the horizon view", () => {
     expect(summary.horizonView).toBe(1000 + 4000 - 500 - 1260);
   });
 

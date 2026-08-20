@@ -51,6 +51,7 @@ export function AddChargeDialog({ card, onOpenChange, onSave }: AddChargeDialogP
             id="charge-amount"
             name="amount"
             type="number"
+            inputMode="decimal"
             step="0.01"
             min="0.01"
             placeholder="0.00"

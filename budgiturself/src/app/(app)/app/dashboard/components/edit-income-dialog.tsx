@@ -50,6 +50,7 @@ export function EditIncomeDialog({
             id="monthly-income"
             name="monthlyIncome"
             type="number"
+            inputMode="decimal"
             step="0.01"
             min="0"
             defaultValue={currentIncome}

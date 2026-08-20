@@ -134,6 +134,7 @@ export function BillDialog({
                 id="bill-amount"
                 name="amount"
                 type="number"
+                inputMode="decimal"
                 step="0.01"
                 min="0.01"
                 placeholder="0.00"
@@ -148,6 +149,7 @@ export function BillDialog({
                 id="bill-charge-date"
                 name="chargeDate"
                 type="number"
+                inputMode="numeric"
                 min="1"
                 max="31"
                 defaultValue={bill?.chargeDate ?? 1}

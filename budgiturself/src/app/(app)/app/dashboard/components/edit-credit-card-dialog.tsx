@@ -63,6 +63,7 @@ export function EditCreditCardDialog({ card, onOpenChange, onSave }: EditCreditC
                 id="edit-card-balance"
                 name="balance"
                 type="number"
+                inputMode="decimal"
                 step="0.01"
                 min="0"
                 defaultValue={card?.balance ?? 0}
@@ -76,6 +77,7 @@ export function EditCreditCardDialog({ card, onOpenChange, onSave }: EditCreditC
                 id="edit-card-limit"
                 name="limit"
                 type="number"
+                inputMode="decimal"
                 step="0.01"
                 min="0.01"
                 defaultValue={card?.limit ?? 0}

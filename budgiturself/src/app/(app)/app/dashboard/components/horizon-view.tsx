@@ -8,33 +8,16 @@ import { AnimatedCurrency } from "./animated-number";
 import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {
-  bankBalance: number;
   monthlyIncome: number;
   summary: BudgetSummary;
 }
 
-function Figure({ label, value, positive }: { label: string; value: number; positive: boolean }) {
-  return (
-    <div className="surface-quiet px-4 py-3.5">
-      <SectionLabel>{label}</SectionLabel>
-      <p
-        className={cn(
-          "mt-1.5 text-xl font-medium tracking-tight sm:text-2xl",
-          positive ? "text-ink" : "text-tone-rose",
-        )}
-      >
-        <AnimatedCurrency value={value} />
-      </p>
-    </div>
-  );
-}
-
-export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonViewProps) {
+export function HorizonView({ monthlyIncome, summary }: HorizonViewProps) {
   const clear = summary.horizonView >= 0;
 
   // Allocation ribbon: the same figures the summary already computed, laid out
   // against whichever is larger — what comes in, or what is spoken for.
-  const scale = Math.max(monthlyIncome, summary.fixedExpensesTotal, 1);
+  const scale = Math.max(monthlyIncome, summary.fixedExpensesTotal + summary.creditCardDebt, 1);
   const segments = [
     {
       label: "Expenses",
@@ -47,6 +30,12 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
       value: summary.monthlyBillsTotal,
       bar: "ribbon wash-sky",
       dot: "bg-tone-sky",
+    },
+    {
+      label: "Credit cards",
+      value: summary.creditCardDebt,
+      bar: "ribbon wash-amber",
+      dot: "bg-tone-amber",
     },
     clear || summary.safeToSpend >= 0
       ? {
@@ -94,45 +83,37 @@ export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonView
           </p>
         </div>
 
-        <div className="space-y-6">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Figure label="Liquid cash" value={bankBalance} positive={bankBalance >= 0} />
-            <Figure
-              label="After obligations"
-              value={summary.trueLiquidWealth}
-              positive={summary.trueLiquidWealth >= 0}
-            />
-          </div>
-
-          {segments.length > 0 && (
-            <div>
-              <div className="flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
-                {segments.map((segment) => (
-                  <div
-                    key={segment.label}
-                    className={cn(
-                      "h-full rounded-full transition-[width] duration-700",
-                      segment.bar,
-                    )}
-                    style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
-                  />
-                ))}
-              </div>
-              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
-                {segments.map((segment) => (
-                  <li
-                    key={segment.label}
-                    className="flex items-center gap-2 text-xs text-ink-faint"
-                  >
-                    <span className={cn("size-1.5 rounded-full", segment.dot)} />
-                    {segment.label}
-                    <span className="num text-ink">{formatCurrency(segment.value)}</span>
-                  </li>
-                ))}
-              </ul>
+        {segments.length > 0 && (
+          <div>
+            <SectionLabel>Monthly income breakdown</SectionLabel>
+            <p className="mt-1.5 text-xs text-ink-ghost">
+              <span className="num text-ink-faint">{formatCurrency(monthlyIncome)}</span> in income
+            </p>
+            <div className="mt-3 flex h-3 gap-1 overflow-hidden rounded-full bg-chip">
+              {segments.map((segment) => (
+                <div
+                  key={segment.label}
+                  className={cn("h-full rounded-full transition-[width] duration-700", segment.bar)}
+                  style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
+                />
+              ))}
             </div>
-          )}
-        </div>
+            <ul className="mt-4 space-y-2.5">
+              {segments.map((segment) => (
+                <li key={segment.label} className="flex items-center gap-2 text-sm text-ink-faint">
+                  <span className={cn("size-2 shrink-0 rounded-full", segment.dot)} />
+                  <span className="flex-1">{segment.label}</span>
+                  <span className="num text-ink-ghost">
+                    {Math.round((segment.value / scale) * 100)}%
+                  </span>
+                  <span className="num w-20 text-right text-ink">
+                    {formatCurrency(segment.value)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </section>
   );

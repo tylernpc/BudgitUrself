@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { summarizeBudget } from "@/lib/budget/calculations";
 import type { Bill, Budget, CreditCard } from "@/lib/budget/types";
@@ -18,6 +18,7 @@ import {
   updateCreditCardAction,
   type ActionResult,
 } from "../lib/actions";
+import { budgetReducer, type OptimisticBudgetAction } from "../lib/budget-reducer";
 import { BillDialog } from "./bill-dialog";
 import { AddChargeDialog } from "./add-charge-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
@@ -41,16 +42,21 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
-  const summary = summarizeBudget(budget);
+  // Reflects the mutation immediately; if the action below fails, revalidatePath
+  // never runs, `budget` never changes, and this reverts on its own once the
+  // transition settles — no manual rollback needed.
+  const [optimisticBudget, applyOptimistic] = useOptimistic(budget, budgetReducer);
+  const summary = summarizeBudget(optimisticBudget);
 
   const close = () => {
     setOpenDialog(null);
     setEditingBill(null);
   };
 
-  const run = (action: () => Promise<ActionResult>) => {
+  const run = (optimisticAction: OptimisticBudgetAction, action: () => Promise<ActionResult>) => {
     setError(undefined);
     startTransition(async () => {
+      applyOptimistic(optimisticAction);
       const result = await action();
       if (result.error) setError(result.error);
     });
@@ -70,35 +76,35 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
 
       <div className="space-y-6">
         <Reveal delay={80}>
-          <HorizonView
-            bankBalance={budget.bankBalance}
-            monthlyIncome={budget.monthlyIncome}
-            summary={summary}
-          />
+          <HorizonView monthlyIncome={optimisticBudget.monthlyIncome} summary={summary} />
         </Reveal>
 
         <div className="grid items-stretch gap-6 lg:grid-cols-2">
           <Reveal delay={180} className="h-full">
             <CurrentStateCard
-              bankBalance={budget.bankBalance}
-              creditCards={budget.creditCards}
+              bankBalance={optimisticBudget.bankBalance}
+              creditCards={optimisticBudget.creditCards}
               summary={summary}
               onEditBankBalance={() => setOpenDialog("bankBalance")}
               onAddCreditCard={() => setOpenDialog("creditCard")}
               onEditCreditCard={setEditingCard}
               onAddCharge={setChargingCard}
-              onRemoveCreditCard={(id) => run(() => removeCreditCardAction(id))}
+              onRemoveCreditCard={(id) =>
+                run({ type: "removeCreditCard", id }, () => removeCreditCardAction(id))
+              }
             />
           </Reveal>
 
           <Reveal delay={260} className="h-full">
             <ExpensesCard
-              monthlyIncome={budget.monthlyIncome}
-              monthlyExpenses={budget.monthlyExpenses}
+              monthlyIncome={optimisticBudget.monthlyIncome}
+              monthlyExpenses={optimisticBudget.monthlyExpenses}
               summary={summary}
               onEditIncome={() => setOpenDialog("income")}
               onAddExpense={() => setOpenDialog("monthlyExpense")}
-              onRemoveExpense={(id) => run(() => removeMonthlyExpenseAction(id))}
+              onRemoveExpense={(id) =>
+                run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
+              }
             />
           </Reveal>
         </div>
@@ -108,7 +114,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
             summary={summary}
             onAddBill={() => setOpenDialog("bill")}
             onEditBill={setEditingBill}
-            onRemoveBill={(id) => run(() => removeBillAction(id))}
+            onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
           />
         </Reveal>
       </div>
@@ -128,43 +134,65 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
       <AddMonthlyExpenseDialog
         open={openDialog === "monthlyExpense"}
         onOpenChange={close}
-        onAdd={(expense) => run(() => addMonthlyExpenseAction(expense))}
+        onAdd={(expense) =>
+          run({ type: "addMonthlyExpense", id: crypto.randomUUID(), input: expense }, () =>
+            addMonthlyExpenseAction(expense),
+          )
+        }
       />
       <BillDialog
         key={editingBill?.id ?? "new-bill"}
         open={openDialog === "bill" || editingBill !== null}
         bill={editingBill}
         onOpenChange={close}
-        onAdd={(bill) => run(() => addBillAction(bill))}
-        onSave={(bill) => run(() => updateBillAction(bill))}
-        creditCards={budget.creditCards.map((card) => card.name)}
+        onAdd={(bill) =>
+          run({ type: "addBill", id: crypto.randomUUID(), input: bill }, () => addBillAction(bill))
+        }
+        onSave={(bill) => run({ type: "updateBill", input: bill }, () => updateBillAction(bill))}
+        creditCards={optimisticBudget.creditCards.map((card) => card.name)}
       />
       <AddCreditCardDialog
         open={openDialog === "creditCard"}
         onOpenChange={close}
-        onAdd={(card) => run(() => addCreditCardAction(card))}
+        onAdd={(card) =>
+          run({ type: "addCreditCard", id: crypto.randomUUID(), input: card }, () =>
+            addCreditCardAction(card),
+          )
+        }
       />
       <EditIncomeDialog
         open={openDialog === "income"}
         onOpenChange={close}
-        currentIncome={budget.monthlyIncome}
-        onSave={(monthlyIncome) => run(() => setMonthlyIncomeAction({ monthlyIncome }))}
+        currentIncome={optimisticBudget.monthlyIncome}
+        onSave={(monthlyIncome) =>
+          run({ type: "setMonthlyIncome", monthlyIncome }, () =>
+            setMonthlyIncomeAction({ monthlyIncome }),
+          )
+        }
       />
       <EditCreditCardDialog
         card={editingCard}
         onOpenChange={() => setEditingCard(null)}
-        onSave={(input) => run(() => updateCreditCardAction(input))}
+        onSave={(input) =>
+          run({ type: "updateCreditCard", input }, () => updateCreditCardAction(input))
+        }
       />
       <AddChargeDialog
         card={chargingCard}
         onOpenChange={() => setChargingCard(null)}
-        onSave={(input) => run(() => addCreditCardChargeAction(input))}
+        onSave={(input) =>
+          run({ type: "addCreditCardCharge", id: input.id, amount: input.amount }, () =>
+            addCreditCardChargeAction(input),
+          )
+        }
       />
       <EditBankBalanceDialog
         open={openDialog === "bankBalance"}
         onOpenChange={close}
-        currentBalance={budget.bankBalance}
-        onSave={(bankBalance) => run(() => setBankBalanceAction({ bankBalance }))}
+        currentBalance={optimisticBudget.bankBalance}
+        onSave={(bankBalance) =>
+          run({ type: "setBankBalance", bankBalance }, () => setBankBalanceAction({ bankBalance }))
+        }
       />
     </>
   );

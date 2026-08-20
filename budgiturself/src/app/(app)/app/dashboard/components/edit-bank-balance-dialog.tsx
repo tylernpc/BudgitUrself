@@ -50,6 +50,7 @@ export function EditBankBalanceDialog({
             id="bank-balance"
             name="bankBalance"
             type="number"
+            inputMode="decimal"
             step="0.01"
             min="0"
             defaultValue={currentBalance}

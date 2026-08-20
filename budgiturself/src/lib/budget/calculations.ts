@@ -10,7 +10,6 @@ export interface BudgetSummary {
   monthlyExpensesTotal: number;
   fixedExpensesTotal: number;
   safeToSpend: number;
-  trueLiquidWealth: number;
   horizonView: number;
 }
 
@@ -51,7 +50,6 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
     monthlyExpensesTotal,
     fixedExpensesTotal,
     safeToSpend: budget.monthlyIncome - fixedExpensesTotal,
-    trueLiquidWealth: budget.bankBalance - creditCardDebt,
     horizonView: budget.bankBalance + budget.monthlyIncome - creditCardDebt - fixedExpensesTotal,
   };
 }
