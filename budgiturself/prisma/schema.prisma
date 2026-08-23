@@ -35,7 +35,8 @@ model CreditCard {
   limit     Decimal  @db.Decimal(12, 2)
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bills Bill[]
 
   @@index([userId])
 }
@@ -59,10 +60,12 @@ enum BillType {
   PERSONAL
 }
 
-/// Digital bills carry `card` + `category`; personal bills carry `owedTo`.
+/// Digital bills carry `cardId` + `category`; personal bills carry `owedTo`.
 /// The pairing is enforced in the database via a CHECK constraint (see the
 /// migration) and re-validated by the mapper. Prisma has no native
-/// discriminated-union column type.
+/// discriminated-union column type, so the branch columns are nullable —
+/// but `cardId` is still a real foreign key, so a bill can never name a card
+/// that does not exist, and deleting a card takes its bills with it.
 model Bill {
   id         String   @id @default(uuid())
   userId     String
@@ -70,12 +73,14 @@ model Bill {
   amount     Decimal  @db.Decimal(12, 2)
   chargeDate Int
   type       BillType
-  card       String?
+  cardId     String?
   category   String?
   owedTo     String?
   createdAt  DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card CreditCard? @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([cardId])
 }

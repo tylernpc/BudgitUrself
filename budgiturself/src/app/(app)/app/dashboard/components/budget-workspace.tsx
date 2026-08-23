@@ -120,6 +120,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         <Reveal delay={340}>
           <MonthlyBillsCard
             summary={summary}
+            creditCards={optimisticBudget.creditCards}
             onAddBill={() => setOpenDialog("bill")}
             onEditBill={setEditingBill}
             onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
@@ -164,7 +165,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
           run({ type: "addBill", id: crypto.randomUUID(), input: bill }, () => addBillAction(bill))
         }
         onSave={(bill) => run({ type: "updateBill", input: bill }, () => updateBillAction(bill))}
-        creditCards={optimisticBudget.creditCards.map((card) => card.name)}
+        creditCards={optimisticBudget.creditCards}
       />
       <AddCreditCardDialog
         open={openDialog === "creditCard"}

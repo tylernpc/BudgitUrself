@@ -60,7 +60,7 @@ export function toDomainMonthlyExpense(row: MonthlyExpenseRow): MonthlyExpense {
 
 /**
  * Prisma has no discriminated-union column type, so a `Bill` row carries all
- * of `card` / `category` / `owedTo` as nullable columns. The DB enforces the
+ * of `cardId` / `category` / `owedTo` as nullable columns. The DB enforces the
  * pairing via a CHECK constraint (see the migration); this function re-checks
  * it at the boundary so a malformed row fails loudly here instead of handing
  * the UI a `Bill` that satisfies neither branch of the domain union.
@@ -74,10 +74,10 @@ export function toDomainBill(row: BillRow): Bill {
   };
 
   if (row.type === "DIGITAL") {
-    if (row.card === null || row.category === null) {
-      throw new Error(`Bill ${row.id} is DIGITAL but missing card/category`);
+    if (row.cardId === null || row.category === null) {
+      throw new Error(`Bill ${row.id} is DIGITAL but missing cardId/category`);
     }
-    return { ...base, type: "digital", card: row.card, category: row.category };
+    return { ...base, type: "digital", cardId: row.cardId, category: row.category };
   }
 
   if (row.owedTo === null) {
@@ -149,7 +149,7 @@ const billTypeToRow: Record<Bill["type"], BillTypeRow> = {
 /**
  * The branch columns are always written as a pair: the active branch set, the
  * other explicitly nulled. `Bill_type_fields_check` rejects any row where a
- * leftover `card` or `owedTo` survives a change of type.
+ * leftover `cardId` or `owedTo` survives a change of type.
  */
 function toBillColumns(input: BillInput) {
   const base = {
@@ -160,8 +160,8 @@ function toBillColumns(input: BillInput) {
   };
 
   return input.type === "digital"
-    ? { ...base, card: input.card, category: input.category, owedTo: null }
-    : { ...base, owedTo: input.owedTo, card: null, category: null };
+    ? { ...base, cardId: input.cardId, category: input.category, owedTo: null }
+    : { ...base, owedTo: input.owedTo, cardId: null, category: null };
 }
 
 export function toBillCreateData(

@@ -17,7 +17,7 @@ const budget: Budget = {
       amount: 20,
       chargeDate: 20,
       type: "digital",
-      card: "A",
+      cardId: "a",
       category: "Software",
     },
     {
@@ -26,7 +26,7 @@ const budget: Budget = {
       amount: 10,
       chargeDate: 3,
       type: "digital",
-      card: "A",
+      cardId: "a",
       category: "Health",
     },
     { id: "b3", name: "Gym", amount: 30, chargeDate: 5, type: "personal", owedTo: "Dad" },

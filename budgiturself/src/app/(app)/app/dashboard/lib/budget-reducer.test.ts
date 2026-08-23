@@ -72,7 +72,7 @@ describe("budgetReducer", () => {
         amount: 15,
         chargeDate: 10,
         type: "digital",
-        card: "A",
+        cardId: "a",
         category: "Entertainment",
       },
     });

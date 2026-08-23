@@ -13,7 +13,7 @@ describe("bill column mapping", () => {
       name: "Apple One",
       amount: 25.95,
       chargeDate: 12,
-      card: "Amex Gold",
+      cardId: "card-amex",
       category: "Entertainment",
     });
 
@@ -22,7 +22,7 @@ describe("bill column mapping", () => {
       name: "Apple One",
       amount: 25.95,
       chargeDate: 12,
-      card: "Amex Gold",
+      cardId: "card-amex",
       category: "Entertainment",
       owedTo: null,
     });
@@ -44,7 +44,7 @@ describe("bill column mapping", () => {
       amount: 20,
       chargeDate: 1,
       owedTo: "Dad",
-      card: null,
+      cardId: null,
       category: null,
     });
   });
@@ -68,7 +68,7 @@ describe("bill column mapping", () => {
       name: "Spotify",
       amount: 11.99,
       chargeDate: 3,
-      card: "Amex Gold",
+      cardId: "card-amex",
       category: "Entertainment",
     } as const;
 

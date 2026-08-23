@@ -17,7 +17,7 @@ import {
   type BillInput,
   type BillUpdateInput,
 } from "@/lib/budget/schemas";
-import type { Bill, BillType } from "@/lib/budget/types";
+import type { Bill, BillType, CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
@@ -32,7 +32,7 @@ interface BillDialogProps {
   onOpenChange: (open: boolean) => void;
   onAdd: (bill: BillInput) => void;
   onSave: (bill: BillUpdateInput) => void;
-  creditCards: string[];
+  creditCards: CreditCard[];
 }
 
 /**
@@ -50,7 +50,7 @@ export function BillDialog({
 }: BillDialogProps) {
   const editing = bill !== null;
   const [type, setType] = useState<BillType>(bill?.type ?? "digital");
-  const [card, setCard] = useState(bill?.type === "digital" ? bill.card : "");
+  const [cardId, setCardId] = useState(bill?.type === "digital" ? bill.cardId : "");
   const [category, setCategory] = useState(bill?.type === "digital" ? bill.category : "");
   const [error, setError] = useState<string>();
 
@@ -64,7 +64,7 @@ export function BillDialog({
     const fields = {
       ...Object.fromEntries(new FormData(event.currentTarget)),
       type,
-      card,
+      cardId,
       category,
     };
 
@@ -163,14 +163,14 @@ export function BillDialog({
             <>
               <div className="space-y-2.5">
                 <FieldLabel htmlFor="bill-card">Charged to card</FieldLabel>
-                <Select value={card} onValueChange={setCard}>
+                <Select value={cardId} onValueChange={setCardId}>
                   <SelectTrigger id="bill-card" className={fieldClass}>
                     <SelectValue placeholder="Select a card" />
                   </SelectTrigger>
                   <SelectContent className={selectContentClass}>
-                    {creditCards.map((cardName) => (
-                      <SelectItem key={cardName} value={cardName} className={selectItemClass}>
-                        {cardName}
+                    {creditCards.map((card) => (
+                      <SelectItem key={card.id} value={card.id} className={selectItemClass}>
+                        {card.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

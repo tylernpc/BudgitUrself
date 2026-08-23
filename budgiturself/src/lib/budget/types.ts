@@ -79,7 +79,7 @@ interface BillBase {
 
 export interface DigitalBill extends BillBase {
   type: "digital";
-  card: string;
+  cardId: string;
   category: string;
 }
 

@@ -66,7 +66,7 @@ const digitalBill = z.object({
   name,
   amount,
   chargeDate,
-  card: z.string().min(1, "Choose a card"),
+  cardId: z.string().min(1, "Choose a card"),
   category: z.enum(BILL_CATEGORIES),
 });
 

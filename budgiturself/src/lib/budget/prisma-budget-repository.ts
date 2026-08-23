@@ -65,31 +65,10 @@ class PrismaBudgetRepository implements BudgetRepository {
     return toDomainCreditCard(row);
   }
 
-  /**
-   * Digital bills reference their card by name, not id (Prisma has no
-   * discriminated-union column type to hang a real relation off). A rename
-   * must cascade into every bill that pointed at the old name, or those
-   * bills silently orphan from the card they were charged to.
-   */
   async updateCreditCard(userId: string, input: CreditCardUpdateInput) {
-    await db.$transaction(async (tx) => {
-      const existing = await tx.creditCard.findFirst({
-        where: { id: input.id, userId },
-        select: { name: true },
-      });
-      if (!existing) return;
-
-      await tx.creditCard.updateMany({
-        where: { id: input.id, userId },
-        data: toCreditCardUpdateData(input),
-      });
-
-      if (existing.name !== input.name) {
-        await tx.bill.updateMany({
-          where: { userId, card: existing.name },
-          data: { card: input.name },
-        });
-      }
+    await db.creditCard.updateMany({
+      where: { id: input.id, userId },
+      data: toCreditCardUpdateData(input),
     });
   }
 
@@ -120,12 +99,36 @@ class PrismaBudgetRepository implements BudgetRepository {
     await db.monthlyExpense.deleteMany({ where: { id, userId } });
   }
 
+  /**
+   * The `Bill_cardId_fkey` foreign key guarantees `cardId` names a card that
+   * exists; it cannot say whose. Bills are only ever written from a picker
+   * listing the caller's own cards, so a foreign id is not a user mistake and
+   * gets no friendly message — it fails here rather than filing one user's
+   * bill against another user's card.
+   */
+  private async assertOwnsCard(userId: string, input: BillInput) {
+    if (input.type !== "digital") return;
+
+    const card = await db.creditCard.findFirst({
+      where: { id: input.cardId, userId },
+      select: { id: true },
+    });
+
+    if (!card) {
+      throw new Error(`Credit card ${input.cardId} does not belong to user ${userId}`);
+    }
+  }
+
   async addBill(userId: string, input: BillInput) {
+    await this.assertOwnsCard(userId, input);
+
     const row = await db.bill.create({ data: toBillCreateData(userId, input) });
     return toDomainBill(row);
   }
 
   async updateBill(userId: string, input: BillUpdateInput) {
+    await this.assertOwnsCard(userId, input);
+
     await db.bill.updateMany({
       where: { id: input.id, userId },
       data: toBillUpdateData(input),

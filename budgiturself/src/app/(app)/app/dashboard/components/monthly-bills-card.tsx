@@ -1,6 +1,6 @@
 import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
-import type { Bill, DigitalBill, PersonalBill } from "@/lib/budget/types";
+import type { Bill, CreditCard, DigitalBill, PersonalBill } from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { AddButton, EditButton, RemoveBadge } from "./actions";
@@ -10,6 +10,7 @@ import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
 
 interface MonthlyBillsCardProps {
   summary: BudgetSummary;
+  creditCards: CreditCard[];
   onAddBill: () => void;
   onEditBill: (bill: Bill) => void;
   onRemoveBill: (id: string) => void;
@@ -76,10 +77,12 @@ function BillRow({
 
 function DigitalBillRow({
   bill,
+  cardName,
   onEdit,
   onRemove,
 }: {
   bill: DigitalBill;
+  cardName: string;
   onEdit: () => void;
   onRemove: () => void;
 }) {
@@ -92,7 +95,7 @@ function DigitalBillRow({
       meta={
         <>
           <CreditCardIcon className="size-3" />
-          {bill.card}
+          {cardName}
         </>
       }
       amount={bill.amount}
@@ -133,10 +136,13 @@ function PersonalBillRow({
 
 export function MonthlyBillsCard({
   summary,
+  creditCards,
   onAddBill,
   onEditBill,
   onRemoveBill,
 }: MonthlyBillsCardProps) {
+  const cardNames = new Map(creditCards.map((card) => [card.id, card.name]));
+
   return (
     <Panel>
       <PanelHeader
@@ -171,6 +177,7 @@ export function MonthlyBillsCard({
                   <DigitalBillRow
                     key={bill.id}
                     bill={bill}
+                    cardName={cardNames.get(bill.cardId) ?? ""}
                     onEdit={() => onEditBill(bill)}
                     onRemove={() => onRemoveBill(bill.id)}
                   />
