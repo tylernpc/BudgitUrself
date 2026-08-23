@@ -19,7 +19,9 @@ export function EditCreditCardDialog({ card, onOpenChange, onSave }: EditCreditC
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!card) return;
+    if (!card) {
+      return;
+    }
 
     const form = new FormData(event.currentTarget);
     const parsed = creditCardUpdateSchema.safeParse({

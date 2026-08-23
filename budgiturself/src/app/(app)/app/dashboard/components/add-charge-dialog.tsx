@@ -19,7 +19,9 @@ export function AddChargeDialog({ card, onOpenChange, onSave }: AddChargeDialogP
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!card) return;
+    if (!card) {
+      return;
+    }
 
     const form = new FormData(event.currentTarget);
     const parsed = creditCardChargeSchema.safeParse({

@@ -107,7 +107,9 @@ class PrismaBudgetRepository implements BudgetRepository {
    * bill against another user's card.
    */
   private async assertOwnsCard(userId: string, input: BillInput) {
-    if (input.type !== "digital") return;
+    if (input.type !== "digital") {
+      return;
+    }
 
     const card = await db.creditCard.findFirst({
       where: { id: input.cardId, userId },

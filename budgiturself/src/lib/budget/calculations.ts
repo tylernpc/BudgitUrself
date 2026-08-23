@@ -55,6 +55,9 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
 }
 
 export function creditUtilization(card: { balance: number; limit: number }): number {
-  if (card.limit <= 0) return 0;
+  if (card.limit <= 0) {
+    return 0;
+  }
+
   return Math.min(card.balance / card.limit, 1);
 }

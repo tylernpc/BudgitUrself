@@ -45,7 +45,9 @@ export function AnimatedCurrency({
 
       fromRef.current = next;
       setDisplay(next);
-      if (progress < 1) handle = requestAnimationFrame(tick);
+      if (progress < 1) {
+        handle = requestAnimationFrame(tick);
+      }
     };
 
     handle = requestAnimationFrame(tick);

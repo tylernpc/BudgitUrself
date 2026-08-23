@@ -202,13 +202,19 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
 
   const goToPage = (index: number) => {
     const el = scrollerRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
+
     el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
   };
 
   const handleScroll = () => {
     const el = scrollerRef.current;
-    if (!el || el.clientWidth === 0) return;
+    if (!el || el.clientWidth === 0) {
+      return;
+    }
+
     setPage(Math.round(el.scrollLeft / el.clientWidth));
   };
 

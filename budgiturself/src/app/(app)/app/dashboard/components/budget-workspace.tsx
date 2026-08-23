@@ -61,7 +61,9 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
     startTransition(async () => {
       applyOptimistic(optimisticAction);
       const result = await action();
-      if (result.error) setError(result.error);
+      if (result.error) {
+        setError(result.error);
+      }
     });
   };
 
