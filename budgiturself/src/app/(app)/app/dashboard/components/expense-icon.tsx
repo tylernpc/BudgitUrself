@@ -83,48 +83,18 @@ export const EXPENSE_ICON_MAP: Record<ExpenseIconKey, LucideIcon> = {
   sofa: Sofa,
 };
 
-/** Matches the app's `tone-*`/`wash-*` design tokens — every class here is a literal string so Tailwind's scanner picks it up. */
+/** Matches the app's `cat-*` design tokens — every class is a literal string so Tailwind's scanner picks it up. */
 export const EXPENSE_COLOR_MAP: Record<
   ExpenseColorKey,
-  { text: string; bg: string; solid: string; ring: string }
+  { text: string; solid: string; ring: string }
 > = {
-  violet: {
-    text: "text-tone-violet",
-    bg: "bg-tone-violet/15",
-    solid: "bg-tone-violet",
-    ring: "ring-tone-violet",
-  },
-  sky: { text: "text-tone-sky", bg: "bg-tone-sky/15", solid: "bg-tone-sky", ring: "ring-tone-sky" },
-  emerald: {
-    text: "text-tone-emerald",
-    bg: "bg-tone-emerald/15",
-    solid: "bg-tone-emerald",
-    ring: "ring-tone-emerald",
-  },
-  rose: {
-    text: "text-tone-rose",
-    bg: "bg-tone-rose/15",
-    solid: "bg-tone-rose",
-    ring: "ring-tone-rose",
-  },
-  indigo: {
-    text: "text-tone-indigo",
-    bg: "bg-tone-indigo/15",
-    solid: "bg-tone-indigo",
-    ring: "ring-tone-indigo",
-  },
-  amber: {
-    text: "text-tone-amber",
-    bg: "bg-tone-amber/15",
-    solid: "bg-tone-amber",
-    ring: "ring-tone-amber",
-  },
-  cyan: {
-    text: "text-tone-cyan",
-    bg: "bg-tone-cyan/15",
-    solid: "bg-tone-cyan",
-    ring: "ring-tone-cyan",
-  },
+  violet: { text: "text-cat-violet", solid: "bg-cat-violet", ring: "ring-cat-violet" },
+  sky: { text: "text-cat-sky", solid: "bg-cat-sky", ring: "ring-cat-sky" },
+  emerald: { text: "text-cat-emerald", solid: "bg-cat-emerald", ring: "ring-cat-emerald" },
+  rose: { text: "text-cat-rose", solid: "bg-cat-rose", ring: "ring-cat-rose" },
+  indigo: { text: "text-cat-indigo", solid: "bg-cat-indigo", ring: "ring-cat-indigo" },
+  amber: { text: "text-cat-amber", solid: "bg-cat-amber", ring: "ring-cat-amber" },
+  cyan: { text: "text-cat-cyan", solid: "bg-cat-cyan", ring: "ring-cat-cyan" },
 };
 
 export function ExpenseIcon({
@@ -148,12 +118,7 @@ interface ColorPickerProps {
 
 export function ColorPicker({ id, value, onChange }: ColorPickerProps) {
   return (
-    <div
-      id={id}
-      className="flex flex-wrap justify-center gap-2.5"
-      role="radiogroup"
-      aria-label="Color"
-    >
+    <div id={id} className="flex flex-wrap gap-2" role="radiogroup" aria-label="Color">
       {EXPENSE_COLOR_KEYS.map((key) => {
         const selected = key === value;
         const tone = EXPENSE_COLOR_MAP[key];
@@ -166,9 +131,9 @@ export function ColorPicker({ id, value, onChange }: ColorPickerProps) {
             aria-label={key}
             onClick={() => onChange(key)}
             className={cn(
-              "size-8 shrink-0 rounded-full ring-2 ring-offset-2 ring-offset-panel transition-transform",
+              "size-7 shrink-0 rounded-md ring-offset-2 ring-offset-surface transition-shadow outline-none",
               tone.solid,
-              selected ? cn(tone.ring, "scale-110") : "ring-transparent hover:scale-105",
+              selected ? cn("ring-2", tone.ring) : "hover:ring-1 hover:ring-line-strong",
             )}
           />
         );
@@ -230,7 +195,7 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
         {ICON_PAGES.map((pageIcons, pageIndex) => (
           <div
             key={pageIndex}
-            className="grid w-full shrink-0 snap-start grid-cols-4 justify-items-center gap-2.5"
+            className="grid w-full shrink-0 snap-start grid-cols-6 gap-2 sm:grid-cols-6"
           >
             {pageIcons.map((key) => {
               const Icon = EXPENSE_ICON_MAP[key];
@@ -244,10 +209,10 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
                   aria-label={key}
                   onClick={() => onChange(key)}
                   className={cn(
-                    "grid size-9 place-items-center rounded-xl border transition-colors",
+                    "grid h-9 place-items-center rounded-md border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
                     selected
-                      ? cn(tone.bg, tone.text, "border-transparent")
-                      : "border-hairline bg-quiet text-ink-ghost hover:border-hairline-strong hover:text-ink",
+                      ? cn("border-line-strong bg-surface-3", tone.text)
+                      : "border-line text-fg-subtle hover:border-line-strong hover:text-fg",
                   )}
                 >
                   <Icon className="size-4" />
@@ -259,7 +224,7 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
       </div>
 
       {ICON_PAGES.length > 1 && (
-        <div className="mt-2.5 flex justify-center gap-1.5">
+        <div className="mt-3 flex justify-center gap-1.5">
           {ICON_PAGES.map((_, index) => (
             <button
               key={index}
@@ -267,8 +232,8 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
               aria-label={`Icons page ${index + 1}`}
               onClick={() => goToPage(index)}
               className={cn(
-                "h-1.5 rounded-full transition-all",
-                index === page ? cn("w-4", tone.solid) : "w-1.5 bg-chip",
+                "h-1 rounded-full transition-all",
+                index === page ? "w-5 bg-fg-muted" : "w-3 bg-line-strong",
               )}
             />
           ))}

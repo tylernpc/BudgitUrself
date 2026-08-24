@@ -1,48 +1,35 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-const accents = {
-  cyan: "text-tone-cyan shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-cyan/50",
-  emerald: "text-tone-emerald shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-emerald/50",
-  violet: "text-tone-violet shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-violet/50",
-} as const;
-
-export type Accent = keyof typeof accents;
-
 /**
- * Frosted card. `isolation: isolate` on .surface is load-bearing — it gives the
- * negative-z overlays inside some panels a stacking context to sit in.
+ * The one card treatment in the app: a solid surface, a hairline edge, and a
+ * shadow that only separates it from the page. Sections inside are divided by
+ * rules rather than by nesting more cards.
  */
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn("surface lift", className)}>{children}</section>;
+  return <section className={cn("app-card", className)}>{children}</section>;
 }
 
 interface PanelHeaderProps {
   icon: ReactNode;
-  accent: Accent;
   title: string;
   description?: string;
   action?: ReactNode;
 }
 
-export function PanelHeader({ icon, accent, title, description, action }: PanelHeaderProps) {
+export function PanelHeader({ icon, title, description, action }: PanelHeaderProps) {
   return (
-    <header className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline px-5 py-5 sm:px-7 sm:py-6">
-      <div className="flex min-w-0 items-center gap-3.5">
-        <span
-          className={cn(
-            "grid size-10 shrink-0 place-items-center rounded-2xl bg-chip ring-1 ring-hairline [&_svg]:size-[18px]",
-            accents[accent],
-          )}
-        >
-          {icon}
-        </span>
-        <div className="min-w-0">
-          <h2 className="text-[15px] font-medium tracking-tight text-ink">{title}</h2>
-          {description && (
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-faint">{description}</p>
-          )}
-        </div>
+    <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 border-b border-line px-5 py-4 sm:px-6">
+      <div className="min-w-0">
+        <h2 className="flex items-center gap-2 text-[15px] font-semibold tracking-tight text-fg">
+          <span className="text-fg-subtle [&_svg]:size-[15px]">{icon}</span>
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-1.5 max-w-prose text-[13px] leading-relaxed text-fg-muted">
+            {description}
+          </p>
+        )}
       </div>
       {action}
     </header>
@@ -50,18 +37,59 @@ export function PanelHeader({ icon, accent, title, description, action }: PanelH
 }
 
 export function PanelBody({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn("px-5 py-6 sm:px-7", className)}>{children}</div>;
+  return <div className={cn("px-5 py-5 sm:px-6", className)}>{children}</div>;
 }
 
-export function SectionLabel({ className, children }: { className?: string; children: ReactNode }) {
+/** Totals live on a tinted strip at the foot of a card, never in a coloured tile. */
+export function PanelFooter({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <span
+    <div
       className={cn(
-        "text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase",
+        "mt-auto flex items-baseline justify-between gap-4 rounded-b-[calc(0.75rem-1px)] border-t border-line bg-surface-2 px-5 py-4 sm:px-6",
         className,
       )}
     >
+      <span className="eyebrow">{label}</span>
       {children}
-    </span>
+    </div>
+  );
+}
+
+export function SectionLabel({ className, children }: { className?: string; children: ReactNode }) {
+  return <span className={cn("eyebrow", className)}>{children}</span>;
+}
+
+/**
+ * The heading for a list inside a card: name on the left, its running total on
+ * the right, and whatever adds to it after that.
+ */
+export function SectionHeading({
+  icon,
+  title,
+  total,
+  action,
+}: {
+  icon?: ReactNode;
+  title: string;
+  total: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <h3 className="flex items-center gap-2 text-[13px] font-semibold text-fg">
+        {icon && <span className="text-fg-subtle [&_svg]:size-[14px]">{icon}</span>}
+        {title}
+        <span className="tnum text-[13px] font-normal text-fg-muted">{total}</span>
+      </h3>
+      {action}
+    </div>
   );
 }

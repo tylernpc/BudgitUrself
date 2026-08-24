@@ -1,13 +1,12 @@
-import { CreditCard as CreditCardIcon, Wallet } from "lucide-react";
+import { CreditCard as CreditCardIcon, Pencil, Plus, Trash2, Wallet } from "lucide-react";
 import { creditUtilization } from "@/lib/budget/calculations";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { CreditCard } from "@/lib/budget/types";
 import { formatCurrency, formatPercent, formatWholeCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, ChargeButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
-import { AnimatedCurrency } from "./animated-number";
+import { AddButton, IconAction, RowActions, SubtleButton } from "./actions";
 import { EmptyState } from "./empty-state";
-import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
+import { Panel, PanelBody, PanelFooter, PanelHeader, SectionHeading, SectionLabel } from "./panel";
 
 interface CurrentStateCardProps {
   bankBalance: number;
@@ -34,95 +33,98 @@ export function CurrentStateCard({
     <Panel className="flex h-full flex-col">
       <PanelHeader
         icon={<Wallet />}
-        accent="violet"
         title="Current position"
         description="What you hold today, and what is already owed against it."
       />
 
-      <PanelBody className="flex flex-1 flex-col gap-7">
-        <div className="wash wash-emerald flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+      <PanelBody className="flex flex-1 flex-col gap-6">
+        <div className="flex items-end justify-between gap-4 border-b border-line pb-5">
           <div className="min-w-0">
-            <SectionLabel className="text-tone-emerald">Bank account</SectionLabel>
-            <p className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-[28px]">
-              <AnimatedCurrency value={bankBalance} />
+            <SectionLabel>Bank account</SectionLabel>
+            <p className="mt-2 font-display text-[2rem] leading-none tracking-tight text-fg">
+              {formatCurrency(bankBalance)}
             </p>
           </div>
           <SubtleButton onClick={onEditBankBalance}>Edit</SubtleButton>
         </div>
 
         <section>
-          <div className="mb-3.5 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <h3 className="text-sm font-medium text-ink">Credit cards</h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
-                {formatCurrency(summary.creditCardDebt)}
-              </span>
-            </div>
-            <AddButton label="Add card" onClick={onAddCreditCard} />
-          </div>
+          <SectionHeading
+            title="Credit cards"
+            total={formatCurrency(summary.creditCardDebt)}
+            action={<AddButton label="Add card" onClick={onAddCreditCard} />}
+          />
 
-          {creditCards.length === 0 ? (
-            <EmptyState>No credit cards yet</EmptyState>
-          ) : (
-            <ul className="space-y-2.5">
-              {creditCards.map((card) => {
-                const used = creditUtilization(card);
-                return (
-                  <li key={card.id} className="surface-quiet relative px-4 py-3.5">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="flex min-w-0 items-center gap-2.5 text-sm text-ink">
-                        <CreditCardIcon className="size-4 shrink-0 text-ink-ghost" />
-                        <span className="truncate">{card.name}</span>
-                      </span>
-                      <span className="flex shrink-0 items-center gap-1.5">
-                        <span className="num text-sm text-ink-muted">
+          <div className="mt-3">
+            {creditCards.length === 0 ? (
+              <EmptyState>No credit cards yet</EmptyState>
+            ) : (
+              <ul>
+                {creditCards.map((card) => {
+                  const used = creditUtilization(card);
+                  const hot = used > 0.7;
+                  return (
+                    <li
+                      key={card.id}
+                      data-row
+                      className="border-t border-line py-3 first:border-t-0 first:pt-0"
+                    >
+                      <div className="flex items-center gap-3">
+                        <CreditCardIcon className="size-4 shrink-0 text-fg-subtle" />
+                        <span className="min-w-0 flex-1 truncate text-[13px] text-fg">
+                          {card.name}
+                        </span>
+                        <span className="tnum text-[13px] text-fg">
                           {formatCurrency(card.balance)}
                         </span>
-                        <ChargeButton
-                          label={`Add to ${card.name}`}
-                          onClick={() => onAddCharge(card)}
-                        />
-                        <EditButton
-                          label={`Edit ${card.name}`}
-                          onClick={() => onEditCreditCard(card)}
-                        />
-                      </span>
-                    </div>
-                    <RemoveBadge
-                      label={`Remove ${card.name}`}
-                      onClick={() => onRemoveCreditCard(card.id)}
-                    />
-                    <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-chip">
-                      <div
-                        className={cn(
-                          "meter h-full rounded-full transition-[width] duration-700",
-                          used > 0.7 ? "meter-fill-hot" : "meter-fill",
-                        )}
-                        style={{ width: formatPercent(used) }}
-                      />
-                    </div>
-                    <p className="num mt-2 text-[11px] text-ink-ghost">
-                      {formatPercent(used)} of {formatWholeCurrency(card.limit)} limit
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+                        <RowActions>
+                          <IconAction
+                            icon={<Plus />}
+                            label={`Add a charge to ${card.name}`}
+                            onClick={() => onAddCharge(card)}
+                          />
+                          <IconAction
+                            icon={<Pencil />}
+                            label={`Edit ${card.name}`}
+                            onClick={() => onEditCreditCard(card)}
+                          />
+                          <IconAction
+                            icon={<Trash2 />}
+                            label={`Remove ${card.name}`}
+                            onClick={() => onRemoveCreditCard(card.id)}
+                            destructive
+                          />
+                        </RowActions>
+                      </div>
 
-        <div
-          className={cn(
-            "mt-auto flex items-center justify-between gap-4 rounded-2xl px-4 py-4",
-            "wash wash-rose",
-          )}
-        >
-          <SectionLabel className="text-tone-rose">Total owed</SectionLabel>
-          <p className="text-xl font-medium tracking-tight text-ink">
-            <AnimatedCurrency value={summary.creditCardDebt} />
-          </p>
-        </div>
+                      <div className="mt-2.5 flex items-center gap-3">
+                        <span className="h-[3px] flex-1 overflow-hidden rounded-[2px] bg-surface-3">
+                          <span
+                            className={cn(
+                              "block h-full rounded-[2px]",
+                              hot ? "bg-neg" : "bg-brand",
+                            )}
+                            style={{ width: formatPercent(used) }}
+                          />
+                        </span>
+                        <span className="tnum text-[11px] whitespace-nowrap text-fg-subtle">
+                          {formatPercent(used)} of {formatWholeCurrency(card.limit)}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </section>
       </PanelBody>
+
+      <PanelFooter label="Total owed">
+        <p className="font-display text-[1.5rem] leading-none tracking-tight text-fg">
+          {formatCurrency(summary.creditCardDebt)}
+        </p>
+      </PanelFooter>
     </Panel>
   );
 }

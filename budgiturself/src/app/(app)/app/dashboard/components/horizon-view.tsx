@@ -1,10 +1,7 @@
-"use client";
-
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AnimatedCurrency } from "./animated-number";
 import { SectionLabel } from "./panel";
 
 interface HorizonViewProps {
@@ -15,110 +12,101 @@ interface HorizonViewProps {
 
 export function HorizonView({ bankBalance, monthlyIncome, summary }: HorizonViewProps) {
   const clear = summary.horizonView >= 0;
-  const totalIncoming = bankBalance + monthlyIncome;
 
-  // Allocation ribbon: the same figures the summary already computed, laid out
-  // against whichever is larger — what comes in, or what is spoken for.
-  const scale = Math.max(monthlyIncome, summary.fixedExpensesTotal + summary.creditCardDebt, 1);
+  /**
+   * Everything is measured against what you actually have coming in, so the
+   * four rows are the Horizon View equation itself and add up to 100%. When
+   * the outgoings overrun it the bar simply fills — the leftover row goes red
+   * and reports the same shortfall as the headline.
+   */
+  const totalIncoming = Math.max(bankBalance + monthlyIncome, 1);
   const segments = [
+    { label: "Expenses", value: summary.monthlyExpensesTotal, color: "var(--cat-violet)" },
+    { label: "Bills", value: summary.monthlyBillsTotal, color: "var(--cat-sky)" },
+    { label: "Credit cards", value: summary.creditCardDebt, color: "var(--cat-amber)" },
     {
-      label: "Expenses",
-      value: summary.monthlyExpensesTotal,
-      bar: "ribbon wash-violet",
-      dot: "bg-tone-violet",
+      label: clear ? "Left over" : "Shortfall",
+      value: summary.horizonView,
+      color: clear ? "var(--app-pos)" : "var(--app-neg)",
     },
-    {
-      label: "Bills",
-      value: summary.monthlyBillsTotal,
-      bar: "ribbon wash-sky",
-      dot: "bg-tone-sky",
-    },
-    {
-      label: "Credit cards",
-      value: summary.creditCardDebt,
-      bar: "ribbon wash-amber",
-      dot: "bg-tone-amber",
-    },
-    clear || summary.safeToSpend >= 0
-      ? {
-          label: "Left over",
-          value: Math.max(summary.safeToSpend, 0),
-          bar: "ribbon wash-emerald",
-          dot: "bg-tone-emerald",
-        }
-      : {
-          label: "Shortfall",
-          value: Math.abs(summary.safeToSpend),
-          bar: "ribbon wash-rose",
-          dot: "bg-tone-rose",
-        },
-  ].filter((segment) => segment.value > 0);
+  ].filter((segment) => segment.value !== 0);
 
   return (
-    <section className="surface px-5 py-8 sm:px-8 sm:py-10">
-      <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
-        <div>
-          <div className="flex flex-wrap items-center gap-3">
-            <SectionLabel>The Horizon View</SectionLabel>
-            <span
-              className={cn(
-                "wash inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium",
-                clear ? "wash-emerald text-tone-emerald" : "wash-rose text-tone-rose",
-              )}
-            >
-              {clear ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
-              {clear ? "Leftover" : "Short this month"}
-            </span>
-          </div>
+    <section className="app-card grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="px-5 py-6 sm:px-8 sm:py-8">
+        <SectionLabel>The Horizon View</SectionLabel>
 
-          <p
-            className={cn(
-              "mt-4 text-[2.75rem] leading-[1.05] font-semibold tracking-tight sm:text-6xl",
-              clear ? "text-ink" : "text-tone-rose",
-            )}
-          >
-            <AnimatedCurrency value={summary.horizonView} duration={1400} />
-          </p>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-faint">
-            This is what you&apos;re on track to have available at the beginning of the month, after
-            all your bills and expenses are accounted for.
-          </p>
+        <p
+          className={cn(
+            "mt-4 font-display text-[3.25rem] leading-none tracking-tight sm:text-[4rem]",
+            clear ? "text-fg" : "text-neg",
+          )}
+        >
+          {formatCurrency(summary.horizonView)}
+        </p>
+
+        <p
+          className={cn(
+            "mt-3 flex items-center gap-1.5 text-[13px] font-medium",
+            clear ? "text-pos" : "text-neg",
+          )}
+        >
+          {clear ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
+          {clear ? "Projected leftover" : "Projected shortfall"}
+        </p>
+
+        <p className="mt-5 max-w-sm text-[13px] leading-relaxed text-fg-muted">
+          What you&apos;re on track to have available at the beginning of the month, once every bill
+          and expense has been accounted for.
+        </p>
+      </div>
+
+      <div className="border-t border-line px-5 py-6 sm:px-8 sm:py-8 lg:border-t-0 lg:border-l">
+        <SectionLabel>Where the month goes</SectionLabel>
+
+        <div className="mt-4 flex h-2 gap-px overflow-hidden rounded-[3px] bg-surface-3">
+          {segments
+            .filter((segment) => segment.value > 0)
+            .map((segment) => (
+              <div
+                key={segment.label}
+                className="h-full shrink-0 first:rounded-l-[3px] last:rounded-r-[3px]"
+                style={{
+                  width: `${(segment.value / totalIncoming) * 100}%`,
+                  backgroundColor: segment.color,
+                }}
+              />
+            ))}
         </div>
 
-        {segments.length > 0 && (
-          <div>
-            <SectionLabel>Monthly income breakdown</SectionLabel>
-            <p className="mt-1.5 text-xs text-ink-ghost">
-              <span className="num text-ink-faint">{formatCurrency(totalIncoming)}</span>{" "}
-              <span className="text-[11px]">
-                ({formatCurrency(bankBalance)} liquid + {formatCurrency(monthlyIncome)} income)
+        <ul className="mt-4">
+          {segments.map((segment) => (
+            <li
+              key={segment.label}
+              className="flex items-center gap-3 border-t border-line py-2.5 text-[13px] first:border-t-0 first:pt-0"
+            >
+              <span
+                aria-hidden
+                className="size-2 shrink-0 rounded-[2px]"
+                style={{ backgroundColor: segment.color }}
+              />
+              <span className="flex-1 text-fg">{segment.label}</span>
+              <span className="tnum w-10 text-right text-fg-subtle">
+                {Math.round((Math.abs(segment.value) / totalIncoming) * 100)}%
               </span>
-            </p>
-            <div className="mt-3 flex h-3 gap-1 overflow-hidden rounded-full bg-chip">
-              {segments.map((segment) => (
-                <div
-                  key={segment.label}
-                  className={cn("h-full rounded-full transition-[width] duration-700", segment.bar)}
-                  style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
-                />
-              ))}
-            </div>
-            <ul className="mt-4 space-y-2.5">
-              {segments.map((segment) => (
-                <li key={segment.label} className="flex items-center gap-2 text-sm text-ink-faint">
-                  <span className={cn("size-2 shrink-0 rounded-full", segment.dot)} />
-                  <span className="flex-1">{segment.label}</span>
-                  <span className="num text-ink-ghost">
-                    {Math.round((segment.value / scale) * 100)}%
-                  </span>
-                  <span className="num w-20 text-right text-ink">
-                    {formatCurrency(segment.value)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+              <span className={cn("tnum w-24 text-right", clear ? "text-fg" : "text-fg")}>
+                {formatCurrency(Math.abs(segment.value))}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-4 border-t border-line pt-3 text-[12px] leading-relaxed text-fg-subtle">
+          Measured against{" "}
+          <span className="tnum text-fg-muted">{formatCurrency(bankBalance + monthlyIncome)}</span>{" "}
+          in play — {formatCurrency(bankBalance)} liquid plus {formatCurrency(monthlyIncome)}{" "}
+          income.
+        </p>
       </div>
     </section>
   );

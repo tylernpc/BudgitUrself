@@ -21,9 +21,8 @@ import type { Bill, BillType, CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
-const selectContentClass =
-  "rounded-xl border-hairline bg-panel text-ink shadow-2xl backdrop-blur-xl";
-const selectItemClass = "rounded-lg text-ink focus:bg-chip focus:text-ink";
+const selectContentClass = "font-ui rounded-lg border-line bg-surface text-fg shadow-lg";
+const selectItemClass = "rounded-md text-[13px] text-fg focus:bg-surface-2 focus:text-fg";
 
 interface BillDialogProps {
   open: boolean;
@@ -96,16 +95,16 @@ export function BillDialog({
     >
       <form key={String(open)} onSubmit={handleSubmit}>
         <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="pt-6">
-          <TabsList className="grid w-full grid-cols-2 items-stretch rounded-xl border border-hairline bg-quiet p-1">
+          <TabsList className="grid w-full grid-cols-2 items-stretch rounded-lg border border-line bg-surface-2 p-1">
             <TabsTrigger
               value="digital"
-              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
+              className="rounded-md text-[13px] text-fg-muted transition-colors data-[state=active]:bg-surface data-[state=active]:text-fg data-[state=active]:shadow-sm"
             >
               Digital bill
             </TabsTrigger>
             <TabsTrigger
               value="personal"
-              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
+              className="rounded-md text-[13px] text-fg-muted transition-colors data-[state=active]:bg-surface data-[state=active]:text-fg data-[state=active]:shadow-sm"
             >
               Personal owed
             </TabsTrigger>

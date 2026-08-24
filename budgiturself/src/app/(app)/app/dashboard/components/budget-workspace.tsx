@@ -31,7 +31,6 @@ import { EditIncomeDialog } from "./edit-income-dialog";
 import { ExpensesCard } from "./expenses-card";
 import { HorizonView } from "./horizon-view";
 import { MonthlyBillsCard } from "./monthly-bills-card";
-import { Reveal } from "./reveal";
 
 type DialogName = "monthlyExpense" | "bill" | "income" | "creditCard" | "bankBalance";
 
@@ -72,62 +71,54 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
       {error && (
         <div
           role="alert"
-          className="reveal mb-6 flex items-start gap-3 rounded-2xl border border-rose-400/25 bg-rose-500/10 px-4 py-3.5 text-sm text-tone-rose backdrop-blur"
+          className="mb-5 flex items-start gap-2.5 rounded-lg border border-l-2 border-line border-l-neg bg-surface px-4 py-3 text-[13px] text-fg"
         >
-          <TriangleAlert className="mt-0.5 size-4 shrink-0" />
+          <TriangleAlert className="mt-0.5 size-4 shrink-0 text-neg" />
           {error}
         </div>
       )}
 
-      <div className="space-y-6">
-        <Reveal delay={80}>
-          <HorizonView
+      <div className="space-y-5">
+        <HorizonView
+          bankBalance={optimisticBudget.bankBalance}
+          monthlyIncome={optimisticBudget.monthlyIncome}
+          summary={summary}
+        />
+
+        <div className="grid items-stretch gap-5 lg:grid-cols-2">
+          <CurrentStateCard
             bankBalance={optimisticBudget.bankBalance}
-            monthlyIncome={optimisticBudget.monthlyIncome}
+            creditCards={optimisticBudget.creditCards}
             summary={summary}
+            onEditBankBalance={() => setOpenDialog("bankBalance")}
+            onAddCreditCard={() => setOpenDialog("creditCard")}
+            onEditCreditCard={setEditingCard}
+            onAddCharge={setChargingCard}
+            onRemoveCreditCard={(id) =>
+              run({ type: "removeCreditCard", id }, () => removeCreditCardAction(id))
+            }
           />
-        </Reveal>
 
-        <div className="grid items-stretch gap-6 lg:grid-cols-2">
-          <Reveal delay={180} className="h-full">
-            <CurrentStateCard
-              bankBalance={optimisticBudget.bankBalance}
-              creditCards={optimisticBudget.creditCards}
-              summary={summary}
-              onEditBankBalance={() => setOpenDialog("bankBalance")}
-              onAddCreditCard={() => setOpenDialog("creditCard")}
-              onEditCreditCard={setEditingCard}
-              onAddCharge={setChargingCard}
-              onRemoveCreditCard={(id) =>
-                run({ type: "removeCreditCard", id }, () => removeCreditCardAction(id))
-              }
-            />
-          </Reveal>
-
-          <Reveal delay={260} className="h-full">
-            <ExpensesCard
-              monthlyIncome={optimisticBudget.monthlyIncome}
-              monthlyExpenses={optimisticBudget.monthlyExpenses}
-              summary={summary}
-              onEditIncome={() => setOpenDialog("income")}
-              onAddExpense={() => setOpenDialog("monthlyExpense")}
-              onEditExpense={setEditingExpense}
-              onRemoveExpense={(id) =>
-                run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
-              }
-            />
-          </Reveal>
+          <ExpensesCard
+            monthlyIncome={optimisticBudget.monthlyIncome}
+            monthlyExpenses={optimisticBudget.monthlyExpenses}
+            summary={summary}
+            onEditIncome={() => setOpenDialog("income")}
+            onAddExpense={() => setOpenDialog("monthlyExpense")}
+            onEditExpense={setEditingExpense}
+            onRemoveExpense={(id) =>
+              run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
+            }
+          />
         </div>
 
-        <Reveal delay={340}>
-          <MonthlyBillsCard
-            summary={summary}
-            creditCards={optimisticBudget.creditCards}
-            onAddBill={() => setOpenDialog("bill")}
-            onEditBill={setEditingBill}
-            onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
-          />
-        </Reveal>
+        <MonthlyBillsCard
+          summary={summary}
+          creditCards={optimisticBudget.creditCards}
+          onAddBill={() => setOpenDialog("bill")}
+          onEditBill={setEditingBill}
+          onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
+        />
       </div>
 
       <div
@@ -136,8 +127,8 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
           isPending ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
         }`}
       >
-        <span className="flex items-center gap-2 rounded-full border border-hairline bg-panel px-4 py-2 text-xs text-ink-muted shadow-2xl backdrop-blur-xl">
-          <Loader2 className={`size-3.5 text-tone-cyan ${isPending ? "animate-spin" : ""}`} />
+        <span className="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-1.5 text-[12px] text-fg-muted shadow-[var(--app-card-shadow)]">
+          <Loader2 className={`size-3 text-fg-subtle ${isPending ? "animate-spin" : ""}`} />
           {isPending ? "Saving changes" : ""}
         </span>
       </div>

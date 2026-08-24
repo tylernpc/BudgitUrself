@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,18 +11,19 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { controlClass } from "./actions";
 
 /**
- * Dark-glass shell for every dashboard dialog. Radix portals the content to
- * `document.body`, outside any themed wrapper, so the treatment is applied with
- * explicit classes rather than a `dark:` variant.
+ * Shell for every dashboard dialog. Radix portals the content to
+ * `document.body`, outside the app shell, so the type and surface tokens are
+ * applied here explicitly rather than inherited.
  */
 export const fieldClass =
-  "h-10 rounded-xl border-hairline bg-quiet text-ink transition-colors placeholder:text-ink-ghost focus-visible:border-tone-cyan focus-visible:ring-tone-cyan/25";
+  "h-9 rounded-md border-line bg-surface px-3 text-[13px] text-fg shadow-none md:text-[13px] transition-colors placeholder:text-fg-subtle focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-brand/30";
 
 export function FieldLabel({ htmlFor, children }: { htmlFor: string; children: ReactNode }) {
   return (
-    <Label htmlFor={htmlFor} className="text-[13px] font-medium text-ink-muted">
+    <Label htmlFor={htmlFor} className="text-[12px] font-medium text-fg-muted">
       {children}
     </Label>
   );
@@ -49,14 +49,15 @@ export function BudgetDialog({
       <DialogContent
         onOpenAutoFocus={(event) => event.preventDefault()}
         className={cn(
-          "max-w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-3xl border-hairline sm:max-w-md",
-          "bg-panel p-6 text-ink",
-          "shadow-[0_50px_140px_-50px_var(--dash-modal-shadow)] backdrop-blur-2xl",
+          "gap-0 overflow-hidden rounded-xl border-line bg-surface p-6 font-ui text-fg sm:max-w-md",
+          "shadow-[var(--app-modal-shadow)]",
         )}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-medium tracking-tight text-ink">{title}</DialogTitle>
-          <DialogDescription className="text-[13px] leading-relaxed text-ink-faint">
+          <DialogTitle className="text-[15px] font-semibold tracking-tight text-fg">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-[13px] leading-relaxed text-fg-muted">
             {description}
           </DialogDescription>
         </DialogHeader>
@@ -74,21 +75,16 @@ export function DialogActions({
   submitLabel: string;
 }) {
   return (
-    <DialogFooter className="mt-6 gap-2">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={onCancel}
-        className="h-10 rounded-xl border border-hairline bg-quiet text-ink-muted hover:bg-chip hover:text-ink"
-      >
+    <DialogFooter className="-mx-6 mt-6 -mb-6 gap-2 border-t border-line bg-surface-2 px-6 py-4">
+      <button type="button" onClick={onCancel} className={`${controlClass} h-9 px-3.5`}>
         Cancel
-      </Button>
-      <Button
+      </button>
+      <button
         type="submit"
-        className="h-10 rounded-xl bg-tone-sky font-medium text-canvas shadow-lg shadow-tone-sky/30 transition-opacity hover:bg-tone-sky hover:opacity-90"
+        className="inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-fg px-3.5 text-[13px] font-medium text-app transition-opacity outline-none hover:opacity-90 focus-visible:ring-2 focus-visible:ring-brand/40"
       >
         {submitLabel}
-      </Button>
+      </button>
     </DialogFooter>
   );
 }

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
-import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
-import { Reveal } from "./components/reveal";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -16,25 +14,19 @@ export default async function DashboardPage() {
   const greetingName = user.firstName;
 
   return (
-    <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
-      <AuroraBackdrop />
+    <div className="min-h-screen bg-app font-ui text-fg selection:bg-brand/15">
+      <DashboardHeader firstName={user.firstName} lastName={user.lastName} email={user.email} />
 
-      <div className="relative z-10">
-        <DashboardHeader firstName={user.firstName} lastName={user.lastName} email={user.email} />
+      <main className="mx-auto w-full max-w-[74rem] px-4 pt-8 pb-16 sm:px-6 sm:pt-10 lg:px-8">
+        <div className="mb-7 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <h1 className="font-display text-[2rem] leading-none tracking-tight text-fg sm:text-[2.5rem]">
+            {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
+          </h1>
+          <p className="eyebrow">{monthLabel.format(new Date())}</p>
+        </div>
 
-        <main className="mx-auto max-w-7xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 lg:px-8">
-          <Reveal className="mb-9 sm:mb-12">
-            <p className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
-              {monthLabel.format(new Date())}
-            </p>
-            <h1 className="mt-3 text-[2rem] leading-tight font-semibold tracking-tight text-ink sm:text-[2.75rem]">
-              {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
-            </h1>
-          </Reveal>
-
-          <BudgetWorkspace budget={budget} />
-        </main>
-      </div>
+        <BudgetWorkspace budget={budget} />
+      </main>
     </div>
   );
 }

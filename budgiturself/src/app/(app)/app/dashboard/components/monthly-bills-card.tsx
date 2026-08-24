@@ -1,12 +1,18 @@
-import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
+import {
+  CalendarClock,
+  CreditCard as CreditCardIcon,
+  Pencil,
+  Receipt,
+  Trash2,
+  Users,
+} from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { Bill, CreditCard, DigitalBill, PersonalBill } from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, EditButton, RemoveBadge } from "./actions";
-import { AnimatedCurrency } from "./animated-number";
+import { AddButton, IconAction, RowActions } from "./actions";
 import { EmptyState } from "./empty-state";
-import { Panel, PanelBody, PanelHeader, SectionLabel } from "./panel";
+import { Panel, PanelFooter, PanelHeader, SectionHeading } from "./panel";
 
 interface MonthlyBillsCardProps {
   summary: BudgetSummary;
@@ -16,26 +22,20 @@ interface MonthlyBillsCardProps {
   onRemoveBill: (id: string) => void;
 }
 
-/** The charge-day chip that anchors each row — bills arrive already date-sorted. */
-function DayChip({ day, tint }: { day: number; tint: string }) {
+/** The charge-day tile that anchors each row — bills arrive already date-sorted. */
+function DayTile({ day }: { day: number }) {
   return (
-    <span
-      className={cn(
-        "grid size-11 shrink-0 place-content-center justify-items-center rounded-xl ring-1",
-        tint,
-      )}
-    >
-      <span className="text-[9px] tracking-[0.14em] text-ink-ghost uppercase">day</span>
-      <span className="num text-sm leading-tight font-medium text-ink">{day}</span>
+    <span className="grid size-10 shrink-0 place-content-center justify-items-center rounded-md border border-line bg-surface-2">
+      <span className="text-[9px] leading-none tracking-[0.1em] text-fg-subtle uppercase">day</span>
+      <span className="tnum mt-0.5 text-[13px] leading-none font-medium text-fg">{day}</span>
     </span>
   );
 }
 
 function BillRow({
   day,
-  tint,
   name,
-  badge,
+  qualifier,
   meta,
   amount,
   onEdit,
@@ -43,9 +43,8 @@ function BillRow({
   actionLabel,
 }: {
   day: number;
-  tint: string;
   name: string;
-  badge?: string;
+  qualifier?: string;
   meta: React.ReactNode;
   amount: number;
   onEdit: () => void;
@@ -53,84 +52,52 @@ function BillRow({
   actionLabel: string;
 }) {
   return (
-    <li className="surface-quiet relative flex items-center gap-3 px-3 py-3 sm:px-3.5">
-      <DayChip day={day} tint={tint} />
+    <li data-row className="flex items-center gap-3 border-t border-line py-3 first:border-t-0">
+      <DayTile day={day} />
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <h4 className="truncate text-sm font-medium text-ink">{name}</h4>
-          {badge && (
-            <span className="rounded-full bg-chip px-2 py-0.5 text-[10px] text-ink-faint ring-1 ring-hairline">
-              {badge}
-            </span>
-          )}
-        </div>
-        <p className="mt-1 flex items-center gap-1.5 text-[11px] text-ink-ghost">{meta}</p>
+        <h4 className="truncate text-[13px] font-medium text-fg">
+          {name}
+          {qualifier && <span className="font-normal text-fg-subtle"> · {qualifier}</span>}
+        </h4>
+        <p className="mt-1 flex items-center gap-1.5 text-[11px] text-fg-subtle [&_svg]:size-3">
+          {meta}
+        </p>
       </div>
-      <span className="flex shrink-0 items-center gap-1.5">
-        <span className="num text-sm text-ink-muted">{formatCurrency(amount)}</span>
-        <EditButton label={`Edit ${actionLabel}`} onClick={onEdit} />
-      </span>
-      <RemoveBadge label={`Remove ${actionLabel}`} onClick={onRemove} />
+      <span className="tnum text-[13px] text-fg">{formatCurrency(amount)}</span>
+      <RowActions>
+        <IconAction icon={<Pencil />} label={`Edit ${actionLabel}`} onClick={onEdit} />
+        <IconAction
+          icon={<Trash2 />}
+          label={`Remove ${actionLabel}`}
+          onClick={onRemove}
+          destructive
+        />
+      </RowActions>
     </li>
   );
 }
 
-function DigitalBillRow({
-  bill,
-  cardName,
-  onEdit,
-  onRemove,
+function BillColumn({
+  className,
+  icon,
+  title,
+  total,
+  blurb,
+  children,
 }: {
-  bill: DigitalBill;
-  cardName: string;
-  onEdit: () => void;
-  onRemove: () => void;
+  className?: string;
+  icon: React.ReactNode;
+  title: string;
+  total: string;
+  blurb: string;
+  children: React.ReactNode;
 }) {
   return (
-    <BillRow
-      day={bill.chargeDate}
-      tint="bg-tone-indigo/12 ring-tone-indigo/25"
-      name={bill.name}
-      badge={bill.category}
-      meta={
-        <>
-          <CreditCardIcon className="size-3" />
-          {cardName}
-        </>
-      }
-      amount={bill.amount}
-      onEdit={onEdit}
-      onRemove={onRemove}
-      actionLabel={bill.name}
-    />
-  );
-}
-
-function PersonalBillRow({
-  bill,
-  onEdit,
-  onRemove,
-}: {
-  bill: PersonalBill;
-  onEdit: () => void;
-  onRemove: () => void;
-}) {
-  return (
-    <BillRow
-      day={bill.chargeDate}
-      tint="bg-tone-amber/12 ring-tone-amber/25"
-      name={bill.name}
-      meta={
-        <>
-          <Users className="size-3" />
-          Owed to {bill.owedTo}
-        </>
-      }
-      amount={bill.amount}
-      onEdit={onEdit}
-      onRemove={onRemove}
-      actionLabel={bill.name}
-    />
+    <section className={cn("px-5 py-5 sm:px-6", className)}>
+      <SectionHeading icon={icon} title={title} total={total} />
+      <p className="mt-2 max-w-prose text-[12px] leading-relaxed text-fg-subtle">{blurb}</p>
+      <div className="mt-3">{children}</div>
+    </section>
   );
 }
 
@@ -144,86 +111,85 @@ export function MonthlyBillsCard({
   const cardNames = new Map(creditCards.map((card) => [card.id, card.name]));
 
   return (
-    <Panel>
+    <Panel className="flex flex-col">
       <PanelHeader
         icon={<CalendarClock />}
-        accent="cyan"
         title="Monthly bills"
         description="The recurring charges behind your expenses — what leaves, and on which day."
         action={<AddButton label="Add bill" onClick={onAddBill} />}
       />
 
-      <PanelBody className="space-y-8">
-        <div className="grid gap-8 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-10 lg:gap-y-0">
-          <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <div className="mb-3.5 flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
-                <Receipt className="size-4 text-tone-indigo" />
-                Digital bills
-              </h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
-                {formatCurrency(summary.digitalBillsTotal)}
-              </span>
-            </div>
-            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
-              Subscriptions and services that charge a card on their own schedule — streaming,
-              software, the gym app.
-            </p>
-            {summary.digitalBills.length === 0 ? (
-              <EmptyState>No subscriptions tracked yet</EmptyState>
-            ) : (
-              <ul className="space-y-3.5">
-                {summary.digitalBills.map((bill) => (
-                  <DigitalBillRow
-                    key={bill.id}
-                    bill={bill}
-                    cardName={cardNames.get(bill.cardId) ?? ""}
-                    onEdit={() => onEditBill(bill)}
-                    onRemove={() => onRemoveBill(bill.id)}
-                  />
-                ))}
-              </ul>
-            )}
-          </section>
+      <div className="grid lg:grid-cols-2">
+        <BillColumn
+          icon={<Receipt />}
+          title="Digital bills"
+          total={formatCurrency(summary.digitalBillsTotal)}
+          blurb="Subscriptions and services that charge a card on their own schedule — streaming, software, the gym app."
+        >
+          {summary.digitalBills.length === 0 ? (
+            <EmptyState>No subscriptions tracked yet</EmptyState>
+          ) : (
+            <ul>
+              {summary.digitalBills.map((bill: DigitalBill) => (
+                <BillRow
+                  key={bill.id}
+                  day={bill.chargeDate}
+                  name={bill.name}
+                  qualifier={bill.category}
+                  meta={
+                    <>
+                      <CreditCardIcon />
+                      {cardNames.get(bill.cardId) ?? ""}
+                    </>
+                  }
+                  amount={bill.amount}
+                  onEdit={() => onEditBill(bill)}
+                  onRemove={() => onRemoveBill(bill.id)}
+                  actionLabel={bill.name}
+                />
+              ))}
+            </ul>
+          )}
+        </BillColumn>
 
-          <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <div className="mb-3.5 flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
-                <Users className="size-4 text-tone-amber" />
-                Personal owed bills
-              </h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
-                {formatCurrency(summary.personalBillsTotal)}
-              </span>
-            </div>
-            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
-              Money you owe a person each month — paying a family member back for a shared
-              membership, say.
-            </p>
-            {summary.personalBills.length === 0 ? (
-              <EmptyState>Nobody to pay back right now</EmptyState>
-            ) : (
-              <ul className="space-y-3.5">
-                {summary.personalBills.map((bill) => (
-                  <PersonalBillRow
-                    key={bill.id}
-                    bill={bill}
-                    onEdit={() => onEditBill(bill)}
-                    onRemove={() => onRemoveBill(bill.id)}
-                  />
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
+        <BillColumn
+          className="border-t border-line lg:border-t-0 lg:border-l"
+          icon={<Users />}
+          title="Personal owed bills"
+          total={formatCurrency(summary.personalBillsTotal)}
+          blurb="Money you owe a person each month — paying a family member back for a shared membership, say."
+        >
+          {summary.personalBills.length === 0 ? (
+            <EmptyState>Nobody to pay back right now</EmptyState>
+          ) : (
+            <ul>
+              {summary.personalBills.map((bill: PersonalBill) => (
+                <BillRow
+                  key={bill.id}
+                  day={bill.chargeDate}
+                  name={bill.name}
+                  meta={
+                    <>
+                      <Users />
+                      Owed to {bill.owedTo}
+                    </>
+                  }
+                  amount={bill.amount}
+                  onEdit={() => onEditBill(bill)}
+                  onRemove={() => onRemoveBill(bill.id)}
+                  actionLabel={bill.name}
+                />
+              ))}
+            </ul>
+          )}
+        </BillColumn>
+      </div>
 
-        <div className="wash wash-indigo flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
-          <SectionLabel className="text-tone-indigo">Total monthly bills</SectionLabel>
-          <p className="text-xl font-medium tracking-tight text-ink">
-            <AnimatedCurrency value={summary.monthlyBillsTotal} />
-          </p>
-        </div>
-      </PanelBody>
+      <PanelFooter label="Total monthly bills">
+        <p className="font-display text-[1.5rem] leading-none tracking-tight text-fg">
+          {formatCurrency(summary.monthlyBillsTotal)}
+        </p>
+      </PanelFooter>
     </Panel>
   );
 }

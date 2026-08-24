@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { controlClass } from "./actions";
 import { SettingsDialog } from "./settings-dialog";
 
 interface SettingsButtonProps {
@@ -16,15 +16,14 @@ export function SettingsButton({ firstName, lastName, email }: SettingsButtonPro
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="icon"
+      <button
+        type="button"
         onClick={() => setOpen(true)}
-        className="size-9 rounded-full border border-hairline bg-quiet text-ink-muted transition-colors hover:bg-chip hover:text-ink"
+        className={`${controlClass} size-8`}
+        aria-label="Settings"
       >
-        <Settings className="size-4" />
-        <span className="sr-only">Settings</span>
-      </Button>
+        <Settings className="size-3.5" />
+      </button>
 
       <SettingsDialog
         open={open}

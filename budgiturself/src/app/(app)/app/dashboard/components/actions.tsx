@@ -1,11 +1,10 @@
-import { Pencil, Plus, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import type { ReactNode } from "react";
+import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const glass =
-  "border border-hairline bg-quiet text-ink-muted backdrop-blur transition-colors hover:border-hairline-strong hover:bg-chip hover:text-ink focus-visible:ring-hairline-strong";
+export const controlClass =
+  "inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-line bg-surface text-[13px] font-medium text-fg-muted transition-colors outline-none hover:border-line-strong hover:bg-surface-2 hover:text-fg focus-visible:ring-2 focus-visible:ring-brand/40 disabled:pointer-events-none disabled:opacity-50";
 
-/** Primary "add a thing" affordance — 36px tall so it stays thumb-friendly. */
 export function AddButton({
   label,
   onClick,
@@ -16,15 +15,10 @@ export function AddButton({
   className?: string;
 }) {
   return (
-    <Button
-      size="sm"
-      variant="ghost"
-      onClick={onClick}
-      className={cn(glass, "h-9 rounded-full px-3.5 text-xs font-medium", className)}
-    >
+    <button type="button" onClick={onClick} className={cn(controlClass, "h-8 px-2.5", className)}>
       <Plus className="size-3.5" />
       {label}
-    </Button>
+    </button>
   );
 }
 
@@ -33,60 +27,44 @@ export function SubtleButton({
   onClick,
   className,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   onClick: () => void;
   className?: string;
 }) {
   return (
-    <Button
-      size="sm"
-      variant="ghost"
-      onClick={onClick}
-      className={cn(glass, "h-8 rounded-full px-3 text-xs font-medium", className)}
-    >
+    <button type="button" onClick={onClick} className={cn(controlClass, "h-8 px-2.5", className)}>
       {children}
-    </Button>
+    </button>
   );
 }
 
-export function ChargeButton({ label, onClick }: { label: string; onClick: () => void }) {
-  return (
-    <Button
-      size="icon"
-      variant="ghost"
-      aria-label={label}
-      onClick={onClick}
-      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
-    >
-      <Plus className="size-3.5" />
-    </Button>
-  );
+/** Holds a row's controls. The row itself needs `data-row` for the hover reveal. */
+export function RowActions({ children }: { children: ReactNode }) {
+  return <span className="row-actions flex shrink-0 items-center gap-0.5">{children}</span>;
 }
 
-export function EditButton({ label, onClick }: { label: string; onClick: () => void }) {
-  return (
-    <Button
-      size="icon"
-      variant="ghost"
-      aria-label={label}
-      onClick={onClick}
-      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
-    >
-      <Pencil className="size-3.5" />
-    </Button>
-  );
-}
-
-/** Sits in a row's top-right corner instead of crowding its trailing content — the row needs `relative`. */
-export function RemoveBadge({ label, onClick }: { label: string; onClick: () => void }) {
+export function IconAction({
+  icon,
+  label,
+  onClick,
+  destructive,
+}: {
+  icon: ReactNode;
+  label: string;
+  onClick: () => void;
+  destructive?: boolean;
+}) {
   return (
     <button
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="absolute -top-2 -right-2 z-10 grid size-5 place-items-center rounded-full bg-tone-rose text-canvas shadow-md shadow-tone-rose/30 transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-tone-rose/50 focus-visible:outline-none"
+      className={cn(
+        "grid size-7 shrink-0 place-items-center rounded-md text-fg-subtle transition-colors outline-none hover:bg-surface-3 focus-visible:ring-2 focus-visible:ring-brand/40 [&_svg]:size-3.5",
+        destructive ? "hover:text-neg" : "hover:text-fg",
+      )}
     >
-      <X className="size-3.5" />
+      {icon}
     </button>
   );
 }
