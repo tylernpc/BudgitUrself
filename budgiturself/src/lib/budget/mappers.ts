@@ -50,6 +50,7 @@ export function toDomainMonthlyExpense(row: MonthlyExpenseRow): MonthlyExpense {
     id: row.id,
     name: row.name,
     amount: row.amount.toNumber(),
+    spent: row.spent.toNumber(),
     // Written only through `monthlyExpenseSchema`, which restricts these to
     // `EXPENSE_ICON_KEYS`/`EXPENSE_COLOR_KEYS` — safe to widen back from the
     // DB's plain `TEXT` columns.
@@ -130,6 +131,7 @@ export function toMonthlyExpenseCreateData(
     userId,
     name: input.name,
     amount: input.amount,
+    spent: input.spent,
     icon: input.icon,
     color: input.color,
   };
@@ -138,7 +140,13 @@ export function toMonthlyExpenseCreateData(
 export function toMonthlyExpenseUpdateData(
   input: MonthlyExpenseUpdateInput,
 ): Prisma.MonthlyExpenseUncheckedUpdateInput {
-  return { name: input.name, amount: input.amount, icon: input.icon, color: input.color };
+  return {
+    name: input.name,
+    amount: input.amount,
+    spent: input.spent,
+    icon: input.icon,
+    color: input.color,
+  };
 }
 
 const billTypeToRow: Record<Bill["type"], BillTypeRow> = {

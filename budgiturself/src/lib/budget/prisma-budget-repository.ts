@@ -21,6 +21,7 @@ import type {
   CreditCardChargeInput,
   CreditCardInput,
   CreditCardUpdateInput,
+  MonthlyExpenseContributionInput,
   MonthlyExpenseInput,
   MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
@@ -92,6 +93,13 @@ class PrismaBudgetRepository implements BudgetRepository {
     await db.monthlyExpense.updateMany({
       where: { id: input.id, userId },
       data: toMonthlyExpenseUpdateData(input),
+    });
+  }
+
+  async addMonthlyExpenseContribution(userId: string, input: MonthlyExpenseContributionInput) {
+    await db.monthlyExpense.updateMany({
+      where: { id: input.id, userId },
+      data: { spent: { increment: input.amount } },
     });
   }
 

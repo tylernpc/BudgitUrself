@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { byChargeDate, creditUtilization, summarizeBudget } from "./calculations";
+import { byChargeDate, summarizeBudget, utilization } from "./calculations";
 import type { Budget } from "./types";
 
 const budget: Budget = {
@@ -9,7 +9,9 @@ const budget: Budget = {
     { id: "a", name: "A", balance: 200, limit: 1000 },
     { id: "b", name: "B", balance: 300, limit: 2000 },
   ],
-  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200, icon: "home", color: "violet" }],
+  monthlyExpenses: [
+    { id: "m1", name: "Rent", amount: 1200, spent: 0, icon: "home", color: "violet" },
+  ],
   bills: [
     {
       id: "b1",
@@ -71,13 +73,13 @@ describe("byChargeDate", () => {
   });
 });
 
-describe("creditUtilization", () => {
+describe("utilization", () => {
   it("returns the used fraction of the limit", () => {
-    expect(creditUtilization({ balance: 250, limit: 1000 })).toBe(0.25);
+    expect(utilization(250, 1000)).toBe(0.25);
   });
 
   it("caps at 100% and handles a missing limit", () => {
-    expect(creditUtilization({ balance: 2000, limit: 1000 })).toBe(1);
-    expect(creditUtilization({ balance: 100, limit: 0 })).toBe(0);
+    expect(utilization(2000, 1000)).toBe(1);
+    expect(utilization(100, 0)).toBe(0);
   });
 });

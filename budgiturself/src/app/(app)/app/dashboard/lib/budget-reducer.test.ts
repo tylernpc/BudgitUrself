@@ -6,7 +6,9 @@ const budget: Budget = {
   bankBalance: 1000,
   monthlyIncome: 4000,
   creditCards: [{ id: "a", name: "A", balance: 200, limit: 1000 }],
-  monthlyExpenses: [{ id: "m1", name: "Rent", amount: 1200, icon: "home", color: "violet" }],
+  monthlyExpenses: [
+    { id: "m1", name: "Rent", amount: 1200, spent: 0, icon: "home", color: "violet" },
+  ],
   bills: [{ id: "b1", name: "Gym", amount: 20, chargeDate: 5, type: "personal", owedTo: "Dad" }],
 };
 
@@ -45,19 +47,26 @@ describe("budgetReducer", () => {
     expect(removed.creditCards).toEqual([]);
   });
 
-  it("adds, updates and removes a monthly expense", () => {
+  it("adds, updates, contributes to and removes a monthly expense", () => {
     const added = budgetReducer(budget, {
       type: "addMonthlyExpense",
       id: "new",
-      input: { name: "Groceries", amount: 300, icon: "shopping-bag", color: "emerald" },
+      input: { name: "Groceries", amount: 300, spent: 0, icon: "shopping-bag", color: "emerald" },
     });
     expect(added.monthlyExpenses.map((e) => e.id)).toEqual(["m1", "new"]);
 
     const updated = budgetReducer(budget, {
       type: "updateMonthlyExpense",
-      input: { id: "m1", name: "Rent", amount: 1250, icon: "home", color: "violet" },
+      input: { id: "m1", name: "Rent", amount: 1250, spent: 0, icon: "home", color: "violet" },
     });
     expect(updated.monthlyExpenses[0]?.amount).toBe(1250);
+
+    const contributed = budgetReducer(budget, {
+      type: "addMonthlyExpenseContribution",
+      id: "m1",
+      amount: 80,
+    });
+    expect(contributed.monthlyExpenses[0]?.spent).toBe(80);
 
     const removed = budgetReducer(budget, { type: "removeMonthlyExpense", id: "m1" });
     expect(removed.monthlyExpenses).toEqual([]);

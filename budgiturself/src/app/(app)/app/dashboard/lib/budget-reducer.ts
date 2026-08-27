@@ -24,6 +24,7 @@ export type OptimisticBudgetAction =
   | { type: "removeCreditCard"; id: string }
   | { type: "addMonthlyExpense"; id: string; input: MonthlyExpenseInput }
   | { type: "updateMonthlyExpense"; input: MonthlyExpenseUpdateInput }
+  | { type: "addMonthlyExpenseContribution"; id: string; amount: number }
   | { type: "removeMonthlyExpense"; id: string }
   | { type: "addBill"; id: string; input: BillInput }
   | { type: "updateBill"; input: BillUpdateInput }
@@ -76,6 +77,14 @@ export function budgetReducer(budget: Budget, action: OptimisticBudgetAction): B
         ...budget,
         monthlyExpenses: budget.monthlyExpenses.map((expense) =>
           expense.id === action.input.id ? action.input : expense,
+        ),
+      };
+
+    case "addMonthlyExpenseContribution":
+      return {
+        ...budget,
+        monthlyExpenses: budget.monthlyExpenses.map((expense) =>
+          expense.id === action.id ? { ...expense, spent: expense.spent + action.amount } : expense,
         ),
       };
 

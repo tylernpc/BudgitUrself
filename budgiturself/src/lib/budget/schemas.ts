@@ -24,15 +24,23 @@ const name = z.string().trim().min(1, "Required").max(80);
 const amount = z.coerce.number().positive("Enter an amount above zero").max(9_999_999);
 const chargeDate = z.coerce.number().int().min(1, "Day must be 1-31").max(31, "Day must be 1-31");
 
+const spent = z.coerce.number().min(0).max(9_999_999);
+
 export const monthlyExpenseSchema = z.object({
   name,
   amount,
+  spent,
   icon: z.enum(EXPENSE_ICON_KEYS),
   color: z.enum(EXPENSE_COLOR_KEYS),
 });
 
 export const monthlyExpenseUpdateSchema = monthlyExpenseSchema.extend({
   id: z.string().min(1),
+});
+
+export const monthlyExpenseContributionSchema = z.object({
+  id: z.string().min(1),
+  amount,
 });
 
 export const monthlyIncomeSchema = z.object({
@@ -90,6 +98,7 @@ export const billUpdateSchema = z.discriminatedUnion("type", [
 
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;
 export type MonthlyExpenseUpdateInput = MonthlyExpense;
+export type MonthlyExpenseContributionInput = { id: string; amount: number };
 export type BillInput = DistributiveOmit<Bill, "id">;
 export type BillUpdateInput = Bill;
 export type CreditCardInput = Omit<CreditCard, "id">;

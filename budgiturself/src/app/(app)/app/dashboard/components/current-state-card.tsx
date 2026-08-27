@@ -1,5 +1,5 @@
 import { CreditCard as CreditCardIcon, Wallet } from "lucide-react";
-import { creditUtilization } from "@/lib/budget/calculations";
+import { utilization } from "@/lib/budget/calculations";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { CreditCard } from "@/lib/budget/types";
 import { formatCurrency, formatPercent, formatWholeCurrency } from "@/lib/format";
@@ -66,7 +66,7 @@ export function CurrentStateCard({
           ) : (
             <ul className="space-y-2.5">
               {creditCards.map((card) => {
-                const used = creditUtilization(card);
+                const used = utilization(card.balance, card.limit);
                 return (
                   <li key={card.id} className="surface-quiet relative px-4 py-3.5">
                     <div className="flex items-center justify-between gap-3">

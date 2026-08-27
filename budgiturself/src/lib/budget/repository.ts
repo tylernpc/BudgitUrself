@@ -4,6 +4,7 @@ import type {
   CreditCardChargeInput,
   CreditCardInput,
   CreditCardUpdateInput,
+  MonthlyExpenseContributionInput,
   MonthlyExpenseInput,
   MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
@@ -33,6 +34,10 @@ export interface BudgetRepository {
 
   addMonthlyExpense(userId: string, input: MonthlyExpenseInput): Promise<MonthlyExpense>;
   updateMonthlyExpense(userId: string, input: MonthlyExpenseUpdateInput): Promise<void>;
+  addMonthlyExpenseContribution(
+    userId: string,
+    input: MonthlyExpenseContributionInput,
+  ): Promise<void>;
   removeMonthlyExpense(userId: string, id: string): Promise<void>;
 
   addBill(userId: string, input: BillInput): Promise<Bill>;

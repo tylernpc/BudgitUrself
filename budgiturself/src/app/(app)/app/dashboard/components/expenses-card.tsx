@@ -1,9 +1,10 @@
 import { Receipt, TrendingUp, Users } from "lucide-react";
+import { utilization } from "@/lib/budget/calculations";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { MonthlyExpense } from "@/lib/budget/types";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatPercent, formatWholeCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AddButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
+import { AddButton, ChargeButton, EditButton, RemoveBadge, SubtleButton } from "./actions";
 import { AnimatedCurrency } from "./animated-number";
 import { EmptyState } from "./empty-state";
 import { EXPENSE_COLOR_MAP, ExpenseIcon } from "./expense-icon";
@@ -16,6 +17,7 @@ interface ExpensesCardProps {
   onEditIncome: () => void;
   onAddExpense: () => void;
   onEditExpense: (expense: MonthlyExpense) => void;
+  onAddContribution: (expense: MonthlyExpense) => void;
   onRemoveExpense: (id: string) => void;
 }
 
@@ -54,6 +56,7 @@ export function ExpensesCard({
   onEditIncome,
   onAddExpense,
   onEditExpense,
+  onAddContribution,
   onRemoveExpense,
 }: ExpensesCardProps) {
   const clear = summary.safeToSpend >= 0;
@@ -92,37 +95,65 @@ export function ExpensesCard({
           <ul className="space-y-2">
             {monthlyExpenses.length === 0 && <EmptyState>No fixed expenses yet</EmptyState>}
 
-            {monthlyExpenses.map((expense) => (
-              <li
-                key={expense.id}
-                className="surface-quiet relative flex items-center justify-between gap-3 px-4 py-3"
-              >
-                <span className="flex min-w-0 items-center gap-2.5">
-                  <span
-                    className={cn(
-                      "grid size-7 shrink-0 place-items-center rounded-lg",
-                      EXPENSE_COLOR_MAP[expense.color].bg,
-                    )}
-                  >
-                    <ExpenseIcon icon={expense.icon} color={expense.color} className="size-3.5" />
-                  </span>
-                  <span className="truncate text-sm text-ink">{expense.name}</span>
-                </span>
-                <span className="flex shrink-0 items-center gap-1.5">
-                  <span className="num text-sm text-ink-muted">
-                    {formatCurrency(expense.amount)}
-                  </span>
-                  <EditButton
-                    label={`Edit ${expense.name}`}
-                    onClick={() => onEditExpense(expense)}
+            {monthlyExpenses.map((expense) => {
+              const used = utilization(expense.spent, expense.amount);
+              return (
+                <li
+                  key={expense.id}
+                  className="surface-quiet relative flex flex-col gap-3 px-4 py-3"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="flex min-w-0 items-center gap-2.5">
+                      <span
+                        className={cn(
+                          "grid size-7 shrink-0 place-items-center rounded-lg",
+                          EXPENSE_COLOR_MAP[expense.color].bg,
+                        )}
+                      >
+                        <ExpenseIcon
+                          icon={expense.icon}
+                          color={expense.color}
+                          className="size-3.5"
+                        />
+                      </span>
+                      <span className="truncate text-sm text-ink">{expense.name}</span>
+                    </span>
+                    <span className="flex shrink-0 items-center gap-1.5">
+                      <span className="num text-sm text-ink-muted">
+                        {formatCurrency(expense.amount)}
+                      </span>
+                      <ChargeButton
+                        label={`Add to ${expense.name}`}
+                        onClick={() => onAddContribution(expense)}
+                      />
+                      <EditButton
+                        label={`Edit ${expense.name}`}
+                        onClick={() => onEditExpense(expense)}
+                      />
+                    </span>
+                  </div>
+                  <div>
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-chip">
+                      <div
+                        className={cn(
+                          "meter h-full rounded-full transition-[width] duration-700",
+                          used > 0.7 ? "meter-fill-hot" : "meter-fill",
+                        )}
+                        style={{ width: formatPercent(used) }}
+                      />
+                    </div>
+                    <p className="num mt-2 text-[11px] text-ink-ghost">
+                      {formatWholeCurrency(expense.spent)} of {formatWholeCurrency(expense.amount)}{" "}
+                      used ({formatPercent(used)})
+                    </p>
+                  </div>
+                  <RemoveBadge
+                    label={`Remove ${expense.name}`}
+                    onClick={() => onRemoveExpense(expense.id)}
                   />
-                </span>
-                <RemoveBadge
-                  label={`Remove ${expense.name}`}
-                  onClick={() => onRemoveExpense(expense.id)}
-                />
-              </li>
-            ))}
+                </li>
+              );
+            })}
 
             <RolledUpRow
               icon={<Receipt className="size-3.5 text-tone-cyan" />}

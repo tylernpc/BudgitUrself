@@ -99,6 +99,21 @@ export function MonthlyExpenseDialog({
             />
           </div>
           <div className="space-y-2.5">
+            <FieldLabel htmlFor="monthly-expense-spent">Already spent</FieldLabel>
+            <Input
+              id="monthly-expense-spent"
+              name="spent"
+              type="number"
+              inputMode="decimal"
+              step="0.01"
+              min="0"
+              placeholder="0.00"
+              defaultValue={expense?.spent ?? 0}
+              required
+              className={fieldClass}
+            />
+          </div>
+          <div className="space-y-2.5">
             <FieldLabel htmlFor="monthly-expense-color">Color</FieldLabel>
             <ColorPicker id="monthly-expense-color" value={color} onChange={setColor} />
           </div>

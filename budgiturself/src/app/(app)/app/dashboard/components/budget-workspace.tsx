@@ -9,6 +9,7 @@ import {
   addCreditCardAction,
   addCreditCardChargeAction,
   addMonthlyExpenseAction,
+  addMonthlyExpenseContributionAction,
   removeBillAction,
   removeCreditCardAction,
   removeMonthlyExpenseAction,
@@ -23,6 +24,7 @@ import { budgetReducer, type OptimisticBudgetAction } from "../lib/budget-reduce
 import { BillDialog } from "./bill-dialog";
 import { AddChargeDialog } from "./add-charge-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
+import { AddExpenseContributionDialog } from "./add-expense-contribution-dialog";
 import { MonthlyExpenseDialog } from "./monthly-expense-dialog";
 import { CurrentStateCard } from "./current-state-card";
 import { EditBankBalanceDialog } from "./edit-bank-balance-dialog";
@@ -42,6 +44,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [chargingCard, setChargingCard] = useState<CreditCard | null>(null);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
   const [editingExpense, setEditingExpense] = useState<MonthlyExpense | null>(null);
+  const [chargingExpense, setChargingExpense] = useState<MonthlyExpense | null>(null);
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
   // Reflects the mutation immediately; if the action below fails, revalidatePath
@@ -112,6 +115,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
               onEditIncome={() => setOpenDialog("income")}
               onAddExpense={() => setOpenDialog("monthlyExpense")}
               onEditExpense={setEditingExpense}
+              onAddContribution={setChargingExpense}
               onRemoveExpense={(id) =>
                 run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
               }
@@ -201,6 +205,15 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         onSave={(input) =>
           run({ type: "addCreditCardCharge", id: input.id, amount: input.amount }, () =>
             addCreditCardChargeAction(input),
+          )
+        }
+      />
+      <AddExpenseContributionDialog
+        expense={chargingExpense}
+        onOpenChange={() => setChargingExpense(null)}
+        onSave={(input) =>
+          run({ type: "addMonthlyExpenseContribution", id: input.id, amount: input.amount }, () =>
+            addMonthlyExpenseContributionAction(input),
           )
         }
       />

@@ -54,10 +54,11 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
   };
 }
 
-export function creditUtilization(card: { balance: number; limit: number }): number {
-  if (card.limit <= 0) {
+/** Shared by credit card usage and expense-contribution tracking — both are "used out of a cap." */
+export function utilization(used: number, limit: number): number {
+  if (limit <= 0) {
     return 0;
   }
 
-  return Math.min(card.balance / card.limit, 1);
+  return Math.min(used / limit, 1);
 }
