@@ -132,21 +132,23 @@ export function ExpensesCard({
                       />
                     </span>
                   </div>
-                  <div>
-                    <div className="h-1 w-full overflow-hidden rounded-full bg-chip">
-                      <div
-                        className={cn(
-                          "meter h-full rounded-full transition-[width] duration-700",
-                          used > 0.7 ? "meter-fill-hot" : "meter-fill",
-                        )}
-                        style={{ width: formatPercent(used) }}
-                      />
+                  {expense.spent > 0 && (
+                    <div>
+                      <div className="h-1 w-full overflow-hidden rounded-full bg-chip">
+                        <div
+                          className={cn(
+                            "meter h-full rounded-full transition-[width] duration-700",
+                            used > 0.7 ? "meter-fill-hot" : "meter-fill",
+                          )}
+                          style={{ width: formatPercent(used) }}
+                        />
+                      </div>
+                      <p className="num mt-2 text-[11px] text-ink-ghost">
+                        {formatWholeCurrency(expense.spent)} of{" "}
+                        {formatWholeCurrency(expense.amount)} used ({formatPercent(used)})
+                      </p>
                     </div>
-                    <p className="num mt-2 text-[11px] text-ink-ghost">
-                      {formatWholeCurrency(expense.spent)} of {formatWholeCurrency(expense.amount)}{" "}
-                      used ({formatPercent(used)})
-                    </p>
-                  </div>
+                  )}
                   <RemoveBadge
                     label={`Remove ${expense.name}`}
                     onClick={() => onRemoveExpense(expense.id)}
