@@ -16,13 +16,22 @@ export interface OnboardingSubmitResult {
 
 interface OnboardingFormProps {
   email: string;
+  /** Prefilled for accounts that already have a profile. */
+  defaultFirstName?: string | null;
+  existingAvatarUrl?: string | null;
   /** Saves the profile. Omitted in the local preview, where Continue just advances. */
   onSubmit?: (formData: FormData) => Promise<OnboardingSubmitResult>;
   onComplete: () => void;
 }
 
-export function OnboardingForm({ email, onSubmit, onComplete }: OnboardingFormProps) {
-  const [firstName, setFirstName] = useState("");
+export function OnboardingForm({
+  email,
+  defaultFirstName,
+  existingAvatarUrl,
+  onSubmit,
+  onComplete,
+}: OnboardingFormProps) {
+  const [firstName, setFirstName] = useState(defaultFirstName ?? "");
   // The cropped photo waits here until Continue sends it with the name.
   const [avatar, setAvatar] = useState<File | null>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
@@ -30,12 +39,13 @@ export function OnboardingForm({ email, onSubmit, onComplete }: OnboardingFormPr
   const [isPending, startTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const avatarUrl = useMemo(() => (avatar ? URL.createObjectURL(avatar) : null), [avatar]);
+  const pickedUrl = useMemo(() => (avatar ? URL.createObjectURL(avatar) : null), [avatar]);
   useEffect(() => {
-    if (avatarUrl) {
-      return () => URL.revokeObjectURL(avatarUrl);
+    if (pickedUrl) {
+      return () => URL.revokeObjectURL(pickedUrl);
     }
-  }, [avatarUrl]);
+  }, [pickedUrl]);
+  const avatarUrl = pickedUrl ?? existingAvatarUrl ?? null;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -137,7 +147,7 @@ export function OnboardingForm({ email, onSubmit, onComplete }: OnboardingFormPr
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
               >
-                {avatar ? "Change photo" : "Add photo"}
+                {avatarUrl ? "Change photo" : "Add photo"}
               </Button>
               {avatar && (
                 <Button type="button" variant="ghost" size="sm" onClick={() => setAvatar(null)}>

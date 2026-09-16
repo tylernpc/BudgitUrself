@@ -9,6 +9,8 @@ export type OnboardingStep = "setup" | "tour";
 
 interface OnboardingFlowProps {
   email: string;
+  defaultFirstName?: string | null;
+  existingAvatarUrl?: string | null;
   initialStep?: OnboardingStep;
   /** Saves the profile at the end of setup. Omitted in the local preview. */
   onSubmit?: (formData: FormData) => Promise<OnboardingSubmitResult>;
@@ -21,6 +23,8 @@ interface OnboardingFlowProps {
 /** Setup (name + photo) first, then the walkthrough. */
 export function OnboardingFlow({
   email,
+  defaultFirstName,
+  existingAvatarUrl,
   initialStep = "setup",
   onSubmit,
   onFinish,
@@ -38,7 +42,15 @@ export function OnboardingFlow({
   };
 
   if (step === "setup") {
-    return <OnboardingForm email={email} onSubmit={onSubmit} onComplete={() => setStep("tour")} />;
+    return (
+      <OnboardingForm
+        email={email}
+        defaultFirstName={defaultFirstName}
+        existingAvatarUrl={existingAvatarUrl}
+        onSubmit={onSubmit}
+        onComplete={() => setStep("tour")}
+      />
+    );
   }
 
   return <OnboardingTour pending={isFinishing} onFinish={finish} />;

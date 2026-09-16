@@ -20,8 +20,9 @@ export default async function OnboardingPage() {
     <OnboardingShell>
       <OnboardingFlow
         email={user.email}
-        // Accounts that predate onboarding already have a name; they only get the tour.
-        initialStep={user.firstName ? "tour" : "setup"}
+        // Accounts that predate onboarding confirm what they already have.
+        defaultFirstName={user.firstName}
+        existingAvatarUrl={user.avatarUrl}
         onSubmit={completeOnboardingAction}
         onFinish={finishOnboardingAction}
         finishHref={DASHBOARD_PATH}
