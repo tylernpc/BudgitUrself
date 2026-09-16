@@ -9,9 +9,10 @@ interface SettingsButtonProps {
   firstName: string | null;
   lastName: string | null;
   email: string;
+  avatarUrl: string | null;
 }
 
-export function SettingsButton({ firstName, lastName, email }: SettingsButtonProps) {
+export function SettingsButton({ firstName, lastName, email, avatarUrl }: SettingsButtonProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,6 +28,7 @@ export function SettingsButton({ firstName, lastName, email }: SettingsButtonPro
         firstName={firstName}
         lastName={lastName}
         email={email}
+        avatarUrl={avatarUrl}
       />
     </>
   );

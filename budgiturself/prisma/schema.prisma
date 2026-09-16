@@ -17,6 +17,8 @@ model User {
   email         String   @unique
   firstName     String?
   lastName      String?
+  avatar        Bytes?
+  avatarType    String?
   bankBalance   Decimal  @default(0) @db.Decimal(12, 2)
   monthlyIncome Decimal  @default(0) @db.Decimal(12, 2)
   createdAt     DateTime @default(now())

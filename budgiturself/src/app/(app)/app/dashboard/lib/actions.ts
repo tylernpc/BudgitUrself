@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCurrentUser } from "@/lib/auth/dal";
-import { nameSchema } from "@/lib/auth/schemas";
+import { avatarSchema, nameSchema } from "@/lib/auth/schemas";
 import { db } from "@/lib/db";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import {
@@ -43,6 +43,35 @@ export async function updateNameAction(input: unknown): Promise<ActionResult> {
   await db.user.update({
     where: { id: user.id },
     data: { firstName: parsed.data.firstName, lastName: parsed.data.lastName },
+  });
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+/** Takes FormData rather than a plain object because the payload is a File. */
+export async function updateAvatarAction(formData: FormData): Promise<ActionResult> {
+  const parsed = avatarSchema.safeParse(formData.get("avatar"));
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Choose a valid image" };
+  }
+
+  const user = await requireCurrentUser();
+  await db.user.update({
+    where: { id: user.id },
+    data: {
+      avatar: new Uint8Array(await parsed.data.arrayBuffer()),
+      avatarType: parsed.data.type,
+    },
+  });
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+export async function removeAvatarAction(): Promise<ActionResult> {
+  const user = await requireCurrentUser();
+  await db.user.update({
+    where: { id: user.id },
+    data: { avatar: null, avatarType: null },
   });
   revalidatePath(DASHBOARD_PATH);
   return {};

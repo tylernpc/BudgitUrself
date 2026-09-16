@@ -17,6 +17,37 @@ export interface AppUser {
   email: string;
   firstName: string | null;
   lastName: string | null;
+  /** The uploaded profile picture as a data URL, ready for an `<img>`. */
+  avatarUrl: string | null;
+}
+
+const userSelect = {
+  id: true,
+  email: true,
+  firstName: true,
+  lastName: true,
+  avatar: true,
+  avatarType: true,
+} as const;
+
+interface UserRow {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatar: Uint8Array | null;
+  avatarType: string | null;
+}
+
+/** Avatars are small (resized client-side before upload), so inlining beats a second request. */
+function toAppUser({ avatar, avatarType, ...user }: UserRow): AppUser {
+  return {
+    ...user,
+    avatarUrl:
+      avatar && avatarType
+        ? `data:${avatarType};base64,${Buffer.from(avatar).toString("base64")}`
+        : null,
+  };
 }
 
 /**
@@ -58,10 +89,12 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
     return null;
   }
 
-  return db.user.findUnique({
+  const user = await db.user.findUnique({
     where: { auth0Sub: sessionUser.auth0Sub },
-    select: { id: true, email: true, firstName: true, lastName: true },
+    select: userSelect,
   });
+
+  return user ? toAppUser(user) : null;
 });
 
 /**
@@ -72,13 +105,15 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
 export const requireCurrentUser = cache(async (): Promise<AppUser> => {
   const sessionUser = await requireSessionUser();
 
-  return db.user.upsert({
+  const user = await db.user.upsert({
     where: { auth0Sub: sessionUser.auth0Sub },
     create: {
       auth0Sub: sessionUser.auth0Sub,
       email: sessionUser.email,
     },
     update: { email: sessionUser.email },
-    select: { id: true, email: true, firstName: true, lastName: true },
+    select: userSelect,
   });
+
+  return toAppUser(user);
 });

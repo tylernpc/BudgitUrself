@@ -7,9 +7,10 @@ interface DashboardHeaderProps {
   firstName: string | null;
   lastName: string | null;
   email: string;
+  avatarUrl: string | null;
 }
 
-export function DashboardHeader({ firstName, lastName, email }: DashboardHeaderProps) {
+export function DashboardHeader({ firstName, lastName, email, avatarUrl }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-panel">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -19,7 +20,12 @@ export function DashboardHeader({ firstName, lastName, email }: DashboardHeaderP
         </div>
 
         <div className="flex items-center gap-2">
-          <SettingsButton firstName={firstName} lastName={lastName} email={email} />
+          <SettingsButton
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            avatarUrl={avatarUrl}
+          />
 
           <Button variant="outline" size="sm" asChild className="h-8 px-2.5 sm:px-3">
             <a href="/auth/logout">
