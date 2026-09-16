@@ -9,10 +9,15 @@ export const metadata: Metadata = { title: "Welcome" };
 
 const DASHBOARD_PATH = "/app/dashboard";
 
-export default async function OnboardingPage() {
-  const user = await requireCurrentUser();
+/** `?replay=1` lets Settings show the flow again to someone who has already been through it. */
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ replay?: string }>;
+}) {
+  const [user, { replay }] = await Promise.all([requireCurrentUser(), searchParams]);
 
-  if (user.onboardedAt) {
+  if (user.onboardedAt && !replay) {
     redirect(DASHBOARD_PATH);
   }
 

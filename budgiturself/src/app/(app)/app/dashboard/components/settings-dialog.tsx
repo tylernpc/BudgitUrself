@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AVATAR_TYPES, nameSchema } from "@/lib/profile/schemas";
@@ -195,6 +196,19 @@ export function SettingsDialog({
             <FieldError message={error} />
             <DialogActions onCancel={() => onOpenChange(false)} submitLabel="Save changes" />
           </form>
+
+          <div className="mt-6 flex items-center justify-between gap-4 border-t border-hairline pt-4">
+            <div>
+              <p className="text-[13px] font-medium text-ink-muted">Need a refresher?</p>
+              <p className="mt-0.5 text-xs text-ink-faint">Walk through how the app works again.</p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/app/onboarding?replay=1">
+                Take the tour
+                <ArrowRight className="size-3.5" />
+              </Link>
+            </Button>
+          </div>
         </>
       )}
     </BudgetDialog>
