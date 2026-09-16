@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Welcome" };
 
 const DASHBOARD_PATH = "/app/dashboard";
 
-/** `?replay=1` lets Settings show the flow again to someone who has already been through it. */
+/** `?replay=1` lets Settings show the tour again; it skips setup and does not re-stamp `onboardedAt`. */
 export default async function OnboardingPage({
   searchParams,
 }: {
@@ -28,8 +28,9 @@ export default async function OnboardingPage({
         // Accounts that predate onboarding confirm what they already have.
         defaultFirstName={user.firstName}
         existingAvatarUrl={user.avatarUrl}
+        initialStep={replay ? "tour" : "setup"}
         onSubmit={completeOnboardingAction}
-        onFinish={finishOnboardingAction}
+        onFinish={replay ? undefined : finishOnboardingAction}
         finishHref={DASHBOARD_PATH}
       />
     </OnboardingShell>
