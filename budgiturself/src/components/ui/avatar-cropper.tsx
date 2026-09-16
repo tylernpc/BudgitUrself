@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 import {
   centredCrop,
   drawCrop,
   loadAvatarSource,
   renderAvatar,
   type CropRect,
-} from "../lib/prepare-avatar";
+} from "@/lib/profile/avatar";
 
 /** Preview edge in CSS pixels; it fits the dialog at phone width with room to spare. */
 const VIEWPORT = 240;

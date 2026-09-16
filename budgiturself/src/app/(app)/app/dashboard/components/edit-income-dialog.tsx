@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { monthlyIncomeSchema } from "@/lib/budget/schemas";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface EditIncomeDialogProps {
   open: boolean;

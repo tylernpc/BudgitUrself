@@ -11,7 +11,7 @@ import {
 import type { ExpenseColorKey, ExpenseIconKey, MonthlyExpense } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { ColorPicker, IconPicker } from "./expense-icon";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface MonthlyExpenseDialogProps {
   open: boolean;

@@ -8,7 +8,7 @@ import {
 } from "@/lib/budget/schemas";
 import type { MonthlyExpense } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface AddExpenseContributionDialogProps {
   /** The expense being contributed to; `null` keeps the dialog closed. */

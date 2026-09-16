@@ -19,7 +19,7 @@ import {
 } from "@/lib/budget/schemas";
 import type { Bill, BillType, CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface BillDialogProps {
   open: boolean;

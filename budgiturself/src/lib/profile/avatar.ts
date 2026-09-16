@@ -1,4 +1,4 @@
-import { AVATAR_SIZE } from "@/lib/auth/schemas";
+import { AVATAR_SIZE } from "@/lib/profile/schemas";
 
 /** A square region of the source image, in its natural pixels. */
 export interface CropRect {

@@ -6,6 +6,7 @@ import { auth0 } from "@/lib/auth/auth0";
 import { db } from "@/lib/db";
 
 export const LOGIN_PATH = "/auth/login";
+export const ONBOARDING_PATH = "/app/onboarding";
 
 export interface SessionUser {
   auth0Sub: string;
@@ -19,6 +20,8 @@ export interface AppUser {
   lastName: string | null;
   /** The uploaded profile picture as a data URL, ready for an `<img>`. */
   avatarUrl: string | null;
+  /** When they finished (or skipped) the onboarding tour; null until then. */
+  onboardedAt: Date | null;
 }
 
 const userSelect = {
@@ -28,6 +31,7 @@ const userSelect = {
   lastName: true,
   avatar: true,
   avatarType: true,
+  onboardedAt: true,
 } as const;
 
 interface UserRow {
@@ -37,6 +41,7 @@ interface UserRow {
   lastName: string | null;
   avatar: Uint8Array | null;
   avatarType: string | null;
+  onboardedAt: Date | null;
 }
 
 /** Avatars are small (resized client-side before upload), so inlining beats a second request. */
@@ -117,3 +122,18 @@ export const requireCurrentUser = cache(async (): Promise<AppUser> => {
 
   return toAppUser(user);
 });
+
+/**
+ * The signed-in user once they have been through onboarding. Anyone who has
+ * not — new accounts and accounts that predate the tour alike — is sent there
+ * first; it stamps `onboardedAt` so this only ever happens once.
+ */
+export async function requireOnboardedUser(): Promise<AppUser> {
+  const user = await requireCurrentUser();
+
+  if (!user.onboardedAt) {
+    redirect(ONBOARDING_PATH);
+  }
+
+  return user;
+}

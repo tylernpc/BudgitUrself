@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { creditCardUpdateSchema, type CreditCardUpdateInput } from "@/lib/budget/schemas";
 import type { CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface EditCreditCardDialogProps {
   /** The card being edited; `null` keeps the dialog closed. */

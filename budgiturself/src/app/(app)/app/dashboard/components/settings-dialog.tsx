@@ -4,12 +4,12 @@ import { useRef, useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AVATAR_TYPES, nameSchema } from "@/lib/auth/schemas";
+import { AVATAR_TYPES, nameSchema } from "@/lib/profile/schemas";
 import { removeAvatarAction, updateAvatarAction, updateNameAction } from "../lib/actions";
-import { AvatarCropper } from "./avatar-cropper";
+import { AvatarCropper } from "@/components/ui/avatar-cropper";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
-import { ProfileAvatar } from "./profile-avatar";
+import { FieldError } from "@/components/ui/field-error";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
 
 interface SettingsDialogProps {
   open: boolean;

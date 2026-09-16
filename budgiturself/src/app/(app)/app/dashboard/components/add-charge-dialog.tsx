@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { creditCardChargeSchema, type CreditCardChargeInput } from "@/lib/budget/schemas";
 import type { CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
-import { FieldError } from "./field-error";
+import { FieldError } from "@/components/ui/field-error";
 
 interface AddChargeDialogProps {
   /** The card being charged; `null` keeps the dialog closed. */

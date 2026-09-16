@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCurrentUser } from "@/lib/auth/dal";
-import { avatarSchema, nameSchema } from "@/lib/auth/schemas";
+import { avatarSchema, nameSchema } from "@/lib/profile/schemas";
 import { db } from "@/lib/db";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import {

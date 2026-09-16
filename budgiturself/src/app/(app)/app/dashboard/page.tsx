@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { requireCurrentUser } from "@/lib/auth/dal";
+import { requireOnboardedUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
-import { ProfileAvatar } from "./components/profile-avatar";
+import { ProfileAvatar } from "@/components/ui/profile-avatar";
 import { Reveal } from "./components/reveal";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Dashboard" };
 const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" });
 
 export default async function DashboardPage() {
-  const user = await requireCurrentUser();
+  const user = await requireOnboardedUser();
   const budget = await budgetRepository.getBudget(user.id);
   const greetingName = user.firstName;
 
