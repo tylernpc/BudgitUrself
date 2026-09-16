@@ -29,10 +29,10 @@ export function HeroPreview() {
     <div className="surface overflow-hidden">
       <div className="px-5 py-5 sm:px-7 sm:py-6">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase">
+          <span className="text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase">
             The Horizon View
           </span>
-          <span className="wash wash-emerald inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-tone-emerald">
+          <span className="inline-flex items-center gap-1 rounded-md border border-tone-emerald/30 bg-tone-emerald/10 px-2 py-0.5 text-[11px] font-medium text-tone-emerald">
             <ArrowUpRight className="size-3" />
             Leftover
           </span>
@@ -42,23 +42,23 @@ export function HeroPreview() {
           {formatCurrency(horizon)}
         </p>
 
-        <div className="mt-5">
-          <span className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase">
+        <div className="mt-6 border-t border-hairline pt-5">
+          <span className="text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase">
             Monthly income breakdown
           </span>
           <p className="mt-1.5 text-xs text-ink-ghost">
-            <span className="num text-ink-faint">
+            <span className="num font-medium text-ink-muted">
               {formatCurrency(BANK_BALANCE + MONTHLY_INCOME)}
             </span>{" "}
-            <span className="text-[11px]">
+            <span>
               ({formatCurrency(BANK_BALANCE)} liquid + {formatCurrency(MONTHLY_INCOME)} income)
             </span>
           </p>
-          <div className="mt-3 flex h-2 gap-1 overflow-hidden rounded-full bg-chip">
+          <div className="mt-3 flex h-2 gap-0.5 overflow-hidden rounded-sm bg-chip">
             {segments.map((segment) => (
               <div
                 key={segment.label}
-                className={`ribbon meter h-full rounded-full ${segment.hue}`}
+                className={`ribbon meter h-full ${segment.hue}`}
                 style={{ width: `${Math.min((segment.value / scale) * 100, 100)}%` }}
               />
             ))}
@@ -66,9 +66,9 @@ export function HeroPreview() {
           <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
             {segments.map((segment) => (
               <li key={segment.label} className="flex items-center gap-2 text-xs text-ink-faint">
-                <span className={`size-1.5 rounded-full ${segment.dot}`} />
+                <span className={`size-2 rounded-sm ${segment.dot}`} />
                 {segment.label}
-                <span className="num text-ink-muted">{formatCurrency(segment.value)}</span>
+                <span className="num font-medium text-ink">{formatCurrency(segment.value)}</span>
               </li>
             ))}
           </ul>

@@ -16,12 +16,7 @@ export function SettingsButton({ firstName, lastName, email }: SettingsButtonPro
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setOpen(true)}
-        className="size-9 rounded-full border border-hairline bg-quiet text-ink-muted transition-colors hover:bg-chip hover:text-ink"
-      >
+      <Button variant="outline" size="icon" onClick={() => setOpen(true)} className="size-8">
         <Settings className="size-4" />
         <span className="sr-only">Settings</span>
       </Button>

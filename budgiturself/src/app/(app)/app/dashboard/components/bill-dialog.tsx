@@ -21,10 +21,6 @@ import type { Bill, BillType, CreditCard } from "@/lib/budget/types";
 import { BudgetDialog, DialogActions, FieldLabel, fieldClass } from "./dialog-shell";
 import { FieldError } from "./field-error";
 
-const selectContentClass =
-  "rounded-xl border-hairline bg-panel text-ink shadow-2xl backdrop-blur-xl";
-const selectItemClass = "rounded-lg text-ink focus:bg-chip focus:text-ink";
-
 interface BillDialogProps {
   open: boolean;
   /** The bill being edited, or `null` to add a new one. */
@@ -96,23 +92,14 @@ export function BillDialog({
     >
       <form key={String(open)} onSubmit={handleSubmit}>
         <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="pt-6">
-          <TabsList className="grid w-full grid-cols-3 items-stretch rounded-xl border border-hairline bg-quiet p-1">
-            <TabsTrigger
-              value="recurring"
-              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
-            >
+          <TabsList className="grid h-10 w-full grid-cols-3 items-stretch">
+            <TabsTrigger value="recurring" className="text-[13px]">
               Recurring bill
             </TabsTrigger>
-            <TabsTrigger
-              value="digital"
-              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
-            >
+            <TabsTrigger value="digital" className="text-[13px]">
               Subscription
             </TabsTrigger>
-            <TabsTrigger
-              value="personal"
-              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
-            >
+            <TabsTrigger value="personal" className="text-[13px]">
               Personal owed
             </TabsTrigger>
           </TabsList>
@@ -179,9 +166,9 @@ export function BillDialog({
                   <SelectTrigger id="bill-card" className={fieldClass}>
                     <SelectValue placeholder="Select a card" />
                   </SelectTrigger>
-                  <SelectContent className={selectContentClass}>
+                  <SelectContent>
                     {creditCards.map((card) => (
-                      <SelectItem key={card.id} value={card.id} className={selectItemClass}>
+                      <SelectItem key={card.id} value={card.id}>
                         {card.name}
                       </SelectItem>
                     ))}
@@ -194,9 +181,9 @@ export function BillDialog({
                   <SelectTrigger id="bill-category" className={fieldClass}>
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
-                  <SelectContent className={selectContentClass}>
+                  <SelectContent>
                     {BILL_CATEGORIES.map((name) => (
-                      <SelectItem key={name} value={name} className={selectItemClass}>
+                      <SelectItem key={name} value={name}>
                         {name}
                       </SelectItem>
                     ))}

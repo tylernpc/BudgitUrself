@@ -11,15 +11,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 
 /**
- * Dark-glass shell for every dashboard dialog. Radix portals the content to
- * `document.body`, outside any themed wrapper, so the treatment is applied with
+ * Shell for every dashboard dialog. Radix portals the content to
+ * `document.body`, outside any themed wrapper, so the palette is applied with
  * explicit classes rather than a `dark:` variant.
  */
-export const fieldClass =
-  "h-10 rounded-xl border-hairline bg-quiet text-ink transition-colors placeholder:text-ink-ghost focus-visible:border-tone-cyan focus-visible:ring-tone-cyan/25";
+export const fieldClass = "h-10";
 
 export function FieldLabel({ htmlFor, children }: { htmlFor: string; children: ReactNode }) {
   return (
@@ -48,17 +46,11 @@ export function BudgetDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         onOpenAutoFocus={(event) => event.preventDefault()}
-        className={cn(
-          "max-w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-3xl border-hairline sm:max-w-md",
-          "bg-panel p-6 text-ink",
-          "shadow-[0_50px_140px_-50px_var(--dash-modal-shadow)] backdrop-blur-2xl",
-        )}
+        className="max-w-[calc(100%-2rem)] gap-0 overflow-hidden sm:max-w-md"
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-medium tracking-tight text-ink">{title}</DialogTitle>
-          <DialogDescription className="text-[13px] leading-relaxed text-ink-faint">
-            {description}
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>
@@ -75,18 +67,10 @@ export function DialogActions({
 }) {
   return (
     <DialogFooter className="mt-6 gap-2">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={onCancel}
-        className="h-10 rounded-xl border border-hairline bg-quiet text-ink-muted hover:bg-chip hover:text-ink"
-      >
+      <Button type="button" variant="outline" onClick={onCancel} className="h-10">
         Cancel
       </Button>
-      <Button
-        type="submit"
-        className="h-10 rounded-xl bg-tone-sky font-medium text-canvas shadow-lg shadow-tone-sky/30 transition-opacity hover:bg-tone-sky hover:opacity-90"
-      >
+      <Button type="submit" className="h-10">
         {submitLabel}
       </Button>
     </DialogFooter>

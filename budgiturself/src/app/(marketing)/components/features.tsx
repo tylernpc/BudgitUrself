@@ -32,10 +32,8 @@ export function Features() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="reveal mx-auto max-w-2xl text-center">
-        <span className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
-          How it works
-        </span>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem]">
+        <span className="text-sm font-semibold text-brand">How it works</span>
+        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
           Four numbers, honestly counted
         </h2>
         <p className="mt-3 text-base leading-relaxed text-ink-faint">
@@ -43,20 +41,20 @@ export function Features() {
         </p>
       </div>
 
-      <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {features.map(({ icon: Icon, tone, title, description }, index) => (
           <article
             key={title}
-            className="surface lift reveal p-6"
-            style={{ animationDelay: `${100 + index * 80}ms` }}
+            className="surface reveal p-6"
+            style={{ animationDelay: `${60 + index * 40}ms` }}
           >
             <span
-              className={`grid size-10 place-items-center rounded-2xl bg-chip ring-1 ring-hairline ${tone}`}
+              className={`grid size-9 place-items-center rounded-md border border-hairline bg-quiet ${tone}`}
             >
-              <Icon className="size-[18px]" />
+              <Icon className="size-4" />
             </span>
-            <h3 className="mt-4 text-[15px] font-medium tracking-tight text-ink">{title}</h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-ink-faint">{description}</p>
+            <h3 className="mt-4 text-[15px] font-semibold tracking-tight text-ink">{title}</h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-ink-faint">{description}</p>
           </article>
         ))}
       </div>

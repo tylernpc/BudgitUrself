@@ -27,12 +27,14 @@ function DayChip({ day, tint }: { day: number; tint: string }) {
   return (
     <span
       className={cn(
-        "grid size-11 shrink-0 place-content-center justify-items-center rounded-xl ring-1",
+        "grid size-10 shrink-0 place-content-center justify-items-center rounded-md border",
         tint,
       )}
     >
-      <span className="text-[9px] tracking-[0.14em] text-ink-ghost uppercase">day</span>
-      <span className="num text-sm leading-tight font-medium text-ink">{day}</span>
+      <span className="text-[9px] font-semibold tracking-[0.04em] text-ink-ghost uppercase">
+        day
+      </span>
+      <span className="num text-sm leading-tight font-semibold text-ink">{day}</span>
     </span>
   );
 }
@@ -59,21 +61,21 @@ function BillRow({
   actionLabel: string;
 }) {
   return (
-    <li className="surface-quiet relative flex items-center gap-3 px-3 py-3 sm:px-3.5">
+    <li className="surface-quiet relative flex items-center gap-3 px-3 py-2.5">
       <DayChip day={day} tint={tint} />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <h4 className="truncate text-sm font-medium text-ink">{name}</h4>
           {badge && (
-            <span className="rounded-full bg-chip px-2 py-0.5 text-[10px] text-ink-faint ring-1 ring-hairline">
+            <span className="rounded border border-hairline bg-panel px-1.5 py-px text-[10px] font-medium text-ink-faint">
               {badge}
             </span>
           )}
         </div>
-        <p className="mt-1 flex items-center gap-1.5 text-[11px] text-ink-ghost">{meta}</p>
+        <p className="mt-0.5 flex items-center gap-1.5 text-xs text-ink-ghost">{meta}</p>
       </div>
-      <span className="flex shrink-0 items-center gap-1.5">
-        <span className="num text-sm text-ink-muted">{formatCurrency(amount)}</span>
+      <span className="flex shrink-0 items-center gap-1">
+        <span className="num mr-1 text-sm font-medium text-ink">{formatCurrency(amount)}</span>
         <EditButton label={`Edit ${actionLabel}`} onClick={onEdit} />
       </span>
       <RemoveBadge label={`Remove ${actionLabel}`} onClick={onRemove} />
@@ -95,7 +97,7 @@ function DigitalBillRow({
   return (
     <BillRow
       day={bill.chargeDate}
-      tint="bg-tone-indigo/12 ring-tone-indigo/25"
+      tint="border-tone-indigo/25 bg-tone-indigo/10"
       name={bill.name}
       badge={bill.category}
       meta={
@@ -124,7 +126,7 @@ function RecurringBillRow({
   return (
     <BillRow
       day={bill.chargeDate}
-      tint="bg-tone-violet/12 ring-tone-violet/25"
+      tint="border-tone-violet/25 bg-tone-violet/10"
       name={bill.name}
       meta={
         <>
@@ -152,7 +154,7 @@ function PersonalBillRow({
   return (
     <BillRow
       day={bill.chargeDate}
-      tint="bg-tone-amber/12 ring-tone-amber/25"
+      tint="border-tone-amber/25 bg-tone-amber/10"
       name={bill.name}
       meta={
         <>
@@ -187,26 +189,26 @@ export function MonthlyBillsCard({
         action={<AddButton label="Add bill" onClick={onAddBill} />}
       />
 
-      <PanelBody className="space-y-8">
+      <PanelBody className="space-y-6">
         <div className="grid gap-8 lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-10 lg:gap-y-0">
           <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <div className="mb-3.5 flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+            <div className="mb-2.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Home className="size-4 text-tone-violet" />
                 Recurring bills
               </h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+              <span className="num rounded-md border border-hairline bg-quiet px-2 py-0.5 text-xs font-medium text-ink-muted">
                 {formatCurrency(summary.recurringBillsTotal)}
               </span>
             </div>
-            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+            <p className="mb-3 text-xs leading-relaxed text-ink-faint">
               Fixed charges with no card or person attached — rent, insurance, anything that bills
               the same amount every month.
             </p>
             {summary.recurringBills.length === 0 ? (
               <EmptyState>No fixed bills tracked yet</EmptyState>
             ) : (
-              <ul className="space-y-3.5">
+              <ul className="space-y-2.5">
                 {summary.recurringBills.map((bill) => (
                   <RecurringBillRow
                     key={bill.id}
@@ -220,23 +222,23 @@ export function MonthlyBillsCard({
           </section>
 
           <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <div className="mb-3.5 flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+            <div className="mb-2.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Receipt className="size-4 text-tone-indigo" />
                 Subscriptions
               </h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+              <span className="num rounded-md border border-hairline bg-quiet px-2 py-0.5 text-xs font-medium text-ink-muted">
                 {formatCurrency(summary.digitalBillsTotal)}
               </span>
             </div>
-            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+            <p className="mb-3 text-xs leading-relaxed text-ink-faint">
               Subscriptions and services that charge a card on their own schedule — streaming,
               software, the gym app.
             </p>
             {summary.digitalBills.length === 0 ? (
               <EmptyState>No subscriptions tracked yet</EmptyState>
             ) : (
-              <ul className="space-y-3.5">
+              <ul className="space-y-2.5">
                 {summary.digitalBills.map((bill) => (
                   <DigitalBillRow
                     key={bill.id}
@@ -251,23 +253,23 @@ export function MonthlyBillsCard({
           </section>
 
           <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <div className="mb-3.5 flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+            <div className="mb-2.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Users className="size-4 text-tone-amber" />
                 Personal owed bills
               </h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+              <span className="num rounded-md border border-hairline bg-quiet px-2 py-0.5 text-xs font-medium text-ink-muted">
                 {formatCurrency(summary.personalBillsTotal)}
               </span>
             </div>
-            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+            <p className="mb-3 text-xs leading-relaxed text-ink-faint">
               Money you owe a person each month — paying a family member back for a shared
               membership, say.
             </p>
             {summary.personalBills.length === 0 ? (
               <EmptyState>Nobody to pay back right now</EmptyState>
             ) : (
-              <ul className="space-y-3.5">
+              <ul className="space-y-2.5">
                 {summary.personalBills.map((bill) => (
                   <PersonalBillRow
                     key={bill.id}
@@ -281,9 +283,9 @@ export function MonthlyBillsCard({
           </section>
         </div>
 
-        <div className="wash wash-indigo flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+        <div className="wash wash-indigo flex items-center justify-between gap-4 rounded-lg px-4 py-3.5">
           <SectionLabel className="text-tone-indigo">Total monthly bills</SectionLabel>
-          <p className="text-xl font-medium tracking-tight text-ink">
+          <p className="text-lg font-semibold tracking-tight text-ink">
             <AnimatedCurrency value={summary.monthlyBillsTotal} />
           </p>
         </div>

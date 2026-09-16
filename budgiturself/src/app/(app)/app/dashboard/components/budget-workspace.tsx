@@ -127,7 +127,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
       {error && (
         <div
           role="alert"
-          className="reveal mb-6 flex items-start gap-3 rounded-2xl border border-rose-400/25 bg-rose-500/10 px-4 py-3.5 text-sm text-tone-rose backdrop-blur"
+          className="reveal mb-6 flex items-start gap-3 rounded-lg border border-tone-rose/30 bg-tone-rose/10 px-4 py-3 text-sm font-medium text-tone-rose"
         >
           <TriangleAlert className="mt-0.5 size-4 shrink-0" />
           {error}
@@ -151,7 +151,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
       </div>
 
       {/* Below `lg`: one section at a time, paged by `MobileDashboardNav`. */}
-      <div className="space-y-6 pb-32 lg:hidden">
+      <div className="space-y-6 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:hidden">
         {activePage === "overview" && (
           <>
             <Reveal>{horizonView}</Reveal>
@@ -170,8 +170,8 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
           isPending ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
         }`}
       >
-        <span className="flex items-center gap-2 rounded-full border border-hairline bg-panel px-4 py-2 text-xs text-ink-muted shadow-2xl backdrop-blur-xl">
-          <Loader2 className={`size-3.5 text-tone-cyan ${isPending ? "animate-spin" : ""}`} />
+        <span className="flex items-center gap-2 rounded-md border border-hairline bg-panel px-3 py-2 text-xs font-medium text-ink-muted shadow-[var(--modal-shadow)]">
+          <Loader2 className={`size-3.5 text-brand ${isPending ? "animate-spin" : ""}`} />
           {isPending ? "Saving changes" : ""}
         </span>
       </div>

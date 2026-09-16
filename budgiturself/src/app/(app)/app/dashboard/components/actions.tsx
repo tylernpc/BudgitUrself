@@ -2,9 +2,6 @@ import { Pencil, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const glass =
-  "border border-hairline bg-quiet text-ink-muted backdrop-blur transition-colors hover:border-hairline-strong hover:bg-chip hover:text-ink focus-visible:ring-hairline-strong";
-
 /** Primary "add a thing" affordance — 36px tall so it stays thumb-friendly. */
 export function AddButton({
   label,
@@ -18,9 +15,9 @@ export function AddButton({
   return (
     <Button
       size="sm"
-      variant="ghost"
+      variant="outline"
       onClick={onClick}
-      className={cn(glass, "h-9 rounded-full px-3.5 text-xs font-medium", className)}
+      className={cn("h-9 px-3 text-[13px] font-medium", className)}
     >
       <Plus className="size-3.5" />
       {label}
@@ -40,24 +37,21 @@ export function SubtleButton({
   return (
     <Button
       size="sm"
-      variant="ghost"
+      variant="outline"
       onClick={onClick}
-      className={cn(glass, "h-8 rounded-full px-3 text-xs font-medium", className)}
+      className={cn("h-8 px-3 text-[13px] font-medium", className)}
     >
       {children}
     </Button>
   );
 }
 
+const iconButton =
+  "size-8 shrink-0 rounded-md text-ink-ghost transition-colors hover:bg-chip hover:text-ink";
+
 export function ChargeButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <Button
-      size="icon"
-      variant="ghost"
-      aria-label={label}
-      onClick={onClick}
-      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
-    >
+    <Button size="icon" variant="ghost" aria-label={label} onClick={onClick} className={iconButton}>
       <Plus className="size-3.5" />
     </Button>
   );
@@ -65,13 +59,7 @@ export function ChargeButton({ label, onClick }: { label: string; onClick: () =>
 
 export function EditButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <Button
-      size="icon"
-      variant="ghost"
-      aria-label={label}
-      onClick={onClick}
-      className="size-8 shrink-0 rounded-full text-ink-ghost transition-colors hover:bg-chip hover:text-ink"
-    >
+    <Button size="icon" variant="ghost" aria-label={label} onClick={onClick} className={iconButton}>
       <Pencil className="size-3.5" />
     </Button>
   );
@@ -84,9 +72,9 @@ export function RemoveBadge({ label, onClick }: { label: string; onClick: () => 
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="absolute -top-2 -right-2 z-10 grid size-5 place-items-center rounded-full bg-tone-rose text-canvas shadow-md shadow-tone-rose/30 transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-tone-rose/50 focus-visible:outline-none"
+      className="absolute -top-2 -right-2 z-10 grid size-5 place-items-center rounded-full border border-hairline-strong bg-panel text-ink-ghost shadow-[var(--panel-shadow)] transition-colors hover:border-tone-rose hover:bg-tone-rose hover:text-white focus-visible:ring-2 focus-visible:ring-tone-rose/40 focus-visible:outline-none"
     >
-      <X className="size-3.5" />
+      <X className="size-3" />
     </button>
   );
 }

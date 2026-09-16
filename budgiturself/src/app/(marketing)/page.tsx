@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { getSessionUser } from "@/lib/auth/dal";
 import { Features } from "./components/features";
 import { Hero } from "./components/hero";
@@ -13,18 +12,14 @@ export default async function MarketingPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
-      <AuroraBackdrop />
-
-      <div className="relative z-10">
-        <main>
-          <Hero />
-          <Features />
-          <InteractiveDemo />
-          <MonthlyBillsPreview />
-        </main>
-        <SiteFooter />
-      </div>
+    <div className="min-h-screen bg-canvas text-ink selection:bg-brand/20">
+      <main>
+        <Hero />
+        <Features />
+        <InteractiveDemo />
+        <MonthlyBillsPreview />
+      </main>
+      <SiteFooter />
     </div>
   );
 }

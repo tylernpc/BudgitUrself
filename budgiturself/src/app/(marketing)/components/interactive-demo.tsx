@@ -10,8 +10,7 @@ import { cn } from "@/lib/utils";
 const MAX_AMOUNT = 9_999_999;
 const SHAKE_DURATION_MS = 450;
 
-const fieldClass =
-  "h-11 rounded-xl border-hairline bg-quiet text-ink transition-colors placeholder:text-ink-ghost focus-visible:border-tone-cyan focus-visible:ring-tone-cyan/25";
+const fieldClass = "h-11";
 
 type FieldName = "paycheck" | "rent" | "utilities" | "car";
 
@@ -28,16 +27,16 @@ const isWithinLimit = (raw: string) => {
 
 function PanelHead({ icon, tone, title }: { icon: React.ReactNode; tone: string; title: string }) {
   return (
-    <header className="flex items-center gap-3 border-b border-hairline px-5 py-3.5 sm:px-6">
+    <header className="flex items-center gap-3 border-b border-hairline px-5 py-4 sm:px-6">
       <span
         className={cn(
-          "grid size-9 place-items-center rounded-xl bg-chip ring-1 ring-hairline [&_svg]:size-[17px]",
+          "grid size-8 place-items-center rounded-md border border-hairline bg-quiet [&_svg]:size-4",
           tone,
         )}
       >
         {icon}
       </span>
-      <h3 className="text-[15px] font-medium tracking-tight text-ink">{title}</h3>
+      <h3 className="text-sm font-semibold tracking-tight text-ink">{title}</h3>
     </header>
   );
 }
@@ -70,10 +69,8 @@ export function InteractiveDemo() {
   return (
     <section id="try-it" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="reveal mx-auto max-w-2xl text-center">
-        <span className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
-          Try it
-        </span>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem]">
+        <span className="text-sm font-semibold text-brand">Try it</span>
+        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
           The whole idea, in three boxes
         </h2>
         <p className="mt-3 text-base leading-relaxed text-ink-faint">
@@ -81,8 +78,8 @@ export function InteractiveDemo() {
         </p>
       </div>
 
-      <div className="mt-9 grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <section className="surface reveal" style={{ animationDelay: "100ms" }}>
+      <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <section className="surface reveal" style={{ animationDelay: "60ms" }}>
           <PanelHead icon={<Wallet />} tone="text-tone-emerald" title="What comes in" />
           <div className="px-5 py-5 sm:px-6">
             <Label htmlFor="paycheck" className="text-[13px] font-medium text-ink-muted">
@@ -103,11 +100,11 @@ export function InteractiveDemo() {
                 rejectedField === "paycheck" && "animate-input-shake border-destructive",
               )}
             />
-            <p className="mt-3 text-[13px] text-ink-ghost">Take-home pay, after tax.</p>
+            <p className="mt-3 text-[13px] text-ink-faint">Take-home pay, after tax.</p>
           </div>
         </section>
 
-        <section className="surface reveal" style={{ animationDelay: "180ms" }}>
+        <section className="surface reveal" style={{ animationDelay: "100ms" }}>
           <PanelHead icon={<ShoppingBag />} tone="text-tone-amber" title="What goes out" />
           <div className="space-y-4 px-5 py-5 sm:px-6">
             {EXPENSE_FIELDS.map(({ name, label, icon: Icon }) => (
@@ -136,32 +133,29 @@ export function InteractiveDemo() {
                 />
               </div>
             ))}
-            <div className="wash wash-amber flex items-center justify-between rounded-2xl px-4 py-3">
-              <span className="text-[10px] font-medium tracking-[0.18em] text-tone-amber uppercase">
+            <div className="wash wash-amber flex items-center justify-between rounded-lg px-4 py-3">
+              <span className="text-[11px] font-semibold tracking-[0.04em] text-tone-amber uppercase">
                 Total expenses
               </span>
-              <span className="num text-lg font-medium text-ink">
+              <span className="num text-lg font-semibold text-ink">
                 {formatWholeCurrency(totalExpenses)}
               </span>
             </div>
           </div>
         </section>
 
-        <section className="surface reveal" style={{ animationDelay: "260ms" }}>
+        <section className="surface reveal" style={{ animationDelay: "140ms" }}>
           <PanelHead icon={<ArrowRight />} tone="text-tone-sky" title="What is left" />
           <div className="px-5 py-5 sm:px-6">
             <div
-              className={cn(
-                "relative overflow-hidden rounded-2xl px-5 py-5 ring-1 ring-hairline",
-                clear ? "wash-surplus" : "wash-shortfall",
-              )}
+              className={cn("wash rounded-lg px-4 py-4", clear ? "wash-surplus" : "wash-shortfall")}
             >
-              <span className="text-[10px] font-medium tracking-[0.18em] text-ink-faint uppercase">
+              <span className="text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase">
                 Free to spend
               </span>
               <p
                 className={cn(
-                  "num mt-2 text-4xl font-semibold tracking-tight",
+                  "num mt-1.5 text-4xl font-semibold tracking-tight",
                   clear ? "text-ink" : "text-tone-rose",
                 )}
               >
@@ -169,20 +163,22 @@ export function InteractiveDemo() {
               </p>
               <span
                 className={cn(
-                  "wash mt-3 inline-flex rounded-full px-2.5 py-1 text-[11px] font-medium",
-                  clear ? "wash-emerald text-tone-emerald" : "wash-rose text-tone-rose",
+                  "mt-3 inline-flex rounded-md border px-2 py-0.5 text-[11px] font-medium",
+                  clear
+                    ? "border-tone-emerald/30 bg-tone-emerald/10 text-tone-emerald"
+                    : "border-tone-rose/30 bg-tone-rose/10 text-tone-rose",
                 )}
               >
                 {clear ? "On track" : "Over budget"}
               </span>
             </div>
 
-            <p className="mt-4 text-[13px] text-ink-faint">This is what can go toward:</p>
+            <p className="mt-5 text-[13px] text-ink-faint">This is what can go toward:</p>
             <ul className="mt-3 space-y-2">
               {["Savings", "Entertainment", "Dining out"].map((label) => (
                 <li
                   key={label}
-                  className="surface-quiet flex items-center justify-between px-4 py-2.5 text-sm text-ink"
+                  className="surface-quiet flex items-center justify-between px-4 py-2.5 text-sm font-medium text-ink"
                 >
                   {label}
                   <span className="text-ink-ghost">—</span>

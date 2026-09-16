@@ -166,7 +166,7 @@ export function ColorPicker({ id, value, onChange }: ColorPickerProps) {
             aria-label={key}
             onClick={() => onChange(key)}
             className={cn(
-              "size-8 shrink-0 rounded-full ring-2 ring-offset-2 ring-offset-panel transition-transform",
+              "size-7 shrink-0 rounded-full ring-2 ring-offset-2 ring-offset-panel transition-transform",
               tone.solid,
               selected ? cn(tone.ring, "scale-110") : "ring-transparent hover:scale-105",
             )}
@@ -244,10 +244,10 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
                   aria-label={key}
                   onClick={() => onChange(key)}
                   className={cn(
-                    "grid size-9 place-items-center rounded-xl border transition-colors",
+                    "grid size-9 place-items-center rounded-md border transition-colors",
                     selected
                       ? cn(tone.bg, tone.text, "border-transparent")
-                      : "border-hairline bg-quiet text-ink-ghost hover:border-hairline-strong hover:text-ink",
+                      : "border-hairline bg-quiet text-ink-faint hover:border-hairline-strong hover:bg-quiet-hover hover:text-ink",
                   )}
                 >
                   <Icon className="size-4" />
@@ -268,7 +268,7 @@ export function IconPicker({ id, value, color, onChange }: IconPickerProps) {
               onClick={() => goToPage(index)}
               className={cn(
                 "h-1.5 rounded-full transition-all",
-                index === page ? cn("w-4", tone.solid) : "w-1.5 bg-chip",
+                index === page ? cn("w-4", tone.solid) : "w-1.5 bg-hairline-strong",
               )}
             />
           ))}

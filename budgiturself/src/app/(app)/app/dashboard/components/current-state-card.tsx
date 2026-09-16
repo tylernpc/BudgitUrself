@@ -39,11 +39,11 @@ export function CurrentStateCard({
         description="What you hold today, and what is already owed against it."
       />
 
-      <PanelBody className="flex flex-1 flex-col gap-7">
-        <div className="wash wash-emerald flex items-center justify-between gap-4 rounded-2xl px-4 py-4">
+      <PanelBody className="flex flex-1 flex-col gap-6">
+        <div className="wash wash-emerald flex items-center justify-between gap-4 rounded-lg px-4 py-3.5">
           <div className="min-w-0">
             <SectionLabel className="text-tone-emerald">Bank account</SectionLabel>
-            <p className="mt-1.5 text-2xl font-medium tracking-tight text-ink sm:text-[28px]">
+            <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">
               <AnimatedCurrency value={bankBalance} />
             </p>
           </div>
@@ -51,10 +51,10 @@ export function CurrentStateCard({
         </div>
 
         <section>
-          <div className="mb-3.5 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <h3 className="text-sm font-medium text-ink">Credit cards</h3>
-              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-ink">Credit cards</h3>
+              <span className="num rounded-md border border-hairline bg-quiet px-2 py-0.5 text-xs font-medium text-ink-muted">
                 {formatCurrency(summary.creditCardDebt)}
               </span>
             </div>
@@ -64,18 +64,18 @@ export function CurrentStateCard({
           {creditCards.length === 0 ? (
             <EmptyState>No credit cards yet</EmptyState>
           ) : (
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               {creditCards.map((card) => {
                 const used = utilization(card.balance, card.limit);
                 return (
-                  <li key={card.id} className="surface-quiet relative px-4 py-3.5">
+                  <li key={card.id} className="surface-quiet relative px-4 py-3">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="flex min-w-0 items-center gap-2.5 text-sm text-ink">
+                      <span className="flex min-w-0 items-center gap-2.5 text-sm font-medium text-ink">
                         <CreditCardIcon className="size-4 shrink-0 text-ink-ghost" />
                         <span className="truncate">{card.name}</span>
                       </span>
-                      <span className="flex shrink-0 items-center gap-1.5">
-                        <span className="num text-sm text-ink-muted">
+                      <span className="flex shrink-0 items-center gap-1">
+                        <span className="num mr-1 text-sm font-medium text-ink">
                           {formatCurrency(card.balance)}
                         </span>
                         <ChargeButton
@@ -92,16 +92,16 @@ export function CurrentStateCard({
                       label={`Remove ${card.name}`}
                       onClick={() => onRemoveCreditCard(card.id)}
                     />
-                    <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-chip">
+                    <div className="mt-3 h-1.5 w-full overflow-hidden rounded-sm bg-chip">
                       <div
                         className={cn(
-                          "meter h-full rounded-full transition-[width] duration-700",
+                          "meter h-full rounded-sm transition-[width] duration-500",
                           used > 0.7 ? "meter-fill-hot" : "meter-fill",
                         )}
                         style={{ width: formatPercent(used) }}
                       />
                     </div>
-                    <p className="num mt-2 text-[11px] text-ink-ghost">
+                    <p className="num mt-2 text-xs text-ink-ghost">
                       {formatPercent(used)} of {formatWholeCurrency(card.limit)} limit
                     </p>
                   </li>
@@ -111,14 +111,9 @@ export function CurrentStateCard({
           )}
         </section>
 
-        <div
-          className={cn(
-            "mt-auto flex items-center justify-between gap-4 rounded-2xl px-4 py-4",
-            "wash wash-rose",
-          )}
-        >
+        <div className="wash wash-rose mt-auto flex items-center justify-between gap-4 rounded-lg px-4 py-3.5">
           <SectionLabel className="text-tone-rose">Total owed</SectionLabel>
-          <p className="text-xl font-medium tracking-tight text-ink">
+          <p className="text-lg font-semibold tracking-tight text-ink">
             <AnimatedCurrency value={summary.creditCardDebt} />
           </p>
         </div>

@@ -14,10 +14,8 @@ export function SiteFooter() {
   return (
     <>
       <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="surface reveal relative overflow-hidden px-6 py-10 text-center sm:px-10 sm:py-14">
-          <div aria-hidden className="wash-surplus pointer-events-none absolute inset-0 -z-10" />
-
-          <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem]">
+        <div className="surface reveal px-6 py-10 text-center sm:px-10 sm:py-14">
+          <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Ready to see what is actually left?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-ink-faint">
@@ -33,14 +31,10 @@ export function SiteFooter() {
             ))}
           </ul>
 
-          <Button
-            size="lg"
-            asChild
-            className="mt-8 h-12 rounded-full bg-tone-sky px-7 text-base font-medium text-canvas shadow-lg shadow-tone-sky/25 transition-all hover:bg-tone-sky hover:opacity-90 active:translate-y-px"
-          >
+          <Button size="lg" asChild className="mt-8 h-11 px-5 text-[15px]">
             <a href="/auth/login">
               Get started
-              <ArrowRight className="ml-1 size-5" />
+              <ArrowRight className="size-4" />
             </a>
           </Button>
 
@@ -53,12 +47,10 @@ export function SiteFooter() {
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="col-span-2 md:col-span-2">
               <Link href="/" className="flex items-center gap-3">
-                <span className="grid size-9 place-items-center rounded-xl bg-chip ring-1 ring-hairline">
-                  <Image src="/logo.png" alt="" width={24} height={24} className="size-6" />
+                <span className="grid size-8 place-items-center rounded-md border border-hairline bg-quiet">
+                  <Image src="/logo.png" alt="" width={20} height={20} className="size-5" />
                 </span>
-                <span className="text-[15px] font-medium tracking-tight text-ink">
-                  BudgitUrself
-                </span>
+                <span className="text-sm font-semibold tracking-tight text-ink">BudgitUrself</span>
               </Link>
               <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-ink-faint">
                 Manual-first budgeting. You enter the money, the app does the arithmetic you keep
@@ -69,11 +61,11 @@ export function SiteFooter() {
             <nav aria-labelledby="footer-company">
               <h2
                 id="footer-company"
-                className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase"
+                className="text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase"
               >
                 Company
               </h2>
-              <ul className="mt-4 space-y-2.5 text-sm">
+              <ul className="mt-3 space-y-2 text-sm">
                 <li>
                   <Link href="/about" className="text-ink-muted transition-colors hover:text-ink">
                     About us
@@ -85,11 +77,11 @@ export function SiteFooter() {
             <nav aria-labelledby="footer-legal">
               <h2
                 id="footer-legal"
-                className="text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase"
+                className="text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase"
               >
                 Legal
               </h2>
-              <ul className="mt-4 space-y-2.5 text-sm">
+              <ul className="mt-3 space-y-2 text-sm">
                 <li>
                   <Link href="/privacy" className="text-ink-muted transition-colors hover:text-ink">
                     Privacy policy

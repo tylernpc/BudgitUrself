@@ -16,8 +16,8 @@ export default function AppError({
 
   return (
     <main className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="text-2xl font-semibold">Something went wrong</h1>
-      <p className="text-sm text-muted-foreground">
+      <h1 className="text-2xl font-semibold tracking-tight text-ink">Something went wrong</h1>
+      <p className="text-sm text-ink-faint">
         We could not load this page. Try again, and if it keeps happening the issue is on our side.
       </p>
       <Button onClick={reset}>Try again</Button>

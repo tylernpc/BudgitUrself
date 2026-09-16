@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { requireCurrentUser } from "@/lib/auth/dal";
 import { budgetRepository } from "@/lib/budget/prisma-budget-repository";
-import { AuroraBackdrop } from "@/components/ui/aurora-backdrop";
 import { BudgetWorkspace } from "./components/budget-workspace";
 import { DashboardHeader } from "./components/dashboard-header";
 import { Reveal } from "./components/reveal";
@@ -16,25 +15,19 @@ export default async function DashboardPage() {
   const greetingName = user.firstName;
 
   return (
-    <div className="relative min-h-screen bg-canvas text-ink selection:bg-tone-cyan/25">
-      <AuroraBackdrop />
+    <div className="min-h-screen bg-canvas text-ink selection:bg-brand/20">
+      <DashboardHeader firstName={user.firstName} lastName={user.lastName} email={user.email} />
 
-      <div className="relative z-10">
-        <DashboardHeader firstName={user.firstName} lastName={user.lastName} email={user.email} />
+      <main className="mx-auto max-w-7xl px-4 pt-8 pb-4 sm:px-6 sm:pt-12 lg:px-8 lg:pb-16">
+        <Reveal className="mb-8 sm:mb-10">
+          <p className="text-sm font-medium text-ink-faint">{monthLabel.format(new Date())}</p>
+          <h1 className="mt-1.5 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+            {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
+          </h1>
+        </Reveal>
 
-        <main className="mx-auto max-w-7xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 lg:px-8">
-          <Reveal className="mb-9 sm:mb-12">
-            <p className="text-[11px] font-medium tracking-[0.2em] text-tone-cyan uppercase">
-              {monthLabel.format(new Date())}
-            </p>
-            <h1 className="mt-3 text-[2rem] leading-tight font-semibold tracking-tight text-ink sm:text-[2.75rem]">
-              {greetingName ? `Welcome back, ${greetingName}` : "Welcome back"}
-            </h1>
-          </Reveal>
-
-          <BudgetWorkspace budget={budget} />
-        </main>
-      </div>
+        <BudgetWorkspace budget={budget} />
+      </main>
     </div>
   );
 }

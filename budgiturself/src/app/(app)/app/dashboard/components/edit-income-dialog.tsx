@@ -57,7 +57,7 @@ export function EditIncomeDialog({
             required
             className={fieldClass}
           />
-          <p className="text-[13px] text-ink-ghost">
+          <p className="text-[13px] text-ink-faint">
             Your take-home pay after all taxes and deductions.
           </p>
           <FieldError message={error} />

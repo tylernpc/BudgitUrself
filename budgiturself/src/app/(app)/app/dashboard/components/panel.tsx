@@ -2,19 +2,19 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const accents = {
-  cyan: "text-tone-cyan shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-cyan/50",
-  emerald: "text-tone-emerald shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-emerald/50",
-  violet: "text-tone-violet shadow-[0_0_24px_-6px_var(--tw-shadow-color)] shadow-tone-violet/50",
+  cyan: "text-tone-cyan",
+  emerald: "text-tone-emerald",
+  violet: "text-tone-violet",
 } as const;
 
 export type Accent = keyof typeof accents;
 
 /**
- * Frosted card. `isolation: isolate` on .surface is load-bearing — it gives the
+ * Opaque card. `isolation: isolate` on .surface is load-bearing — it gives the
  * negative-z overlays inside some panels a stacking context to sit in.
  */
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn("surface lift", className)}>{children}</section>;
+  return <section className={cn("surface", className)}>{children}</section>;
 }
 
 interface PanelHeaderProps {
@@ -27,21 +27,19 @@ interface PanelHeaderProps {
 
 export function PanelHeader({ icon, accent, title, description, action }: PanelHeaderProps) {
   return (
-    <header className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline px-5 py-5 sm:px-7 sm:py-6">
-      <div className="flex min-w-0 items-center gap-3.5">
+    <header className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline px-5 py-4 sm:px-6">
+      <div className="flex min-w-0 items-center gap-3">
         <span
           className={cn(
-            "grid size-10 shrink-0 place-items-center rounded-2xl bg-chip ring-1 ring-hairline [&_svg]:size-[18px]",
+            "grid size-8 shrink-0 place-items-center rounded-md border border-hairline bg-quiet [&_svg]:size-4",
             accents[accent],
           )}
         >
           {icon}
         </span>
         <div className="min-w-0">
-          <h2 className="text-[15px] font-medium tracking-tight text-ink">{title}</h2>
-          {description && (
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-faint">{description}</p>
-          )}
+          <h2 className="text-sm font-semibold tracking-tight text-ink">{title}</h2>
+          {description && <p className="mt-0.5 text-[13px] text-ink-faint">{description}</p>}
         </div>
       </div>
       {action}
@@ -50,14 +48,14 @@ export function PanelHeader({ icon, accent, title, description, action }: PanelH
 }
 
 export function PanelBody({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn("px-5 py-6 sm:px-7", className)}>{children}</div>;
+  return <div className={cn("px-5 py-5 sm:px-6", className)}>{children}</div>;
 }
 
 export function SectionLabel({ className, children }: { className?: string; children: ReactNode }) {
   return (
     <span
       className={cn(
-        "text-[10px] font-medium tracking-[0.18em] text-ink-ghost uppercase",
+        "text-[11px] font-semibold tracking-[0.04em] text-ink-faint uppercase",
         className,
       )}
     >
