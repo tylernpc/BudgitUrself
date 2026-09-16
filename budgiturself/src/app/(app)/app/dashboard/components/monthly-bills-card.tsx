@@ -1,6 +1,12 @@
-import { CalendarClock, CreditCard as CreditCardIcon, Receipt, Users } from "lucide-react";
+import { CalendarClock, CreditCard as CreditCardIcon, Home, Receipt, Users } from "lucide-react";
 import type { BudgetSummary } from "@/lib/budget/calculations";
-import type { Bill, CreditCard, DigitalBill, PersonalBill } from "@/lib/budget/types";
+import type {
+  Bill,
+  CreditCard,
+  DigitalBill,
+  PersonalBill,
+  RecurringBill,
+} from "@/lib/budget/types";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { AddButton, EditButton, RemoveBadge } from "./actions";
@@ -106,6 +112,34 @@ function DigitalBillRow({
   );
 }
 
+function RecurringBillRow({
+  bill,
+  onEdit,
+  onRemove,
+}: {
+  bill: RecurringBill;
+  onEdit: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <BillRow
+      day={bill.chargeDate}
+      tint="bg-tone-violet/12 ring-tone-violet/25"
+      name={bill.name}
+      meta={
+        <>
+          <Home className="size-3" />
+          Fixed charge
+        </>
+      }
+      amount={bill.amount}
+      onEdit={onEdit}
+      onRemove={onRemove}
+      actionLabel={bill.name}
+    />
+  );
+}
+
 function PersonalBillRow({
   bill,
   onEdit,
@@ -154,12 +188,42 @@ export function MonthlyBillsCard({
       />
 
       <PanelBody className="space-y-8">
-        <div className="grid gap-8 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-10 lg:gap-y-0">
+        <div className="grid gap-8 lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-10 lg:gap-y-0">
+          <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
+            <div className="mb-3.5 flex items-center justify-between gap-3">
+              <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
+                <Home className="size-4 text-tone-violet" />
+                Recurring bills
+              </h3>
+              <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
+                {formatCurrency(summary.recurringBillsTotal)}
+              </span>
+            </div>
+            <p className="mb-3.5 text-[12px] leading-relaxed text-ink-ghost">
+              Fixed charges with no card or person attached — rent, insurance, anything that bills
+              the same amount every month.
+            </p>
+            {summary.recurringBills.length === 0 ? (
+              <EmptyState>No fixed bills tracked yet</EmptyState>
+            ) : (
+              <ul className="space-y-3.5">
+                {summary.recurringBills.map((bill) => (
+                  <RecurringBillRow
+                    key={bill.id}
+                    bill={bill}
+                    onEdit={() => onEditBill(bill)}
+                    onRemove={() => onRemoveBill(bill.id)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
+
           <section className="lg:row-span-3 lg:grid lg:grid-rows-subgrid">
             <div className="mb-3.5 flex items-center justify-between gap-3">
               <h3 className="flex items-center gap-2 text-sm font-medium text-ink">
                 <Receipt className="size-4 text-tone-indigo" />
-                Digital bills
+                Subscriptions
               </h3>
               <span className="num rounded-full bg-chip px-2.5 py-1 text-xs text-ink-muted ring-1 ring-hairline">
                 {formatCurrency(summary.digitalBillsTotal)}

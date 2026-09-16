@@ -59,14 +59,17 @@ model MonthlyExpense {
 enum BillType {
   DIGITAL
   PERSONAL
+  RECURRING
 }
 
-/// Digital bills carry `cardId` + `category`; personal bills carry `owedTo`.
-/// The pairing is enforced in the database via a CHECK constraint (see the
-/// migration) and re-validated by the mapper. Prisma has no native
-/// discriminated-union column type, so the branch columns are nullable —
-/// but `cardId` is still a real foreign key, so a bill can never name a card
-/// that does not exist, and deleting a card takes its bills with it.
+/// Digital bills carry `cardId` + `category`; personal bills carry `owedTo`;
+/// recurring bills (rent, insurance, and the like) carry neither — just a
+/// fixed name/amount/day. The pairing is enforced in the database via a
+/// CHECK constraint (see the migration) and re-validated by the mapper.
+/// Prisma has no native discriminated-union column type, so the branch
+/// columns are nullable — but `cardId` is still a real foreign key, so a
+/// bill can never name a card that does not exist, and deleting a card
+/// takes its bills with it.
 model Bill {
   id         String   @id @default(uuid())
   userId     String

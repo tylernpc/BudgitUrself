@@ -1,4 +1,4 @@
-import { CalendarClock, CreditCard, Users } from "lucide-react";
+import { CalendarClock, CreditCard, Home, Users } from "lucide-react";
 import { formatWholeCurrency } from "@/lib/format";
 
 const digitalBills = [
@@ -7,12 +7,18 @@ const digitalBills = [
   { name: "Adobe CC", category: "Software", card: "Chase Sapphire", day: 12, amount: 54.99 },
 ];
 
+const recurringBills = [
+  { name: "Rent", day: 1, amount: 1450 },
+  { name: "Car insurance", day: 8, amount: 132 },
+];
+
 const personalBills = [
   { name: "YMCA Membership", owedTo: "Dad", day: 1, amount: 20 },
   { name: "Storage unit", owedTo: "Sam", day: 15, amount: 65 },
 ];
 
 const digitalTotal = digitalBills.reduce((total, bill) => total + bill.amount, 0);
+const recurringTotal = recurringBills.reduce((total, bill) => total + bill.amount, 0);
 const personalTotal = personalBills.reduce((total, bill) => total + bill.amount, 0);
 
 function PanelHead({ icon, tone, title }: { icon: React.ReactNode; tone: string; title: string }) {
@@ -50,13 +56,43 @@ export function MonthlyBillsPreview() {
           Every bill, on its day
         </h2>
         <p className="mt-3 text-base leading-relaxed text-ink-faint">
-          Subscriptions that charge a card automatically, and the people you pay back yourself.
+          Subscriptions that charge a card automatically, fixed charges like rent, and the people
+          you pay back yourself.
         </p>
       </div>
 
-      <div className="mt-9 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="mt-9 grid grid-cols-1 gap-5 lg:grid-cols-3">
         <section className="surface lift reveal" style={{ animationDelay: "100ms" }}>
-          <PanelHead icon={<CreditCard />} tone="text-tone-indigo" title="Digital bills" />
+          <PanelHead icon={<Home />} tone="text-tone-violet" title="Recurring bills" />
+          <div className="space-y-2.5 px-5 py-5 sm:px-7">
+            {recurringBills.map((bill) => (
+              <div
+                key={bill.name}
+                className="surface-quiet flex items-center gap-3 px-4 py-3 sm:px-3.5"
+              >
+                <DayChip day={bill.day} tone="bg-tone-violet/12 ring-tone-violet/25" />
+                <div className="min-w-0 flex-1">
+                  <h4 className="truncate text-sm font-medium text-ink">{bill.name}</h4>
+                  <p className="mt-1 text-[11px] text-ink-ghost">Fixed charge</p>
+                </div>
+                <p className="num shrink-0 text-sm text-ink-muted">
+                  {formatWholeCurrency(bill.amount)}
+                </p>
+              </div>
+            ))}
+            <div className="flex items-center justify-between border-t border-hairline pt-4">
+              <span className="text-[10px] font-medium tracking-[0.18em] text-ink-faint uppercase">
+                Total recurring bills
+              </span>
+              <span className="num text-xl font-medium text-ink">
+                {formatWholeCurrency(recurringTotal)}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section className="surface lift reveal" style={{ animationDelay: "140ms" }}>
+          <PanelHead icon={<CreditCard />} tone="text-tone-indigo" title="Subscriptions" />
           <div className="space-y-2.5 px-5 py-5 sm:px-7">
             {digitalBills.map((bill) => (
               <div
@@ -80,7 +116,7 @@ export function MonthlyBillsPreview() {
             ))}
             <div className="flex items-center justify-between border-t border-hairline pt-4">
               <span className="text-[10px] font-medium tracking-[0.18em] text-ink-faint uppercase">
-                Total digital bills
+                Total subscriptions
               </span>
               <span className="num text-xl font-medium text-ink">
                 {formatWholeCurrency(digitalTotal)}
@@ -89,7 +125,7 @@ export function MonthlyBillsPreview() {
           </div>
         </section>
 
-        <section className="surface lift reveal" style={{ animationDelay: "180ms" }}>
+        <section className="surface lift reveal" style={{ animationDelay: "220ms" }}>
           <PanelHead icon={<Users />} tone="text-tone-amber" title="Personal owed bills" />
           <div className="space-y-2.5 px-5 py-5 sm:px-7">
             {personalBills.map((bill) => (

@@ -334,6 +334,17 @@
     backdrop-filter: blur(20px) saturate(150%);
   }
 
+  /* Same frosted recipe as .surface, but pill-shaped for the floating mobile nav. */
+  .glass-pill {
+    border-radius: 9999px;
+    border: 1px solid var(--dash-hairline);
+    background: var(--dash-panel-sheen), var(--dash-panel-tint);
+    box-shadow: var(--dash-panel-inset), var(--dash-panel-shadow);
+    /* No -webkit- prefix here: the build's CSS pipeline adds it, and writing
+       both collapses the pair down to the prefixed property alone. */
+    backdrop-filter: blur(20px) saturate(150%);
+  }
+
   .surface-quiet {
     border-radius: 1rem;
     border: 1px solid var(--dash-hairline);

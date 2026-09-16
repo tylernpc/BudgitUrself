@@ -69,7 +69,7 @@ export interface MonthlyExpense {
   color: ExpenseColorKey;
 }
 
-export type BillType = "digital" | "personal";
+export type BillType = "digital" | "personal" | "recurring";
 
 interface BillBase {
   id: string;
@@ -89,7 +89,12 @@ export interface PersonalBill extends BillBase {
   owedTo: string;
 }
 
-export type Bill = DigitalBill | PersonalBill;
+/** A fixed-amount recurring charge with no card or person attached — rent, insurance, and the like. */
+export interface RecurringBill extends BillBase {
+  type: "recurring";
+}
+
+export type Bill = DigitalBill | PersonalBill | RecurringBill;
 
 /** `Omit` collapses a union into its common members; this preserves each member. */
 export type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;

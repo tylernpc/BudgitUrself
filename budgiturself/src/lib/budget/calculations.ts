@@ -1,11 +1,13 @@
-import type { Bill, Budget, DigitalBill, PersonalBill } from "@/lib/budget/types";
+import type { Bill, Budget, DigitalBill, PersonalBill, RecurringBill } from "@/lib/budget/types";
 
 export interface BudgetSummary {
   creditCardDebt: number;
   digitalBills: DigitalBill[];
   personalBills: PersonalBill[];
+  recurringBills: RecurringBill[];
   digitalBillsTotal: number;
   personalBillsTotal: number;
+  recurringBillsTotal: number;
   monthlyBillsTotal: number;
   monthlyExpensesTotal: number;
   fixedExpensesTotal: number;
@@ -24,6 +26,10 @@ export function isPersonalBill(bill: Bill): bill is PersonalBill {
   return bill.type === "personal";
 }
 
+export function isRecurringBill(bill: Bill): bill is RecurringBill {
+  return bill.type === "recurring";
+}
+
 export function byChargeDate<T extends Bill>(bills: readonly T[]): T[] {
   return [...bills].sort((a, b) => a.chargeDate - b.chargeDate);
 }
@@ -33,9 +39,11 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
 
   const digitalBills = byChargeDate(budget.bills.filter(isDigitalBill));
   const personalBills = byChargeDate(budget.bills.filter(isPersonalBill));
+  const recurringBills = byChargeDate(budget.bills.filter(isRecurringBill));
   const digitalBillsTotal = sum(digitalBills);
   const personalBillsTotal = sum(personalBills);
-  const monthlyBillsTotal = digitalBillsTotal + personalBillsTotal;
+  const recurringBillsTotal = sum(recurringBills);
+  const monthlyBillsTotal = digitalBillsTotal + personalBillsTotal + recurringBillsTotal;
 
   const monthlyExpensesTotal = sum(budget.monthlyExpenses);
   const fixedExpensesTotal = monthlyExpensesTotal + monthlyBillsTotal;
@@ -44,8 +52,10 @@ export function summarizeBudget(budget: Budget): BudgetSummary {
     creditCardDebt,
     digitalBills,
     personalBills,
+    recurringBills,
     digitalBillsTotal,
     personalBillsTotal,
+    recurringBillsTotal,
     monthlyBillsTotal,
     monthlyExpensesTotal,
     fixedExpensesTotal,

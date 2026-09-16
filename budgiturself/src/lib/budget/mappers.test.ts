@@ -49,6 +49,26 @@ describe("bill column mapping", () => {
     });
   });
 
+  it("writes the recurring branch and clears both digital and personal columns", () => {
+    const data = toBillUpdateData({
+      id: "bill-5",
+      type: "recurring",
+      name: "Rent",
+      amount: 1200,
+      chargeDate: 1,
+    });
+
+    expect(data).toEqual({
+      type: "RECURRING",
+      name: "Rent",
+      amount: 1200,
+      chargeDate: 1,
+      cardId: null,
+      category: null,
+      owedTo: null,
+    });
+  });
+
   it("never writes the row id as a column", () => {
     const data = toBillUpdateData({
       id: "bill-3",

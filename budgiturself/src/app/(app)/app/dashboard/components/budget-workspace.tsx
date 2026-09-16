@@ -32,6 +32,7 @@ import { EditCreditCardDialog } from "./edit-credit-card-dialog";
 import { EditIncomeDialog } from "./edit-income-dialog";
 import { ExpensesCard } from "./expenses-card";
 import { HorizonView } from "./horizon-view";
+import { MobileDashboardNav, type DashboardPage } from "./mobile-dashboard-nav";
 import { MonthlyBillsCard } from "./monthly-bills-card";
 import { Reveal } from "./reveal";
 
@@ -46,6 +47,9 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   const [editingExpense, setEditingExpense] = useState<MonthlyExpense | null>(null);
   const [chargingExpense, setChargingExpense] = useState<MonthlyExpense | null>(null);
   const [error, setError] = useState<string>();
+  // Below `lg`, the dashboard pages between sections via `MobileDashboardNav`
+  // instead of one long scroll; at `lg` and up everything renders together.
+  const [activePage, setActivePage] = useState<DashboardPage>("overview");
   const [isPending, startTransition] = useTransition();
   // Reflects the mutation immediately; if the action below fails, revalidatePath
   // never runs, `budget` never changes, and this reverts on its own once the
@@ -70,6 +74,54 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
     });
   };
 
+  const horizonView = (
+    <HorizonView
+      bankBalance={optimisticBudget.bankBalance}
+      monthlyIncome={optimisticBudget.monthlyIncome}
+      summary={summary}
+    />
+  );
+
+  const currentStateCard = (
+    <CurrentStateCard
+      bankBalance={optimisticBudget.bankBalance}
+      creditCards={optimisticBudget.creditCards}
+      summary={summary}
+      onEditBankBalance={() => setOpenDialog("bankBalance")}
+      onAddCreditCard={() => setOpenDialog("creditCard")}
+      onEditCreditCard={setEditingCard}
+      onAddCharge={setChargingCard}
+      onRemoveCreditCard={(id) =>
+        run({ type: "removeCreditCard", id }, () => removeCreditCardAction(id))
+      }
+    />
+  );
+
+  const expensesCard = (
+    <ExpensesCard
+      monthlyIncome={optimisticBudget.monthlyIncome}
+      monthlyExpenses={optimisticBudget.monthlyExpenses}
+      summary={summary}
+      onEditIncome={() => setOpenDialog("income")}
+      onAddExpense={() => setOpenDialog("monthlyExpense")}
+      onEditExpense={setEditingExpense}
+      onAddContribution={setChargingExpense}
+      onRemoveExpense={(id) =>
+        run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
+      }
+    />
+  );
+
+  const monthlyBillsCard = (
+    <MonthlyBillsCard
+      summary={summary}
+      creditCards={optimisticBudget.creditCards}
+      onAddBill={() => setOpenDialog("bill")}
+      onEditBill={setEditingBill}
+      onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
+    />
+  );
+
   return (
     <>
       {error && (
@@ -82,61 +134,39 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         </div>
       )}
 
-      <div className="space-y-6">
-        <Reveal delay={80}>
-          <HorizonView
-            bankBalance={optimisticBudget.bankBalance}
-            monthlyIncome={optimisticBudget.monthlyIncome}
-            summary={summary}
-          />
-        </Reveal>
+      {/* `lg` and up: everything on one continuous page, unchanged. */}
+      <div className="hidden space-y-6 lg:block">
+        <Reveal delay={80}>{horizonView}</Reveal>
 
         <div className="grid items-stretch gap-6 lg:grid-cols-2">
           <Reveal delay={180} className="h-full">
-            <CurrentStateCard
-              bankBalance={optimisticBudget.bankBalance}
-              creditCards={optimisticBudget.creditCards}
-              summary={summary}
-              onEditBankBalance={() => setOpenDialog("bankBalance")}
-              onAddCreditCard={() => setOpenDialog("creditCard")}
-              onEditCreditCard={setEditingCard}
-              onAddCharge={setChargingCard}
-              onRemoveCreditCard={(id) =>
-                run({ type: "removeCreditCard", id }, () => removeCreditCardAction(id))
-              }
-            />
+            {currentStateCard}
           </Reveal>
-
           <Reveal delay={260} className="h-full">
-            <ExpensesCard
-              monthlyIncome={optimisticBudget.monthlyIncome}
-              monthlyExpenses={optimisticBudget.monthlyExpenses}
-              summary={summary}
-              onEditIncome={() => setOpenDialog("income")}
-              onAddExpense={() => setOpenDialog("monthlyExpense")}
-              onEditExpense={setEditingExpense}
-              onAddContribution={setChargingExpense}
-              onRemoveExpense={(id) =>
-                run({ type: "removeMonthlyExpense", id }, () => removeMonthlyExpenseAction(id))
-              }
-            />
+            {expensesCard}
           </Reveal>
         </div>
 
-        <Reveal delay={340}>
-          <MonthlyBillsCard
-            summary={summary}
-            creditCards={optimisticBudget.creditCards}
-            onAddBill={() => setOpenDialog("bill")}
-            onEditBill={setEditingBill}
-            onRemoveBill={(id) => run({ type: "removeBill", id }, () => removeBillAction(id))}
-          />
-        </Reveal>
+        <Reveal delay={340}>{monthlyBillsCard}</Reveal>
       </div>
+
+      {/* Below `lg`: one section at a time, paged by `MobileDashboardNav`. */}
+      <div className="space-y-6 pb-32 lg:hidden">
+        {activePage === "overview" && (
+          <>
+            <Reveal>{horizonView}</Reveal>
+            <Reveal delay={80}>{currentStateCard}</Reveal>
+          </>
+        )}
+        {activePage === "flow" && <Reveal>{expensesCard}</Reveal>}
+        {activePage === "bills" && <Reveal>{monthlyBillsCard}</Reveal>}
+      </div>
+
+      <MobileDashboardNav active={activePage} onChange={setActivePage} />
 
       <div
         aria-live="polite"
-        className={`pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center transition-all duration-300 ${
+        className={`pointer-events-none fixed inset-x-0 bottom-32 z-50 flex justify-center transition-all duration-300 lg:bottom-6 ${
           isPending ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
         }`}
       >

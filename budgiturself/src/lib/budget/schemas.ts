@@ -86,14 +86,22 @@ const personalBill = z.object({
   owedTo: name,
 });
 
+const recurringBill = z.object({
+  type: z.literal("recurring"),
+  name,
+  amount,
+  chargeDate,
+});
+
 const billId = z.string().min(1);
 
-export const billSchema = z.discriminatedUnion("type", [digitalBill, personalBill]);
+export const billSchema = z.discriminatedUnion("type", [digitalBill, personalBill, recurringBill]);
 
 /** The same union, addressed to an existing row. Editing may switch the type. */
 export const billUpdateSchema = z.discriminatedUnion("type", [
   digitalBill.extend({ id: billId }),
   personalBill.extend({ id: billId }),
+  recurringBill.extend({ id: billId }),
 ]);
 
 export type MonthlyExpenseInput = Omit<MonthlyExpense, "id">;

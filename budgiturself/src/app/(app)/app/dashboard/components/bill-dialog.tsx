@@ -92,16 +92,22 @@ export function BillDialog({
       open={open}
       onOpenChange={(next) => (next ? onOpenChange(true) : close())}
       title={editing ? "Edit monthly bill" : "Add monthly bill"}
-      description="A recurring subscription, service, or a person you pay back each month."
+      description="A recurring subscription, fixed charge, or a person you pay back each month."
     >
       <form key={String(open)} onSubmit={handleSubmit}>
         <Tabs value={type} onValueChange={(value) => setType(value as BillType)} className="pt-6">
-          <TabsList className="grid w-full grid-cols-2 items-stretch rounded-xl border border-hairline bg-quiet p-1">
+          <TabsList className="grid w-full grid-cols-3 items-stretch rounded-xl border border-hairline bg-quiet p-1">
+            <TabsTrigger
+              value="recurring"
+              className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
+            >
+              Recurring bill
+            </TabsTrigger>
             <TabsTrigger
               value="digital"
               className="rounded-lg text-ink-faint transition-colors data-[state=active]:bg-raised data-[state=active]:text-ink data-[state=active]:shadow-sm"
             >
-              Digital bill
+              Subscription
             </TabsTrigger>
             <TabsTrigger
               value="personal"
@@ -120,7 +126,13 @@ export function BillDialog({
             <Input
               id="bill-name"
               name="name"
-              placeholder={type === "digital" ? "e.g., Netflix, Spotify" : "e.g., YMCA Membership"}
+              placeholder={
+                type === "digital"
+                  ? "e.g., Netflix, Spotify"
+                  : type === "recurring"
+                    ? "e.g., Rent, Car insurance"
+                    : "e.g., YMCA Membership"
+              }
               defaultValue={bill?.name}
               required
               className={fieldClass}
@@ -192,7 +204,7 @@ export function BillDialog({
                 </Select>
               </div>
             </>
-          ) : (
+          ) : type === "personal" ? (
             <div className="space-y-2.5">
               <FieldLabel htmlFor="bill-owed-to">Who you owe</FieldLabel>
               <Input
@@ -204,7 +216,7 @@ export function BillDialog({
                 className={fieldClass}
               />
             </div>
-          )}
+          ) : null}
 
           <FieldError message={error} />
         </div>

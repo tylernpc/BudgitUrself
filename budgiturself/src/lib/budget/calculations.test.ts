@@ -32,6 +32,7 @@ const budget: Budget = {
       category: "Health",
     },
     { id: "b3", name: "Gym", amount: 30, chargeDate: 5, type: "personal", owedTo: "Dad" },
+    { id: "b4", name: "Rent", amount: 500, chargeDate: 1, type: "recurring" },
   ],
 };
 
@@ -45,18 +46,20 @@ describe("summarizeBudget", () => {
   it("splits bills by type and totals them", () => {
     expect(summary.digitalBills.map((bill) => bill.id)).toEqual(["b2", "b1"]);
     expect(summary.personalBills.map((bill) => bill.id)).toEqual(["b3"]);
+    expect(summary.recurringBills.map((bill) => bill.id)).toEqual(["b4"]);
     expect(summary.digitalBillsTotal).toBe(30);
     expect(summary.personalBillsTotal).toBe(30);
-    expect(summary.monthlyBillsTotal).toBe(60);
+    expect(summary.recurringBillsTotal).toBe(500);
+    expect(summary.monthlyBillsTotal).toBe(560);
   });
 
   it("treats monthly expenses plus bills as fixed expenses", () => {
-    expect(summary.fixedExpensesTotal).toBe(1260);
-    expect(summary.safeToSpend).toBe(2740);
+    expect(summary.fixedExpensesTotal).toBe(1760);
+    expect(summary.safeToSpend).toBe(2240);
   });
 
   it("derives the horizon view", () => {
-    expect(summary.horizonView).toBe(1000 + 4000 - 500 - 1260);
+    expect(summary.horizonView).toBe(1000 + 4000 - 500 - 1760);
   });
 
   it("reports a negative horizon when obligations exceed resources", () => {
@@ -68,8 +71,8 @@ describe("summarizeBudget", () => {
 describe("byChargeDate", () => {
   it("sorts a copy without mutating the input", () => {
     const bills = budget.bills;
-    expect(byChargeDate(bills).map((bill) => bill.chargeDate)).toEqual([3, 5, 20]);
-    expect(bills.map((bill) => bill.chargeDate)).toEqual([20, 3, 5]);
+    expect(byChargeDate(bills).map((bill) => bill.chargeDate)).toEqual([1, 3, 5, 20]);
+    expect(bills.map((bill) => bill.chargeDate)).toEqual([20, 3, 5, 1]);
   });
 });
 

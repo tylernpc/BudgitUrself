@@ -17,14 +17,14 @@ Total monthly income
 
 _Expenses_
 Housing: 500
-Digital bills: 25.95
+Subscriptions: 25.95
 Whatever you'd like to add
 
 Total after expenses
 
 # Monthly Bills:
 
-_Digital Bills_
+_Subscriptions_
 Apple One: 25.95
 whatever
 
@@ -32,6 +32,9 @@ Total monthly bills
 
 _How this section works_
 This section generally is to support the expenses but breaks it down so you can see what payment is happening and at what time as far as smaller monthly bills go. Really this is to simplify and divide out whatever. So you're able to actually see what's going on at a little bit of a deeper level
+
+_Recurring bills_
+Fixed charges with no card or person attached — rent, insurance, anything that's the same amount every month. Different from a fixed expense like gas, which is a budget you spend down against rather than a fixed charge.
 
 _Personal owed bills_
 This is like if you owe someone else monthly for money, for instnace I pay my dad 20/m for a ymca membership

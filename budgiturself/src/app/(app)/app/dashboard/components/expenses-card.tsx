@@ -1,4 +1,4 @@
-import { Receipt, TrendingUp, Users } from "lucide-react";
+import { Home, Receipt, TrendingUp, Users } from "lucide-react";
 import { utilization } from "@/lib/budget/calculations";
 import type { BudgetSummary } from "@/lib/budget/calculations";
 import type { MonthlyExpense } from "@/lib/budget/types";
@@ -158,8 +158,14 @@ export function ExpensesCard({
             })}
 
             <RolledUpRow
+              icon={<Home className="size-3.5 text-tone-violet" />}
+              label="Recurring bills"
+              amount={summary.recurringBillsTotal}
+              tint="bg-tone-violet/15"
+            />
+            <RolledUpRow
               icon={<Receipt className="size-3.5 text-tone-cyan" />}
-              label="Digital bills"
+              label="Subscriptions"
               amount={summary.digitalBillsTotal}
               tint="bg-tone-cyan/15"
             />

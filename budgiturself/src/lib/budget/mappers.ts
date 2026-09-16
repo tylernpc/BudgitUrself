@@ -81,6 +81,10 @@ export function toDomainBill(row: BillRow): Bill {
     return { ...base, type: "digital", cardId: row.cardId, category: row.category };
   }
 
+  if (row.type === "RECURRING") {
+    return { ...base, type: "recurring" };
+  }
+
   if (row.owedTo === null) {
     throw new Error(`Bill ${row.id} is PERSONAL but missing owedTo`);
   }
@@ -152,6 +156,7 @@ export function toMonthlyExpenseUpdateData(
 const billTypeToRow: Record<Bill["type"], BillTypeRow> = {
   digital: "DIGITAL",
   personal: "PERSONAL",
+  recurring: "RECURRING",
 };
 
 /**
@@ -167,9 +172,15 @@ function toBillColumns(input: BillInput) {
     type: billTypeToRow[input.type],
   };
 
-  return input.type === "digital"
-    ? { ...base, cardId: input.cardId, category: input.category, owedTo: null }
-    : { ...base, owedTo: input.owedTo, cardId: null, category: null };
+  if (input.type === "digital") {
+    return { ...base, cardId: input.cardId, category: input.category, owedTo: null };
+  }
+
+  if (input.type === "recurring") {
+    return { ...base, cardId: null, category: null, owedTo: null };
+  }
+
+  return { ...base, owedTo: input.owedTo, cardId: null, category: null };
 }
 
 export function toBillCreateData(
