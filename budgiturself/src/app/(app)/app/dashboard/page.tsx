@@ -12,7 +12,10 @@ const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "nume
 
 export default async function DashboardPage() {
   const user = await requireOnboardedUser();
-  const budget = await budgetRepository.getBudget(user.id);
+  const [budget, transactions] = await Promise.all([
+    budgetRepository.getBudget(user.id),
+    budgetRepository.listTransactions(user.id),
+  ]);
   const greetingName = user.firstName;
 
   return (
@@ -40,7 +43,7 @@ export default async function DashboardPage() {
           />
         </Reveal>
 
-        <BudgetWorkspace budget={budget} />
+        <BudgetWorkspace budget={budget} transactions={transactions} />
       </main>
     </div>
   );

@@ -21,3 +21,15 @@ export function formatDayOfMonth(day: number): string {
   const suffix = teen ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[day % 10] ?? "th");
   return `${day}${suffix}`;
 }
+
+const dateTime = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+/** Journal rows need the time as well as the day — several entries often land in one minute. */
+export function formatDateTime(value: Date): string {
+  return dateTime.format(value);
+}

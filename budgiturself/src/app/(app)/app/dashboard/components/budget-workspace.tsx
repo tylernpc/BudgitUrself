@@ -3,16 +3,18 @@
 import { useOptimistic, useState, useTransition } from "react";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { summarizeBudget } from "@/lib/budget/calculations";
-import type { Bill, Budget, CreditCard, MonthlyExpense } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard, MonthlyExpense, Transaction } from "@/lib/budget/types";
 import {
   addBillAction,
   addCreditCardAction,
   addCreditCardChargeAction,
   addMonthlyExpenseAction,
   addMonthlyExpenseContributionAction,
+  clearTransactionsAction,
   removeBillAction,
   removeCreditCardAction,
   removeMonthlyExpenseAction,
+  removeTransactionAction,
   setBankBalanceAction,
   setMonthlyIncomeAction,
   updateBillAction,
@@ -21,6 +23,7 @@ import {
   type ActionResult,
 } from "../lib/actions";
 import { budgetReducer, type OptimisticBudgetAction } from "../lib/budget-reducer";
+import { transactionsReducer, type OptimisticTransactionAction } from "../lib/transactions-reducer";
 import { BillDialog } from "./bill-dialog";
 import { AddChargeDialog } from "./add-charge-dialog";
 import { AddCreditCardDialog } from "./add-credit-card-dialog";
@@ -35,10 +38,17 @@ import { HorizonView } from "./horizon-view";
 import { MobileDashboardNav, type DashboardPage } from "./mobile-dashboard-nav";
 import { MonthlyBillsCard } from "./monthly-bills-card";
 import { Reveal } from "./reveal";
+import { TransactionsCard } from "./transactions-card";
 
 type DialogName = "monthlyExpense" | "bill" | "income" | "creditCard" | "bankBalance";
 
-export function BudgetWorkspace({ budget }: { budget: Budget }) {
+export function BudgetWorkspace({
+  budget,
+  transactions,
+}: {
+  budget: Budget;
+  transactions: Transaction[];
+}) {
   const [openDialog, setOpenDialog] = useState<DialogName | null>(null);
   // Held separately from `openDialog`: these dialogs need to know *which* card.
   const [editingCard, setEditingCard] = useState<CreditCard | null>(null);
@@ -55,6 +65,12 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
   // never runs, `budget` never changes, and this reverts on its own once the
   // transition settles — no manual rollback needed.
   const [optimisticBudget, applyOptimistic] = useOptimistic(budget, budgetReducer);
+  // Its own state because the journal is not part of the `Budget` aggregate,
+  // and only removals are optimistic here — see `transactions-reducer.ts`.
+  const [optimisticTransactions, applyOptimisticTransaction] = useOptimistic(
+    transactions,
+    transactionsReducer,
+  );
   const summary = summarizeBudget(optimisticBudget);
 
   const close = () => {
@@ -112,6 +128,30 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
     />
   );
 
+  const runTransaction = (
+    optimisticAction: OptimisticTransactionAction,
+    action: () => Promise<ActionResult>,
+  ) => {
+    setError(undefined);
+    startTransition(async () => {
+      applyOptimisticTransaction(optimisticAction);
+      const result = await action();
+      if (result.error) {
+        setError(result.error);
+      }
+    });
+  };
+
+  const transactionsCard = (
+    <TransactionsCard
+      transactions={optimisticTransactions}
+      onRemove={(id) =>
+        runTransaction({ type: "removeTransaction", id }, () => removeTransactionAction(id))
+      }
+      onClear={() => runTransaction({ type: "clearTransactions" }, clearTransactionsAction)}
+    />
+  );
+
   const monthlyBillsCard = (
     <MonthlyBillsCard
       summary={summary}
@@ -148,6 +188,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         </div>
 
         <Reveal delay={340}>{monthlyBillsCard}</Reveal>
+        <Reveal delay={420}>{transactionsCard}</Reveal>
       </div>
 
       {/* Below `lg`: one section at a time, paged by `MobileDashboardNav`. */}
@@ -160,6 +201,7 @@ export function BudgetWorkspace({ budget }: { budget: Budget }) {
         )}
         {activePage === "flow" && <Reveal>{expensesCard}</Reveal>}
         {activePage === "bills" && <Reveal>{monthlyBillsCard}</Reveal>}
+        {activePage === "transactions" && <Reveal>{transactionsCard}</Reveal>}
       </div>
 
       <MobileDashboardNav active={activePage} onChange={setActivePage} />

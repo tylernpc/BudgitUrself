@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { toBillCreateData, toBillUpdateData } from "@/lib/budget/mappers";
+import { Prisma } from "@prisma/client";
+import {
+  toBillCreateData,
+  toBillUpdateData,
+  toDomainTransaction,
+  toTransactionCreateData,
+} from "@/lib/budget/mappers";
+import { TRANSACTION_KINDS } from "@/lib/budget/types";
 
 /**
  * `Bill_type_fields_check` rejects any row that carries columns from both
@@ -95,5 +102,45 @@ describe("bill column mapping", () => {
     const { userId, ...created } = toBillCreateData("user-1", bill);
     expect(userId).toBe("user-1");
     expect(created).toEqual(toBillUpdateData({ ...bill, id: "bill-4" }));
+  });
+});
+
+describe("transaction mapping", () => {
+  it("writes the Postgres enum name, and no id or timestamp", () => {
+    const data = toTransactionCreateData("user-1", {
+      kind: "cardCharge",
+      label: "Amex",
+      amount: 42.18,
+    });
+
+    // `id` and `occurredAt` are the database's to assign — a mapper that sent
+    // its own would let two entries claim the same instant from skewed clocks.
+    expect(data).toEqual({
+      userId: "user-1",
+      kind: "CARD_CHARGE",
+      label: "Amex",
+      amount: 42.18,
+    });
+  });
+
+  it("round-trips every kind through the enum", () => {
+    for (const kind of TRANSACTION_KINDS) {
+      const { kind: rowKind } = toTransactionCreateData("user-1", {
+        kind,
+        label: "x",
+        amount: 1,
+      });
+
+      const row = {
+        id: "t-1",
+        userId: "user-1",
+        kind: rowKind,
+        label: "x",
+        amount: new Prisma.Decimal(1),
+        occurredAt: new Date("2026-11-02T15:00:00Z"),
+      };
+
+      expect(toDomainTransaction(row).kind).toBe(kind);
+    }
   });
 });

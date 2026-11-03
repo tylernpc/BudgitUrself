@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Transactions" };
-
+/**
+ * The journal lives as a tab inside the dashboard workspace, not on its own
+ * route — it shares the optimistic state the dashboard already holds. This
+ * stub stays only so an old link still lands somewhere useful.
+ */
 export default function TransactionsPage() {
-  return (
-    <main className="mx-auto max-w-7xl px-6 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">Transactions</h1>
-      <p className="mt-2 text-ink-faint">Transaction history is not built yet.</p>
-    </main>
-  );
+  redirect("/app/dashboard");
 }

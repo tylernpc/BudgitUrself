@@ -217,3 +217,24 @@ export async function removeBillAction(id: string): Promise<ActionResult> {
   revalidatePath(DASHBOARD_PATH);
   return {};
 }
+
+/**
+ * The journal has no "add" action — entries are written by the mutations
+ * above, inside their own database transaction. These two exist only so the
+ * log can be pruned: the table is append-only and the one here that grows
+ * without bound. Deleting an entry removes the record of a change; the
+ * balance it describes is untouched.
+ */
+export async function removeTransactionAction(id: string): Promise<ActionResult> {
+  const user = await requireCurrentUser();
+  await budgetRepository.removeTransaction(user.id, id);
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
+
+export async function clearTransactionsAction(): Promise<ActionResult> {
+  const user = await requireCurrentUser();
+  await budgetRepository.clearTransactions(user.id);
+  revalidatePath(DASHBOARD_PATH);
+  return {};
+}
