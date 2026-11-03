@@ -31,11 +31,29 @@ export interface TransactionAmount {
  * knew the difference, so it cannot render one. `billAdded` / `billRemoved`
  * store a recurring obligation's amount, which is a commitment changing rather
  * than cash moving today.
+ *
+ * So `tone` carries the direction the entry moves what is free to spend, and
+ * `prefix` is spent only where real cash actually moved — a signed figure on a
+ * restatement would claim a delta the app never had.
  */
 export function transactionAmount(kind: TransactionKind): TransactionAmount {
-  // TODO(human): map each TransactionKind to its tone and prefix.
-  // Placeholder: every figure currently renders plain and untinted, which is
-  // visibly incomplete rather than quietly wrong.
-  void kind;
-  return { tone: "neutral", prefix: "" };
+  switch (kind) {
+    // Cash left, or debt grew by this much.
+    case "cardCharge":
+    case "expenseSpend":
+      return { tone: "spend", prefix: "−" };
+
+    // The new absolute figure the user typed, not a change to one.
+    case "bankAdjust":
+    case "incomeAdjust":
+      return { tone: "neutral", prefix: "" };
+
+    // A recurring obligation appearing or going away: it moves what is free to
+    // spend from next month on, but no cash moved today, so no sign.
+    case "billAdded":
+      return { tone: "spend", prefix: "" };
+
+    case "billRemoved":
+      return { tone: "credit", prefix: "" };
+  }
 }
