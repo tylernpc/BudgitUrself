@@ -106,3 +106,33 @@ export interface Budget {
   monthlyExpenses: MonthlyExpense[];
   bills: Bill[];
 }
+
+/**
+ * The kinds of money movement the app journals. Stored as a Postgres enum, so
+ * adding a kind is a migration — deliberately, since each one needs a label
+ * and a direction (see `lib/budget/transaction-log.ts`) to render at all.
+ */
+export const TRANSACTION_KINDS = [
+  "cardCharge",
+  "expenseSpend",
+  "bankAdjust",
+  "incomeAdjust",
+  "billAdded",
+  "billRemoved",
+] as const;
+
+export type TransactionKind = (typeof TRANSACTION_KINDS)[number];
+
+/**
+ * One journal entry. Not part of `Budget` on purpose: `summarizeBudget` must
+ * never read these, so the budget math cannot drift from the log — and the log
+ * can be cleared without touching a single balance.
+ */
+export interface Transaction {
+  id: string;
+  kind: TransactionKind;
+  /** The name of whatever this entry hit, captured at write time so it survives that row's deletion. */
+  label: string;
+  amount: number;
+  occurredAt: Date;
+}

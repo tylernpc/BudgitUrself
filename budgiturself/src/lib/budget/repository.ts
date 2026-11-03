@@ -8,7 +8,7 @@ import type {
   MonthlyExpenseInput,
   MonthlyExpenseUpdateInput,
 } from "@/lib/budget/schemas";
-import type { Bill, Budget, CreditCard, MonthlyExpense } from "@/lib/budget/types";
+import type { Bill, Budget, CreditCard, MonthlyExpense, Transaction } from "@/lib/budget/types";
 
 /**
  * Port for the Budget aggregate. Every method is scoped by `userId`; this
@@ -43,4 +43,18 @@ export interface BudgetRepository {
   addBill(userId: string, input: BillInput): Promise<Bill>;
   updateBill(userId: string, input: BillUpdateInput): Promise<void>;
   removeBill(userId: string, id: string): Promise<void>;
+
+  /**
+   * The journal, newest first. There is no `addTransaction`: entries are a
+   * side effect of the mutations above, written in the same database
+   * transaction as the change they describe, so no caller can record a
+   * movement that did not happen or skip recording one that did.
+   *
+   * Removal is the exception — the journal is the only table here that grows
+   * without bound, so clearing it has to be something the user can do. It
+   * deletes the record, never the balance the record describes.
+   */
+  listTransactions(userId: string): Promise<Transaction[]>;
+  removeTransaction(userId: string, id: string): Promise<void>;
+  clearTransactions(userId: string): Promise<void>;
 }

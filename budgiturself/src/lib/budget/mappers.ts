@@ -6,6 +6,8 @@ import type {
   BillType as BillTypeRow,
   CreditCard as CreditCardRow,
   MonthlyExpense as MonthlyExpenseRow,
+  Transaction as TransactionRow,
+  TransactionKind as TransactionKindRow,
 } from "@prisma/client";
 import type {
   BillInput,
@@ -22,7 +24,34 @@ import type {
   ExpenseColorKey,
   ExpenseIconKey,
   MonthlyExpense,
+  Transaction,
+  TransactionKind,
 } from "@/lib/budget/types";
+
+/**
+ * A journal entry on its way into the database. `id` and `occurredAt` are the
+ * database's to assign, and nothing outside the repository builds one of
+ * these — entries are derived from a mutation, never accepted from a client.
+ */
+export type TransactionEntry = Omit<Transaction, "id" | "occurredAt">;
+
+const transactionKindToDomain: Record<TransactionKindRow, TransactionKind> = {
+  CARD_CHARGE: "cardCharge",
+  EXPENSE_SPEND: "expenseSpend",
+  BANK_ADJUST: "bankAdjust",
+  INCOME_ADJUST: "incomeAdjust",
+  BILL_ADDED: "billAdded",
+  BILL_REMOVED: "billRemoved",
+};
+
+const transactionKindToRow: Record<TransactionKind, TransactionKindRow> = {
+  cardCharge: "CARD_CHARGE",
+  expenseSpend: "EXPENSE_SPEND",
+  bankAdjust: "BANK_ADJUST",
+  incomeAdjust: "INCOME_ADJUST",
+  billAdded: "BILL_ADDED",
+  billRemoved: "BILL_REMOVED",
+};
 
 /**
  * Explicit, two-way mapping between Prisma's generated row shapes and the
@@ -89,6 +118,16 @@ export function toDomainBill(row: BillRow): Bill {
     throw new Error(`Bill ${row.id} is PERSONAL but missing owedTo`);
   }
   return { ...base, type: "personal", owedTo: row.owedTo };
+}
+
+export function toDomainTransaction(row: TransactionRow): Transaction {
+  return {
+    id: row.id,
+    kind: transactionKindToDomain[row.kind],
+    label: row.label,
+    amount: row.amount.toNumber(),
+    occurredAt: row.occurredAt,
+  };
 }
 
 /** Shape returned by `db.user.findUniqueOrThrow` with the budget `select`, see prisma-budget-repository.ts. */
@@ -195,4 +234,16 @@ export function toBillUpdateData({
   ...input
 }: BillUpdateInput): Prisma.BillUncheckedUpdateInput {
   return toBillColumns(input);
+}
+
+export function toTransactionCreateData(
+  userId: string,
+  entry: TransactionEntry,
+): Prisma.TransactionUncheckedCreateInput {
+  return {
+    userId,
+    kind: transactionKindToRow[entry.kind],
+    label: entry.label,
+    amount: entry.amount,
+  };
 }

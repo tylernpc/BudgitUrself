@@ -11,8 +11,10 @@ import {
   toDomainBudget,
   toDomainCreditCard,
   toDomainMonthlyExpense,
+  toDomainTransaction,
   toMonthlyExpenseCreateData,
   toMonthlyExpenseUpdateData,
+  toTransactionCreateData,
 } from "@/lib/budget/mappers";
 import type { BudgetRepository } from "@/lib/budget/repository";
 import type {
@@ -54,11 +56,29 @@ class PrismaBudgetRepository implements BudgetRepository {
   }
 
   async setBankBalance(userId: string, bankBalance: number) {
-    await db.user.update({ where: { id: userId }, data: { bankBalance } });
+    await db.$transaction([
+      db.user.update({ where: { id: userId }, data: { bankBalance } }),
+      db.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "bankAdjust",
+          label: "Bank balance",
+          amount: bankBalance,
+        }),
+      }),
+    ]);
   }
 
   async setMonthlyIncome(userId: string, monthlyIncome: number) {
-    await db.user.update({ where: { id: userId }, data: { monthlyIncome } });
+    await db.$transaction([
+      db.user.update({ where: { id: userId }, data: { monthlyIncome } }),
+      db.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "incomeAdjust",
+          label: "Monthly income",
+          amount: monthlyIncome,
+        }),
+      }),
+    ]);
   }
 
   async addCreditCard(userId: string, input: CreditCardInput) {
@@ -73,10 +93,36 @@ class PrismaBudgetRepository implements BudgetRepository {
     });
   }
 
+  /**
+   * Interactive rather than batched because the journal entry needs the card's
+   * *name*, which `updateMany` does not hand back. Reading it inside the
+   * transaction keeps ownership scoped by `userId` exactly as `updateMany`
+   * did, and means the balance can never move without its entry, or vice
+   * versa. A card that is not the caller's simply matches nothing, which is
+   * what `updateMany` did too.
+   */
   async addCreditCardCharge(userId: string, input: CreditCardChargeInput) {
-    await db.creditCard.updateMany({
-      where: { id: input.id, userId },
-      data: { balance: { increment: input.amount } },
+    await db.$transaction(async (tx) => {
+      const card = await tx.creditCard.findFirst({
+        where: { id: input.id, userId },
+        select: { name: true },
+      });
+
+      if (!card) {
+        return;
+      }
+
+      await tx.creditCard.update({
+        where: { id: input.id },
+        data: { balance: { increment: input.amount } },
+      });
+      await tx.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "cardCharge",
+          label: card.name,
+          amount: input.amount,
+        }),
+      });
     });
   }
 
@@ -96,10 +142,29 @@ class PrismaBudgetRepository implements BudgetRepository {
     });
   }
 
+  /** Same shape as `addCreditCardCharge` — see the note there. */
   async addMonthlyExpenseContribution(userId: string, input: MonthlyExpenseContributionInput) {
-    await db.monthlyExpense.updateMany({
-      where: { id: input.id, userId },
-      data: { spent: { increment: input.amount } },
+    await db.$transaction(async (tx) => {
+      const expense = await tx.monthlyExpense.findFirst({
+        where: { id: input.id, userId },
+        select: { name: true },
+      });
+
+      if (!expense) {
+        return;
+      }
+
+      await tx.monthlyExpense.update({
+        where: { id: input.id },
+        data: { spent: { increment: input.amount } },
+      });
+      await tx.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "expenseSpend",
+          label: expense.name,
+          amount: input.amount,
+        }),
+      });
     });
   }
 
@@ -132,7 +197,18 @@ class PrismaBudgetRepository implements BudgetRepository {
   async addBill(userId: string, input: BillInput) {
     await this.assertOwnsCard(userId, input);
 
-    const row = await db.bill.create({ data: toBillCreateData(userId, input) });
+    const row = await db.$transaction(async (tx) => {
+      const bill = await tx.bill.create({ data: toBillCreateData(userId, input) });
+      await tx.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "billAdded",
+          label: bill.name,
+          amount: input.amount,
+        }),
+      });
+      return bill;
+    });
+
     return toDomainBill(row);
   }
 
@@ -146,7 +222,42 @@ class PrismaBudgetRepository implements BudgetRepository {
   }
 
   async removeBill(userId: string, id: string) {
-    await db.bill.deleteMany({ where: { id, userId } });
+    await db.$transaction(async (tx) => {
+      const bill = await tx.bill.findFirst({
+        where: { id, userId },
+        select: { name: true, amount: true },
+      });
+
+      if (!bill) {
+        return;
+      }
+
+      await tx.bill.delete({ where: { id } });
+      await tx.transaction.create({
+        data: toTransactionCreateData(userId, {
+          kind: "billRemoved",
+          label: bill.name,
+          amount: bill.amount.toNumber(),
+        }),
+      });
+    });
+  }
+
+  async listTransactions(userId: string) {
+    const rows = await db.transaction.findMany({
+      where: { userId },
+      orderBy: { occurredAt: "desc" },
+    });
+
+    return rows.map(toDomainTransaction);
+  }
+
+  async removeTransaction(userId: string, id: string) {
+    await db.transaction.deleteMany({ where: { id, userId } });
+  }
+
+  async clearTransactions(userId: string) {
+    await db.transaction.deleteMany({ where: { userId } });
   }
 }
 
